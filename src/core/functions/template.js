@@ -1,14 +1,7 @@
 import fs from 'fs';
 import path from 'path';
+import addAttributes from '../utils/attributes';
 
-function addAttributes(startTag, attributes) {
-  for (let attribute in attributes) {
-    const kebab = attribute.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
-    startTag += ` ${kebab}="${attributes[attribute]}"`;
-  }
-
-  return startTag += '>';
-}
 
 export default function(ext) {
   const config = require(__base+'/docbook.config');
@@ -26,13 +19,13 @@ export default function(ext) {
      */
     let metaTags = '';
     if (Array.isArray(config.head.meta))
-      config.head.meta.forEach(metaInfo => metaTags += addAttributes('<meta', metaInfo)+'\n');
+      config.head.meta.forEach(metaInfo => metaTags += addAttributes('meta', metaInfo)+'\n');
 
     template = template.replace('{{ meta }}', metaTags);
 
     let linkTags = '';
     if (Array.isArray(config.head.link))
-      config.head.link.forEach(linkInfo => linkTags += addAttributes('<link', linkInfo)+'\n');
+      config.head.link.forEach(linkInfo => linkTags += addAttributes('link', linkInfo)+'\n');
       
     template = template.replace('{{ link }}', linkTags);
   }
