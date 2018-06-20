@@ -4,9 +4,17 @@
   {{ meta }}
   <title>{{ title }}</title>
 
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,700" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
   {{ link }}
 </head>
 <body>
-  {{ body }}
+  <div class="container">
+    <div class="sidebar"></div>
+
+    <div class="content">
+      {{ body }}
+    </div>
+  </div>
 </body>
 </html>
