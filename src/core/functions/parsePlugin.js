@@ -8,6 +8,7 @@ export default function(data) {
   
   const parser = new domParser();
   const dom = parser.parseFromString(data);
+  let pluginCSS = '';
     
   for (let tag in plugins) {
 
@@ -17,9 +18,12 @@ export default function(data) {
       /**
        * Replace the component content with plugin content after it is loaded
        */
-      data = data.replace(element.outerHTML, plugin);
+      data = data.replace(element.outerHTML, plugin.element);
+
+      if (!pluginCSS.includes(plugin.css))
+        pluginCSS += plugin.css;
     });
   }
 
-  return data;
+  return { html: data, css: pluginCSS };
 }

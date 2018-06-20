@@ -31,9 +31,17 @@ export default function createFile(path, data, options, callback) {
      */
     data = injectPlugins(data);
 
-    fs.writeFile(path.replace(/\.[^/.]+$/, options.to), data, err => {
+    fs.writeFile(path.replace(/\.[^/.]+$/, options.to), data.html, err => {
       if (err) callback(err);
     });
+
+    if (data.css) {
+      let cssTemplate = prepareTemplate('.css');
+      cssTemplate += ' '+data.css;
+      fs.writeFile(__base+'/docs/styles.css', cssTemplate, err => {
+        if (err) callback(err);
+      })
+    }
 
   });
 }

@@ -29,6 +29,12 @@ export default function(ext) {
       
     template = template.replace('{{ link }}', linkTags);
   }
+  else if (ext === '.css') {
+    const reset = fs.readFileSync(path.join(__dirname, '../templates/css/reset.min.css')).toString();
+    const styles = fs.readFileSync(path.join(__dirname, '../templates/css/styles.css')).toString();
+
+    template = reset+' '+styles;
+  }
 
   return template;
 }

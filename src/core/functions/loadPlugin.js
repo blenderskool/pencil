@@ -1,4 +1,5 @@
 import addAttributes from '../utils/attributes';
+import camelKebab from '../utils/camelKebab';
 import concat from '../utils/concat';
 
 /**
@@ -43,11 +44,38 @@ function addChildren(children) {
   return data;
 }
 
+function parseStyles(styles) {
+  let css = '';
+
+  for (let selector in styles) {
+    css += `${selector} {`;
+
+    for (let attribute in styles[selector]) {
+      const attrVal = styles[selector][attribute];
+
+      if (typeof attrVal === 'object') {
+        css += `${attribute} {`;
+        for (let subAttr in attrVal) {
+          css += `${camelKebab(subAttr)}: ${attrVal[subAttr]};`
+        }
+        css += '}';
+      }
+      else {
+        css += `${camelKebab(attribute)}: ${styles[selector][attribute]};`;
+      }
+    }
+
+    css += '}';
+  }
+
+  return css;
+}
+
 export default function(plugin, elemRef) {
   const mod = require(plugin);
 
   const html = mod.data(elemRef);
-  const styles = mod.styles(elemRef);
+  const css = parseStyles(mod.styles(elemRef));
 
   /**
    * We add user specified inline styles and class list to the plugin element.
@@ -58,5 +86,5 @@ export default function(plugin, elemRef) {
 
   let element = addChildren(html);
 
-  return element;
+  return { element, css};
 }
