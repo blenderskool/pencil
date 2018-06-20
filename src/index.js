@@ -5,10 +5,8 @@ import recursiveRead from './core/functions/recurRead';
 import createFile from './core/functions/create';
 
 const basePath = process.env.PWD;
-const dir = 'content/'
-const converter = new showdown.Converter({
-  noHeaderId: true
-})
+const dir = 'content/';
+const converter = new showdown.Converter({});
 
 export default function() {
 
