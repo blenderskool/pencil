@@ -15,7 +15,8 @@ export default function() {
   global.__base = basePath;
 
   recursiveRead(dir, {
-    include: 'md'
+    include: 'md',
+    ignore: ['sidebar.md']
   }, (err, filePath) => {
 
     fs.readFile(filePath, (err, fileBuf) => {
