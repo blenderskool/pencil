@@ -11,6 +11,10 @@
   "bin": {
     "docbook": "bin/docbook"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/blenderskool/docbook"
+  },
   "author": "Akash Hamirwasia",
   "license": "MIT",
   "devDependencies": {
