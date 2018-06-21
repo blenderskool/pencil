@@ -3,10 +3,13 @@ import showdown from 'showdown';
 
 import recursiveRead from './core/functions/recurRead';
 import createFile from './core/functions/create';
+import copyStatic from "./core/functions/copydir";
 
 const basePath = process.env.PWD;
 const dir = 'content/';
-const converter = new showdown.Converter({});
+const converter = new showdown.Converter({
+  ghCompatibleHeaderId: true
+});
 
 export default function() {
 
@@ -26,9 +29,13 @@ export default function() {
       const fullPath = basePath + '/docs/' + filePath.replace(dir, '');
       
       createFile(fullPath, html, { to: '.html' }, err => {
-        console.log(err)
-      })
+        console.log(err);
+      });
   
-    })
+    });
   });
+
+  copyStatic(err => {
+    console.log(err);
+  })
 }
