@@ -11,7 +11,6 @@ export default function(ext) {
   if (ext === '.html') {
 
     template = fs.readFileSync(path.join(__dirname, '../templates/html.html')).toString();
-    template = template.replace('{{ title }}', config.head.title);
 
     /**
      * 'meta', 'link' data is taken from the config file and added to the
