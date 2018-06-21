@@ -1,7 +1,3 @@
-* {
-  box-sizing: border-box;
-}
-
 body {
   font-family: 'Source Sans Pro', sans-serif;
   font-size: 18px;
@@ -19,7 +15,7 @@ h1 {
 }
 h2 {
   font-size: 30px;
-  margin: 20px 0;
+  margin: 40px 0 20px 0;
 }
 h2::after {
   content: '';
@@ -43,11 +39,14 @@ h6 {
   font-size: 18px;
 }
 
-p {
-  max-width: 33em;
+
+p, ul, ol {
   color: #4D5A60;
   line-height: 1.4em;
-  margin: 20px 0 40px 0;
+}
+
+p {
+  margin: 20px 0 30px 0;
 }
 
 a {
@@ -64,6 +63,32 @@ code {
   margin: 0 3px;
   font-family: 'Source Sans Pro', monospace;
   font-weight: 600;
+  white-space: nowrap;
+}
+
+b, strong {
+  font-weight: 600;
+  color: #30353c;
+}
+
+ul {
+  list-style: disc outside none !important;
+  padding-left: 20px;
+  margin-bottom: 30px;
+}
+
+img {
+  max-width: 100%;
+  border-radius: 3px;
+}
+
+blockquote {
+  border-left: 3px solid #869095;
+  border-radius: 2px;
+  padding-left: 15px;
+}
+blockquote p {
+  color: #869095;
 }
 
 .container {
@@ -86,4 +111,30 @@ code {
 .content {
   padding: 20px 60px;
   margin-left: 19%;
+  max-width: calc(34em + 60px);
+}
+
+
+/**
+Prism JS overrides
+**/
+
+.content div.code-toolbar > .toolbar .toolbar-item {
+  margin: 0 0.2em;
+}
+.content div.code-toolbar > .toolbar a, div.code-toolbar > .toolbar button, div.code-toolbar > .toolbar span {
+  color: #4D5A60 !important;
+  padding: 0.1em 0.5em !important;
+  background: #ffffff !important;
+  border-radius: 3px !important;
+  box-shadow: none !important;
+}
+
+.content div.code-toolbar code[class*="language-"] {
+  padding: 0;
+  font-weight: initial;
+}
+
+.content code[class*="language-"], pre[class*="language-"] {
+  text-shadow: none !important;
 }
