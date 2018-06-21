@@ -1,5 +1,6 @@
 import domParser from 'dom-parser';
 import pluginLoader from './loadPlugin';
+import indexGen from './content';
 
 export default function(data) {
   const config = require(__base + '/docbook.config');
@@ -44,6 +45,9 @@ export default function(data) {
         pluginCSS += plugin.css;
     });
   }
+
+  /** Contents sidebar will be generated now */
+  data = indexGen(data);
 
   return { html: data, css: pluginCSS };
 }
