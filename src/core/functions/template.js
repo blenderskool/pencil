@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import addAttributes from '../utils/attributes';
+import bundler from '../utils/bundler';
 
 
 export default function(ext) {
@@ -36,10 +37,17 @@ export default function(ext) {
       
   }
   else if (ext === '.css') {
-    const reset = fs.readFileSync(path.join(__dirname, '../templates/css/reset.min.css')).toString();
-    const styles = fs.readFileSync(path.join(__dirname, '../templates/css/styles.css')).toString();
+    /**
+     * Bundle the default, external css files into one single file
+     */
+    const external = Array.isArray(config.styles) ? config.styles : [];
 
-    template = reset+' '+styles;
+    template = bundler([
+      path.join(__dirname, '../templates/css/reset.min.css'),
+      path.join(__dirname, '../templates/css/styles.css')
+    ].concat(external), err => {
+      console.log(err);
+    });
   }
 
   return template;
