@@ -26,8 +26,15 @@ export default function(ext) {
     let linkTags = '';
     if (Array.isArray(config.head.link))
       config.head.link.forEach(linkInfo => linkTags += addAttributes('link', linkInfo)+'\n');
-      
+
     template = template.replace('{{ link }}', linkTags);
+
+    let scriptTags = '';
+    if (Array.isArray(config.scripts))
+      config.scripts.forEach(scriptInfo => scriptTags += addAttributes('script', scriptInfo)+'</script>\n');
+
+    template = template.replace('{{ body }}', scriptTags);
+      
   }
   else if (ext === '.css') {
     const reset = fs.readFileSync(path.join(__dirname, '../templates/css/reset.min.css')).toString();

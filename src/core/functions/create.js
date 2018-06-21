@@ -23,7 +23,7 @@ export default function createFile(path, data, options, callback) {
       /**
        * Merge the data into the template
        */
-      data = htmlTemplate.replace('{{ body }}', data);
+      data = htmlTemplate.replace('{{ content }}', data);
     }
 
     /**
