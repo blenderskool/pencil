@@ -7,8 +7,21 @@ import copyStatic from "./core/functions/copydir";
 
 const basePath = process.env.PWD;
 const dir = 'content/';
+
+/**
+ * Showdown extension that is used to make h1, h2, h3 elements anchored links
+ */
+showdown.extension('heading-anchor', function() {
+  return [{
+    type: 'html',
+    regex: /(<h([1-3]) id="([^"]+?)">)(.*<\/h\2>)/g,
+    replace: '$1<a class="anchor" href="#$3" aria-hidden="true">$4</a>'
+  }];
+});
+
 const converter = new showdown.Converter({
-  ghCompatibleHeaderId: true
+  ghCompatibleHeaderId: true,
+  extensions: ['heading-anchor']
 });
 
 export default function() {
