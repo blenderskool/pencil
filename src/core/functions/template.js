@@ -26,7 +26,7 @@ export default function(ext, meta) {
     else
       template = template.replace('{{ title }}', config.head ? config.head.title ? config.head.title : 'Docbook site' : 'Docbook site');
 
-    let metaTags = '';
+    let tags = '';
     if (Array.isArray(config.head.meta)) {
       config.head.meta.forEach(metaInfo => {
 
@@ -37,30 +37,56 @@ export default function(ext, meta) {
             delete meta[metaInfo.name];
         }
 
-        metaTags += addAttributes('meta', metaInfo)+'\n'
+        tags += addAttributes('meta', metaInfo)+'\n'
       });
     }
 
     // Additional page meta data is added here
     if (meta) {
       for (let metaName in meta) {
-        metaTags += addAttributes('meta', { name: metaName, content: meta[metaName] })+'\n';
+        tags += addAttributes('meta', { name: metaName, content: meta[metaName] })+'\n';
       }
     }
 
-    template = template.replace('{{ meta }}', metaTags);
+    template = template.replace('{{ meta }}', tags);
 
-    let linkTags = '';
+    tags = '';
     if (Array.isArray(config.head.link))
-      config.head.link.forEach(linkInfo => linkTags += addAttributes('link', linkInfo)+'\n');
+      config.head.link.forEach(linkInfo => tags += addAttributes('link', linkInfo)+'\n');
 
-    template = template.replace('{{ link }}', linkTags);
+    template = template.replace('{{ link }}', tags);
 
-    let scriptTags = '';
+    tags = '';
+    if (config.navigation) {
+      for (let name in config.navigation) {
+        const val = config.navigation[name];
+
+        if (typeof val === 'string') {
+          tags += addAttributes('a', {
+            href: val, ariaHidden: true
+          }) + name+'</a>';
+        }
+        else if (!val) {
+          tags += `<span>${name}</span>`;
+        }
+        else if (typeof val === 'object') {
+          if (val.newTab) {
+            tags += addAttributes('a', {
+              href: val, ariaHidden: true, target: '_blank'
+            }) + name+'</a>';
+          }
+
+          // TODO: Implement dropdown menu
+        }
+      }
+    }
+    template = template.replace('{{ nav }}', tags);
+
+    tags = '';
     if (Array.isArray(config.scripts))
-      config.scripts.forEach(scriptInfo => scriptTags += addAttributes('script', scriptInfo)+'</script>\n');
+      config.scripts.forEach(scriptInfo => tags += addAttributes('script', scriptInfo)+'</script>\n');
 
-    template = template.replace('{{ body }}', scriptTags);
+    template = template.replace('{{ body }}', tags);
       
   }
   else if (ext === '.css') {
