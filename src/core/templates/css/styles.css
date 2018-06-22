@@ -56,12 +56,17 @@ a {
   color: #1CA9F0;
   font-weight: 600;
   text-decoration: none;
+  transition: color .15s ease, opacity .15s ease;
+}
+a:hover {
+  opacity: 0.7;
 }
 a.anchor {
   color: inherit;
 }
 a.anchor:hover {
   /* border-bottom is used as it gives more control */
+  opacity: 1;
   border-bottom: 3px solid #1CA9F0;
 }
 
@@ -124,6 +129,43 @@ blockquote p {
   max-width: calc(34em + 60px);
 }
 
+.index {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: calc(100% - 19% - 30px - (34em + 60px));
+  font-size: 16px;
+  font-weight: 600;
+
+  margin-top: 30px;
+  padding-left: 30px;
+  border-left: 1px solid #E1E8E8;
+}
+.index div:first-child {
+  margin-bottom: 15px;
+  text-transform: uppercase;
+  color: #869095;
+  font-size: 14px;
+}
+.index div:not(:first-child) {
+  padding-top: 10px;
+  padding-bottom: 2px;
+}
+
+.index div a {
+  color: #4D5A60;
+}
+.index div a:hover {
+  color: #1CA9F0;
+}
+
+.index div.indent {
+  padding: 2px 0 2px 20px;
+}
+.index .indent a {
+  font-size: 14px;
+  font-weight: 400;
+}
 
 /**
 Prism JS overrides
@@ -147,4 +189,29 @@ Prism JS overrides
 
 .content code[class*="language-"], pre[class*="language-"] {
   text-shadow: none !important;
+}
+
+/** Media queries **/
+
+@media screen and (min-width: 700px) and (max-width: 1080px) {
+  .content {
+    margin: 0 auto !important;
+  }
+}
+
+@media screen and (max-width: 1080px) {
+  .index {
+    /* TODO: Make the contents responsive */
+    display: none;
+  }
+
+  .sidebar {
+    transform: translateX(-100%);
+  }
+
+  .content {
+    width: 100%;
+    margin-left: 0;
+    padding: 20px 40px;
+  }
 }
