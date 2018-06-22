@@ -1,6 +1,8 @@
 import fs from 'fs';
 import pathMod from 'path';
 import mkdirp from 'mkdirp';
+import { minify } from "html-minifier";
+import cleanCSS from "clean-css";
 
 import prepareTemplate from './template';
 import injectPlugins from './parsePlugin';
@@ -20,16 +22,23 @@ export default function createFile(path, data, options, callback) {
      */
     if (options.to && options.to === '.html') {
       const htmlTemplate = prepareTemplate(options.to, data.meta);
-      /**
-       * Merge the data into the template
-       */
+
+      // Merge the data into the template
       data = htmlTemplate.replace('{{ content }}', data.html);
     }
 
-    /**
-     * Additional plugins that are being used are injected here
-     */
+    // Additional plugins that are being used are injected here
     data = injectPlugins(data);
+
+    // Minify the html
+    data.html = minify(data.html, {
+      collapseWhitespace: true,
+      removeComments: true,
+      removeOptionalTags: true,
+      removeRedundantAttributes: true,
+      removeScriptTypeAttributes: true,
+      useShortDoctype: true
+    });
 
     fs.writeFile(path.replace(/\.[^/.]+$/, options.to), data.html, err => {
       if (err) callback(err);
@@ -37,6 +46,7 @@ export default function createFile(path, data, options, callback) {
 
     let cssTemplate = prepareTemplate('.css');
     cssTemplate += ' '+data.css;
+    cssTemplate = new cleanCSS({}).minify(cssTemplate).styles;
     fs.writeFile(__base+'/docs/styles.css', cssTemplate, err => {
       if (err) callback(err);
     });
