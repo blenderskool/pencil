@@ -106,9 +106,13 @@ blockquote p {
   color: #869095;
 }
 
+footer {
+  height: 50px;
+  width: 100%;
+}
+
 .container {
   display: flex;
-  height: 100%;
 }
 
 .sidebar {
