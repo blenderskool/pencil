@@ -21,7 +21,8 @@ showdown.extension('heading-anchor', function() {
 
 const converter = new showdown.Converter({
   ghCompatibleHeaderId: true,
-  extensions: ['heading-anchor']
+  extensions: ['heading-anchor'],
+  metadata: true
 });
 
 export default function() {
@@ -38,10 +39,11 @@ export default function() {
       const markdown = file.toString();
   
       const html = converter.makeHtml(markdown);
+      const metaData = converter.getMetadata();
   
       const fullPath = basePath + '/docs/' + filePath.replace(dir, '');
       
-      createFile(fullPath, html, { to: '.html' }, err => {
+      createFile(fullPath, {html, meta: metaData}, { to: '.html' }, err => {
         console.log(err);
       });
   

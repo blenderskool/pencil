@@ -19,11 +19,11 @@ export default function createFile(path, data, options, callback) {
      * being converted too
      */
     if (options.to && options.to === '.html') {
-      const htmlTemplate = prepareTemplate(options.to);
+      const htmlTemplate = prepareTemplate(options.to, data.meta);
       /**
        * Merge the data into the template
        */
-      data = htmlTemplate.replace('{{ content }}', data);
+      data = htmlTemplate.replace('{{ content }}', data.html);
     }
 
     /**
@@ -35,13 +35,11 @@ export default function createFile(path, data, options, callback) {
       if (err) callback(err);
     });
 
-    if (data.css) {
-      let cssTemplate = prepareTemplate('.css');
-      cssTemplate += ' '+data.css;
-      fs.writeFile(__base+'/docs/styles.css', cssTemplate, err => {
-        if (err) callback(err);
-      })
-    }
+    let cssTemplate = prepareTemplate('.css');
+    cssTemplate += ' '+data.css;
+    fs.writeFile(__base+'/docs/styles.css', cssTemplate, err => {
+      if (err) callback(err);
+    });
 
   });
 }

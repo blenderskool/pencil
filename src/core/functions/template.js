@@ -4,7 +4,7 @@ import addAttributes from '../utils/attributes';
 import bundler from '../utils/bundler';
 
 
-export default function(ext) {
+export default function(ext, meta) {
   const config = require(__base+'/docbook.config');
 
   let template = '';
@@ -17,9 +17,36 @@ export default function(ext) {
      * 'meta', 'link' data is taken from the config file and added to the
      * html template
      */
+
+    // If title is present in meta data for the page, then use it
+    if (meta.title) {
+      template = template.replace('{{ title }}', meta.title);
+      delete meta.title;
+    }
+    else
+      template = template.replace('{{ title }}', config.head ? config.head.title ? config.head.title : 'Docbook site' : 'Docbook site');
+
     let metaTags = '';
-    if (Array.isArray(config.head.meta))
-      config.head.meta.forEach(metaInfo => metaTags += addAttributes('meta', metaInfo)+'\n');
+    if (Array.isArray(config.head.meta)) {
+      config.head.meta.forEach(metaInfo => {
+
+        // Page meta data overrides the global meta data
+        if (meta) {
+          if (meta.hasOwnProperty(metaInfo.name))
+            metaInfo.content = meta[metaInfo.name];
+            delete meta[metaInfo.name];
+        }
+
+        metaTags += addAttributes('meta', metaInfo)+'\n'
+      });
+    }
+
+    // Additional page meta data is added here
+    if (meta) {
+      for (let metaName in meta) {
+        metaTags += addAttributes('meta', { name: metaName, content: meta[metaName] })+'\n';
+      }
+    }
 
     template = template.replace('{{ meta }}', metaTags);
 
