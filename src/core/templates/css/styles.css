@@ -161,10 +161,10 @@ footer {
 .sidebar a:hover {
   border-bottom: 2px solid #1CA9F0;
 }
-.sidebar div {
+.sidebar div.page {
   padding: 5px 0;
 }
-.sidebar div {
+.sidebar div.page {
   font-weight: 600;
 }
 .sidebar .indent {

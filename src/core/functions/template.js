@@ -112,7 +112,7 @@ export default function(ext, meta) {
             tags += `<${name}>${val}</${name}>`;
         }
         else if (val && typeof val === 'object') {
-          tags += `<div>${ name }</div>`
+          tags += `<div class="page">${ name }</div>`
           for (let subName in val) {
             tags += `<div class="indent">${addAttributes('a', {
               href: val[subName], ariaHidden: true
@@ -120,7 +120,7 @@ export default function(ext, meta) {
           }
         }
         else {
-          tags += `<div>${addAttributes('a', {
+          tags += `<div class="page">${addAttributes('a', {
             href: val, ariaHidden: true
           }) + name + '</a>'}</div>`;
         }
