@@ -47,15 +47,24 @@ export default function(ext, meta) {
         tags += addAttributes('meta', { name: metaName, content: meta[metaName] })+'\n';
       }
     }
-
     template = template.replace('{{ meta }}', tags);
 
+    // Link tags
     tags = '';
     if (Array.isArray(config.head.link))
       config.head.link.forEach(linkInfo => tags += addAttributes('link', linkInfo)+'\n');
 
     template = template.replace('{{ link }}', tags);
 
+
+    // Header is built here
+    if (config.navigation || config.logo)
+      template = template.replace('{{ header }}', '<header><div class="brand"></div><nav>{{ nav }}</nav></header>');
+    else
+      template = template.replace('{{ header }}', '');
+
+    
+    // Navigation is built here
     tags = '';
     if (config.navigation) {
       for (let name in config.navigation) {
@@ -70,9 +79,10 @@ export default function(ext, meta) {
           tags += `<span>${name}</span>`;
         }
         else if (typeof val === 'object') {
-          if (val.newTab) {
+          // If the link is supposed to open in a new tab
+          if (val.newTab && val.link) {
             tags += addAttributes('a', {
-              href: val, ariaHidden: true, target: '_blank'
+              href: val.link, ariaHidden: true, target: '_blank'
             }) + name+'</a>';
           }
 
@@ -82,11 +92,35 @@ export default function(ext, meta) {
     }
     template = template.replace('{{ nav }}', tags);
 
+    // Scripts for the body section
     tags = '';
     if (Array.isArray(config.scripts))
       config.scripts.forEach(scriptInfo => tags += addAttributes('script', scriptInfo)+'</script>\n');
 
     template = template.replace('{{ body }}', tags);
+
+    tags = '';
+    if (config.sidebar && typeof config.sidebar === 'object') {
+      for (let name in config.sidebar) {
+        const val = config.sidebar[name];
+
+        if (typeof val === 'string') {
+          tags += `<div>${addAttributes('a', {
+            href: val, ariaHidden: true
+          }) + name + '</a>'}</div>`;
+        }
+        else if (val && typeof val === 'object') {
+          tags += `<div>${ name }</div>`
+          for (let subName in val) {
+            tags += `<div class="indent">${addAttributes('a', {
+              href: val[subName], ariaHidden: true
+            }) + subName + '</a>'}</div>`;
+          }
+        }
+
+      }
+    }
+    template = template.replace('{{ sidebar }}', tags);
       
   }
   else if (ext === '.css') {

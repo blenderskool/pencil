@@ -129,7 +129,7 @@ header nav {
 }
 header nav a, header nav span {
   padding: 0 10px;
-  font-weight: 400;
+  font-weight: 600;
 }
 
 footer {
@@ -151,6 +151,29 @@ footer {
   bottom: 0;
   width: 19%;
   z-index: 10;
+  padding: 25px;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+.sidebar a {
+  color: #192328;
+}
+.sidebar a:hover {
+  border-bottom: 2px solid #1CA9F0;
+}
+.sidebar div {
+  padding: 5px 0;
+}
+.sidebar div {
+  font-weight: 600;
+}
+.sidebar .indent {
+  padding: 2px 0 2px 20px;
+}
+.sidebar .indent a {
+  font-weight: 400;
+  color: #4D5A60;
+  font-size: 16px;
 }
 
 .content {
