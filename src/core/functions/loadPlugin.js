@@ -29,15 +29,14 @@ function addChildren(children) {
   // If children is passed as array of objects
   if (Array.isArray(children)) {
     children.forEach(child => {
-      data = appendElement(child);
+      data += appendElement(child);
     });
   }
   // If children is passed as a single object
   else if (typeof children === 'object') {
     data = appendElement(children);
   }
-  // If children is a string
-  else if (typeof children === "string") {
+  else {
     data = children;
   }
   
