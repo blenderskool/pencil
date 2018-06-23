@@ -41,7 +41,7 @@ export default function() {
       const html = converter.makeHtml(markdown);
       const metaData = converter.getMetadata();
   
-      const fullPath = basePath + '/docs/' + filePath.replace(dir, '');
+      const fullPath = basePath + '/dist/' + filePath.replace(dir, '');
       
       createFile(fullPath, {html, meta: metaData}, { to: '.html' }, err => {
         console.log(err);

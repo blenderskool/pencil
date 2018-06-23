@@ -47,7 +47,7 @@ export default function createFile(path, data, options, callback) {
     let cssTemplate = prepareTemplate('.css');
     cssTemplate += ' '+data.css;
     cssTemplate = new cleanCSS({}).minify(cssTemplate).styles;
-    fs.writeFile(__base+'/docs/styles.css', cssTemplate, err => {
+    fs.writeFile(__base+'/dist/styles.css', cssTemplate, err => {
       if (err) callback(err);
     });
 

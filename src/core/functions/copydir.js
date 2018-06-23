@@ -1,12 +1,13 @@
 import path from 'path';
 import { ncp } from "ncp";
+import { existsSync } from 'fs';
 
 export default function(callback) {
-  const config = require(__base+'/docbook.config');
+  const staticPath = path.join(__base, 'static');
 
-  if (!config.static) return;
+  if (!existsSync(staticPath)) return callback('Path not found');
 
-  ncp(path.join(__base, config.static), path.join(__base, 'docs'), err => {
+  ncp(staticPath, path.join(__base, 'dist'), err => {
     if (err) {
       return callback(err)
     }
