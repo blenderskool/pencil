@@ -104,10 +104,12 @@ export default function(ext, meta) {
       for (let name in config.sidebar) {
         const val = config.sidebar[name];
 
-        if (typeof val === 'string') {
-          tags += `<div>${addAttributes('a', {
-            href: val, ariaHidden: true
-          }) + name + '</a>'}</div>`;
+        if (config.plugins && typeof config.plugins === 'object' && config.plugins.hasOwnProperty(name)) {
+          // This section adds plugin support to the sidebar
+          if (val && typeof val === 'object')
+            tags += addAttributes(name, val)+`${val.children ? val.children : ''}</${name}>`;
+          else
+            tags += `<${name}>${val}</${name}>`;
         }
         else if (val && typeof val === 'object') {
           tags += `<div>${ name }</div>`
@@ -116,6 +118,11 @@ export default function(ext, meta) {
               href: val[subName], ariaHidden: true
             }) + subName + '</a>'}</div>`;
           }
+        }
+        else {
+          tags += `<div>${addAttributes('a', {
+            href: val, ariaHidden: true
+          }) + name + '</a>'}</div>`;
         }
 
       }
