@@ -5,8 +5,7 @@ const regex = /<h([2-3]) id="(.*?)".*?><a.*?>(.*?)<\/a><\/h[2-3]/g;
  * to the {{ index }} hook of the template
  */
 export default function(data) {
-
-  let index = '<div>Contents</div>';
+  let index = '';
   let matches = [];
 
   while ((matches = regex.exec(data)) !== null) {
@@ -14,6 +13,10 @@ export default function(data) {
     <a href="#${matches[2]}" aria-hidden="true">${matches[3]}</a>
     </div>`;
   }
+
+  // This does the check if index of the page, must be shown or not
+  if (index)
+    index = '<div>Contents</div>' + index;
 
   return data.replace('{{ index }}', index);
 }
