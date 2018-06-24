@@ -54,7 +54,7 @@ export default function(meta) {
 
   // Header is built here
   if (config.navigation || config.logo)
-    template = template.replace('{{ header }}', '<header><div class="brand"></div><nav>{{ nav }}</nav></header>');
+    template = template.replace('{{ header }}', `<header>${config.logo ? `<a href="/" class="brand"><img src=${config.logo}></a>` : ''}<nav>{{ nav }}</nav></header>`);
   else
     template = template.replace('{{ header }}', '');
 
@@ -94,7 +94,8 @@ export default function(meta) {
 
   template = template.replace('{{ body }}', tags);
 
-  tags = '';
+  // Sidebar is generated here
+  tags = config.logo ? `<a href="/" class="brand"><img src=${config.logo}></a>` : '';
   if (config.sidebar && typeof config.sidebar === 'object') {
     for (let name in config.sidebar) {
       const val = config.sidebar[name];

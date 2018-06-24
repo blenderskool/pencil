@@ -95,6 +95,11 @@ ul {
 img {
   max-width: 100%;
   border-radius: 3px;
+  vertical-align: middle;
+}
+a.brand img {
+  border-radius: 0;
+  height: 45px;
 }
 
 blockquote {
@@ -120,11 +125,11 @@ header {
   background-color: #ffffff;
   box-shadow: 0 2px 3px rgba(30, 38, 36, 0.12);
 }
-header .brand {
-  width: 20%;
+header a.brand img {
+  height: 40px;
 }
 header nav {
-  width: 80%;
+  flex: 1;
   text-align: right;
 }
 header nav a, header nav span {
@@ -151,9 +156,15 @@ footer {
   bottom: 0;
   width: 19%;
   z-index: 10;
-  padding: 25px;
+  padding: 20px 25px;
   overflow-x: hidden;
   overflow-y: auto;
+}
+.sidebar a.brand:hover {
+  border: none;
+}
+.sidebar a.brand img {
+  margin-bottom: 10px;
 }
 .sidebar a {
   color: #192328;
