@@ -2,17 +2,16 @@ import fs from 'fs';
 import pathMod from 'path';
 import mkdirp from 'mkdirp';
 import { minify } from "html-minifier";
-import cleanCSS from "clean-css";
 
-import prepareTemplate from './template';
-import injectPlugins from './parsePlugin';
+import templateHTML from './templates/html';
+import injectPlugins from './plugins/parser';
 
 /**
  * Writes a file to the specified path. If the parent folder does not
  * exist, it is created. Options include a 'to' property which saves
  * the file in the specified format
  */
-export default function createFile(path, data, options, callback) {
+export default function(path, data, options, callback) {
   mkdirp(pathMod.dirname(path), err => {
     if (err) callback(err);
 
@@ -21,7 +20,7 @@ export default function createFile(path, data, options, callback) {
      * being converted too
      */
     if (options.to && options.to === '.html') {
-      const htmlTemplate = prepareTemplate(options.to, data.meta);
+      const htmlTemplate = templateHTML(data.meta);
 
       // Merge the data into the template
       data = htmlTemplate.replace('{{ content }}', data.html);
@@ -31,7 +30,7 @@ export default function createFile(path, data, options, callback) {
     data = injectPlugins(data);
 
     // Minify the html
-    data.html = minify(data.html, {
+    data = minify(data, {
       collapseWhitespace: true,
       removeComments: true,
       removeOptionalTags: true,
@@ -40,16 +39,8 @@ export default function createFile(path, data, options, callback) {
       useShortDoctype: true
     });
 
-    fs.writeFile(path.replace(/\.[^/.]+$/, options.to), data.html, err => {
+    fs.writeFile(path.replace(/\.[^/.]+$/, options.to), data, err => {
       if (err) callback(err);
     });
-
-    let cssTemplate = prepareTemplate('.css');
-    cssTemplate += ' '+data.css;
-    cssTemplate = new cleanCSS({}).minify(cssTemplate).styles;
-    fs.writeFile(__base+'/dist/styles.css', cssTemplate, err => {
-      if (err) callback(err);
-    });
-
   });
 }

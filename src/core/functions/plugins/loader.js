@@ -1,6 +1,6 @@
-import addAttributes from '../utils/attributes';
-import camelKebab from '../utils/camelKebab';
-import concat from '../utils/concat';
+import addAttributes from '../../utils/attributes';
+import camelKebab from '../../utils/camelKebab';
+import concat from '../../utils/concat';
 
 /**
  * This function takes a children object which includes the properties for that
@@ -70,20 +70,24 @@ function parseStyles(styles) {
   return css;
 }
 
-export default function(plugin, elemRef) {
+export default function(plugin, elemRef, type='html') {
   const mod = require(plugin);
 
-  const html = mod.data(elemRef);
-  const css = parseStyles(mod.styles(elemRef));
+  if (type === 'html') {
+    const html = mod.data(elemRef);
 
-  /**
-   * We add user specified inline styles and class list to the plugin element.
-   * This gives customizability to the user.
-   */
-  html.attributes.style = concat(html.attributes.style, elemRef.getAttribute('style'));
-  html.attributes.class = concat(html.attributes.class, ' ', elemRef.getAttribute('class'));
+    /**
+     * We add user specified inline styles and class list to the plugin element.
+     * This gives customizability to the user.
+     */
 
-  let element = addChildren(html);
+    html.attributes.style = concat(html.attributes.style, elemRef.getAttribute('style'));
+    html.attributes.class = concat(html.attributes.class, ' ', elemRef.getAttribute('class'));
+  
+    return addChildren(html);  
+  }
+  else if (type === 'css') {
+    return parseStyles(mod.styles());
+  }
 
-  return { element, css};
 }

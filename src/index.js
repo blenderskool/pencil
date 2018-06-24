@@ -2,8 +2,9 @@ import fs from 'fs';
 import showdown from 'showdown';
 
 import recursiveRead from './core/functions/recurRead';
-import createFile from './core/functions/create';
-import copyStatic from "./core/functions/copydir";
+import createHTML from './core/functions/createHTML';
+import copyStatic from './core/functions/copydir';
+import styles from './core/functions/templates/styles';
 
 const basePath = process.env.PWD;
 const dir = 'content/';
@@ -43,8 +44,13 @@ export default function() {
   
       const fullPath = basePath + '/dist/' + filePath.replace(dir, '');
       
-      createFile(fullPath, {html, meta: metaData}, { to: '.html' }, err => {
+      createHTML(fullPath, {html, meta: metaData}, { to: '.html' }, err => {
         console.log(err);
+      });
+
+
+      fs.writeFile(__base+'/dist/styles.css', styles(), err => {
+        if (err) console.log(err);
       });
   
     });

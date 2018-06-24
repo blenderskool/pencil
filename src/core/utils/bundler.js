@@ -12,7 +12,6 @@ export default function(paths=[], callback) {
     catch (err) {
       callback(err);
     }
-
   }
 
   return data;
