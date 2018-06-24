@@ -17,10 +17,12 @@ export default function() {
     }
   }
 
-  return new cleanCSS({}).minify(bundler([
+  const css = (bundler([
     path.join(__dirname, '../../templates/css/reset.min.css'),
     path.join(__dirname, '../../templates/css/styles.css')
   ].concat(external), err => {
     console.log(err);
-  }) + pluginCSS).styles;
+  }) + pluginCSS).replace(/\[theme\]/gi, config.themeColor ? config.themeColor : '#1CA9F0');
+
+  return new cleanCSS({}).minify(css).styles;
 }

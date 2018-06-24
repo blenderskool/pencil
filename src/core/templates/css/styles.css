@@ -53,7 +53,7 @@ p {
 }
 
 a {
-  color: #1CA9F0;
+  color: [theme];
   font-weight: 600;
   text-decoration: none;
   transition: color .15s ease, opacity .15s ease;
@@ -61,13 +61,16 @@ a {
 a:hover {
   opacity: 0.7;
 }
+a.brand {
+  display: block;
+}
 a.anchor {
   color: inherit;
 }
 a.anchor:hover {
   /* border-bottom is used as it gives more control */
   opacity: 1;
-  border-bottom: 3px solid #1CA9F0;
+  border-bottom: 3px solid [theme];
 }
 
 code {
@@ -163,17 +166,17 @@ footer {
   overflow-x: hidden;
   overflow-y: auto;
 }
+.sidebar a.brand {
+  margin-bottom: 20px;
+}
 .sidebar a.brand:hover {
   border: none;
-}
-.sidebar a.brand img {
-  margin-bottom: 10px;
 }
 .sidebar a {
   color: #192328;
 }
 .sidebar a:hover {
-  border-bottom: 2px solid #1CA9F0;
+  border-bottom: 2px solid [theme];
 }
 .sidebar div.page {
   padding: 5px 0;
@@ -223,7 +226,7 @@ footer {
   color: #4D5A60;
 }
 .index div a:hover {
-  color: #1CA9F0;
+  color: [theme];
 }
 
 .index div.indent {
