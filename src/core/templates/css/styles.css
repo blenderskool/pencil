@@ -102,7 +102,7 @@ img {
 }
 a.brand img {
   border-radius: 0;
-  height: 30px;
+  height: 25px;
 }
 
 blockquote {
@@ -130,9 +130,6 @@ header {
 }
 header a.brand {
   display: none;
-}
-header a.brand img {
-  height: 25px;
 }
 header nav {
   flex: 1;
@@ -167,7 +164,7 @@ footer {
   overflow-y: auto;
 }
 .sidebar a.brand {
-  margin-bottom: 20px;
+  margin-bottom: 30px;
 }
 .sidebar a.brand:hover {
   border: none;
