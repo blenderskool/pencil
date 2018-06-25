@@ -30,33 +30,54 @@ export default function() {
 
   global.__base = basePath;
 
-  recursiveRead(dir, {
-    include: 'md',
-    ignore: ['sidebar.md']
+  recursiveRead('dist/', {
+    includeDir: true
   }, (err, filePath) => {
+    if (err) return console.log(err);
 
-    fs.readFile(filePath, (err, fileBuf) => {
-      const file = Buffer.from(fileBuf);
-      const markdown = file.toString();
-  
-      const html = converter.makeHtml(markdown);
-      const metaData = converter.getMetadata();
-  
-      const fullPath = basePath + '/dist/' + filePath.replace(dir, '');
-      
-      createHTML(fullPath, {html, meta: metaData}, { to: '.html' }, err => {
-        console.log(err);
-      });
-
-
-      fs.writeFile(__base+'/dist/styles.css', styles(), err => {
-        if (err) console.log(err);
-      });
-  
+    fs.unlink(filePath, err => {
+      if (err) {
+        // Error due to directory
+        if (err.errno === -21) {
+          fs.rmdir(filePath, err => {
+            if (err) return console.log(err);
+          });
+        }
+        else return console.log(err);
+      }
     });
+
+  }, () => {
+    recursiveRead(dir, {
+      include: 'md',
+      ignore: ['sidebar.md']
+    }, (err, filePath) => {
+
+      fs.readFile(filePath, (err, fileBuf) => {
+        const file = Buffer.from(fileBuf);
+        const markdown = file.toString();
+    
+        const html = converter.makeHtml(markdown);
+        const metaData = converter.getMetadata();
+    
+        const fullPath = basePath + '/dist/' + filePath.replace(dir, '');
+        
+        createHTML(fullPath, {html, meta: metaData}, { to: '.html' }, err => {
+          console.log(err);
+        });
+
+
+        fs.writeFile(__base+'/dist/styles.css', styles(), err => {
+          if (err) console.log(err);
+        });
+    
+      });
+    });
+
+    copyStatic(err => {
+      console.log(err);
+    });
+
   });
 
-  copyStatic(err => {
-    console.log(err);
-  })
 }
