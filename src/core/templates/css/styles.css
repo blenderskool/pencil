@@ -190,13 +190,13 @@ footer {
   font-size: 16px;
 }
 
-.content {
+main {
   padding: 80px 0 20px 80px;
   margin-left: 19%;
   max-width: calc(34em);
 }
 
-.index {
+aside {
   position: fixed;
   top: 0;
   right: 0;
@@ -208,28 +208,28 @@ footer {
   padding-left: 30px;
   border-left: 1px solid #E1E8E8;
 }
-.index div:first-child {
+aside div:first-child {
   margin-bottom: 15px;
   text-transform: uppercase;
   color: #869095;
   font-size: 14px;
 }
-.index div:not(:first-child) {
+aside div:not(:first-child) {
   padding-top: 10px;
   padding-bottom: 2px;
 }
 
-.index div a {
+aside div a {
   color: #4D5A60;
 }
-.index div a:hover {
+aside div a:hover {
   color: [theme];
 }
 
-.index div.indent {
+aside div.indent {
   padding: 2px 0 2px 20px;
 }
-.index .indent a {
+aside .indent a {
   font-size: 14px;
   font-weight: 400;
 }
@@ -238,10 +238,10 @@ footer {
 Prism JS overrides
 **/
 
-.content div.code-toolbar > .toolbar .toolbar-item {
+main div.code-toolbar > .toolbar .toolbar-item {
   margin: 0 0.2em;
 }
-.content div.code-toolbar > .toolbar a, div.code-toolbar > .toolbar button, div.code-toolbar > .toolbar span {
+main div.code-toolbar > .toolbar a, div.code-toolbar > .toolbar button, div.code-toolbar > .toolbar span {
   color: #4D5A60 !important;
   padding: 0.1em 0.5em !important;
   background: #ffffff !important;
@@ -249,12 +249,12 @@ Prism JS overrides
   box-shadow: none !important;
 }
 
-.content div.code-toolbar code[class*="language-"] {
+main div.code-toolbar code[class*="language-"] {
   padding: 0;
   font-weight: initial;
 }
 
-.content code[class*="language-"], pre[class*="language-"] {
+main code[class*="language-"], pre[class*="language-"] {
   text-shadow: none !important;
 }
 

@@ -16,7 +16,7 @@ showdown.extension('heading-anchor', function() {
   return [{
     type: 'html',
     regex: /(<h([1-3]) id="([^"]+?)">)(.*)(<\/h\2>)/g,
-    replace: '$1<a class="anchor" href="#$3" aria-hidden="true">$4</a>$5'
+    replace: '$1<a class="anchor" href="#$3" aria-hidden="true" tabindex="-1">$4</a>$5'
   }];
 });
 

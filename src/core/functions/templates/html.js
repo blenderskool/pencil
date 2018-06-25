@@ -111,13 +111,13 @@ export default function(meta) {
         tags += `<div class="page">${ name }</div>`
         for (let subName in val) {
           tags += `<div class="indent">${addAttributes('a', {
-            href: val[subName], ariaHidden: true
+            href: val[subName]
           }) + subName + '</a>'}</div>`;
         }
       }
       else {
         tags += `<div class="page">${addAttributes('a', {
-          href: val, ariaHidden: true
+          href: val
         }) + name + '</a>'}</div>`;
       }
 

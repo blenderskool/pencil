@@ -10,7 +10,7 @@ export default function(data) {
 
   while ((matches = regex.exec(data)) !== null) {
     index += `<div${matches[1] === '3' ? ' class="indent"' : ''}>
-    <a href="#${matches[2]}" aria-hidden="true">${matches[3]}</a>
+    <a href="#${matches[2]}">${matches[3]}</a>
     </div>`;
   }
 
