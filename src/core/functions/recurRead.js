@@ -6,9 +6,8 @@ import fs from 'fs';
  */
 export default function recursiveRead(dir, options={}, callback, next) {
 
-  /**
-   * TODO: check if necessary build folder exists
-   */
+  if (!fs.statSync(dir).isDirectory()) return callback('Invalid directory');
+  
   fs.readdir(dir, (err, files) => {
     if (err) return callback(err);
 
