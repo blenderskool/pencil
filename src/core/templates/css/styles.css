@@ -280,7 +280,7 @@ main code[class*="language-"], pre[class*="language-"] {
   main {
     width: 100%;
     margin-left: 0;
-    padding-right: 30px;
-    padding-left: 30px;
+    padding-right: 30px !important;
+    padding-left: 30px !important;
   }
 }
