@@ -53,10 +53,13 @@ export default function(meta) {
 
 
   // Header is built here
-  if (config.navigation || config.logo)
+  if (config.navigation || config.logo) {
     template = template.replace('{{ header }}',
       `<header>${config.logo ? `<a href="/" class="brand"><img alt="${config.head ? config.head.title : 'Docbook site'}" src=${config.logo}></a>` : ''}<nav>{{ nav }}</nav></header>`
     );
+    // Adds a class to the container to accomodate for the fixed header height
+    template = template.replace('<div class="container">', '<div class="container fixed-head">');
+  }
   else
     template = template.replace('{{ header }}', '');
 

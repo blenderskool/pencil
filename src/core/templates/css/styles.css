@@ -145,6 +145,15 @@ footer {
 .container {
   display: flex;
 }
+.container.fixed-head .sidebar {
+  padding: 80px 25px 20px 25px;
+}
+.container.fixed-head main {
+  padding: 80px 0 20px 80px;
+}
+.container.container.fixed-head aside {
+  margin-top: 90px;
+}
 
 .sidebar {
   background-color: #F0F2F2;
@@ -156,7 +165,7 @@ footer {
   bottom: 0;
   width: 19%;
   z-index: 99;
-  padding: 80px 25px 20px 25px;
+  padding: 35px 25px;
   overflow-x: hidden;
   overflow-y: auto;
 }
@@ -182,7 +191,7 @@ footer {
 }
 
 main {
-  padding: 80px 0 20px 80px;
+  padding: 20px 0 20px 80px;
   margin-left: 19%;
   max-width: calc(34em);
 }
@@ -195,8 +204,8 @@ aside {
   font-size: 16px;
   font-weight: 600;
 
-  margin-top: 90px;
-  padding-left: 30px;
+  margin-top: 50px;
+  padding: 0 20px 0 30px;
   border-left: 1px solid #E1E8E8;
 }
 aside div:first-child {
@@ -252,14 +261,14 @@ main code[class*="language-"], pre[class*="language-"] {
 /** Media queries **/
 
 @media screen and (min-width: 700px) and (max-width: 1080px) {
-  .content {
+  main {
     margin: 0 auto !important;
   }
 }
 
 @media screen and (max-width: 1080px) {
 
-  .index {
+  aside {
     /* TODO: Make the contents responsive */
     display: none;
   }
@@ -268,9 +277,10 @@ main code[class*="language-"], pre[class*="language-"] {
     transform: translateX(-100%);
   }
 
-  .content {
+  main {
     width: 100%;
     margin-left: 0;
-    padding: 80px 20px 20px 40px;
+    padding-right: 30px;
+    padding-left: 30px;
   }
 }
