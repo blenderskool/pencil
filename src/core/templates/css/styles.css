@@ -169,6 +169,9 @@ footer {
   overflow-x: hidden;
   overflow-y: auto;
 }
+.sidebar:empty {
+  display: none;
+}
 .sidebar a {
   color: #192328;
 }
@@ -193,7 +196,10 @@ footer {
 main {
   padding: 20px 0 20px 80px;
   margin-left: 19%;
-  max-width: calc(34em);
+  max-width: 34em;
+}
+.sidebar:empty + aside + main {
+  margin-left: 0;
 }
 
 aside {
