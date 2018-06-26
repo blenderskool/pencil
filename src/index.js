@@ -7,7 +7,7 @@ import copyStatic from './core/functions/copydir';
 import styles from './core/functions/templates/styles';
 
 const basePath = process.env.PWD;
-const dir = 'content/';
+const dir = 'src/';
 
 /**
  * Showdown extension that is used to make h1, h2, h3 elements anchored links
@@ -66,14 +66,17 @@ export default function() {
           console.log(err);
         });
 
-
-        fs.writeFile(__base+'/dist/styles.css', styles(), err => {
-          if (err) console.log(err);
-        });
-    
       });
+    }, () => {
+
+      // Create a bundled styles file
+      fs.writeFile(__base+'/dist/styles.css', styles(), err => {
+        if (err) console.log(err);
+      });
+
     });
 
+    // Copy the files from the static folder to the final build as is
     copyStatic(err => {
       console.log(err);
     });
