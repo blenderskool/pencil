@@ -2,5 +2,11 @@
   "presets": [
     "es2015",
     "minify"
+  ],
+  "ignore": [
+    "./node_modules",
+    "./.babelrc",
+    "./package.json",
+    "./npm-debug.log"
   ]
 }
