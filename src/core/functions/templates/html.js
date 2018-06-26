@@ -54,7 +54,9 @@ export default function(meta) {
 
   // Header is built here
   if (config.navigation || config.logo)
-    template = template.replace('{{ header }}', `<header>${config.logo ? `<a href="/" class="brand"><img src=${config.logo}></a>` : ''}<nav>{{ nav }}</nav></header>`);
+    template = template.replace('{{ header }}',
+      `<header>${config.logo ? `<a href="/" class="brand"><img alt="${config.head ? config.head.title : 'Docbook site'}" src=${config.logo}></a>` : ''}<nav>{{ nav }}</nav></header>`
+    );
   else
     template = template.replace('{{ header }}', '');
 
@@ -67,7 +69,7 @@ export default function(meta) {
 
       if (typeof val === 'string') {
         tags += addAttributes('a', {
-          href: val, ariaHidden: true
+          href: val
         }) + name+'</a>';
       }
       else if (!val) {
@@ -77,7 +79,7 @@ export default function(meta) {
         // If the link is supposed to open in a new tab
         if (val.newTab && val.link) {
           tags += addAttributes('a', {
-            href: val.link, ariaHidden: true, target: '_blank'
+            href: val.link, target: '_blank'
           }) + name+'</a>';
         }
 
@@ -95,7 +97,7 @@ export default function(meta) {
   template = template.replace('{{ body }}', tags);
 
   // Sidebar is generated here
-  tags = config.logo ? `<a href="/" class="brand"><img src=${config.logo}></a>` : '';
+  tags = '';
   if (config.sidebar && typeof config.sidebar === 'object') {
     for (let name in config.sidebar) {
       const val = config.sidebar[name];
