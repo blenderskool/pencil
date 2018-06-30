@@ -72,6 +72,22 @@ a.anchor:hover {
   opacity: 1;
   border-bottom: 3px solid [theme];
 }
+/* Styles for Skip link for improved accessibility */
+a.skip-link {
+  position: absolute;
+  top: -50px;
+  left: 0;
+  color: [theme];
+  background-color: #ffffff;
+  padding: 10px 15px;
+  border-bottom-right-radius: 3px;
+  z-index: 110;
+  transition: top 0.2s ease;
+  box-shadow: 0 3px 10px rgba(30, 38, 36, 0.12);
+}
+a.skip-link:focus {
+  top: 0;
+}
 
 code {
   background-color: #f0f2f2;
