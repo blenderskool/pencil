@@ -93,7 +93,7 @@ export default function(meta) {
   template = template.replace('{{ nav }}', tags);
 
   // Scripts for the body section
-  tags = '';
+  tags = '<script src="/script.js"></script>\n';
   if (Array.isArray(config.scripts))
     config.scripts.forEach(scriptInfo => tags += addAttributes('script', scriptInfo)+'</script>\n');
 

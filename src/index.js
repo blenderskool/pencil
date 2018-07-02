@@ -5,6 +5,7 @@ import recursiveRead from './core/functions/recurRead';
 import createHTML from './core/functions/createHTML';
 import copyStatic from './core/functions/copydir';
 import styles from './core/functions/templates/styles';
+import scripts from './core/functions/templates/javascript';
 
 const basePath = process.env.PWD;
 const dir = 'src/';
@@ -23,7 +24,8 @@ showdown.extension('heading-anchor', function() {
 const converter = new showdown.Converter({
   ghCompatibleHeaderId: true,
   extensions: ['heading-anchor'],
-  metadata: true
+  metadata: true,
+  emoji: true
 });
 
 export default function() {
@@ -71,6 +73,11 @@ export default function() {
 
       // Create a bundled styles file
       fs.writeFile(__base+'/dist/styles.css', styles(), err => {
+        if (err) console.log(err);
+      });
+
+      // Create scripts file
+      fs.writeFile(__base+'/dist/script.js', scripts(), err => {
         if (err) console.log(err);
       });
 

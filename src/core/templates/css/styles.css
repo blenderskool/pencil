@@ -180,7 +180,7 @@ footer {
   left: 0;
   bottom: 0;
   width: 19%;
-  z-index: 99;
+  z-index: 98;
   padding: 35px 25px;
   overflow-x: hidden;
   overflow-y: auto;
@@ -256,6 +256,20 @@ aside .indent a {
   font-weight: 400;
 }
 
+.sidebar-control {
+  position: fixed;
+  left: 8px;
+  bottom: 12px;
+  display: none;
+  z-index: 99;
+  font-size: 1.7rem;
+  border: none;
+  background: transparent;
+  color: [theme];
+  cursor: pointer;
+  user-select: none;
+}
+
 /**
 Prism JS overrides
 **/
@@ -283,12 +297,17 @@ main code[class*="language-"], pre[class*="language-"] {
 /** Media queries **/
 
 @media screen and (min-width: 700px) and (max-width: 1080px) {
-  main {
-    margin: 0 auto !important;
+  aside + main {
+    margin: 0 auto;
   }
 }
 
 @media screen and (max-width: 1080px) {
+
+  h1 {
+    /* Break word, as open sidebar may cause horizontal scrolling */
+    word-wrap: break-word;
+  }
 
   aside {
     /* TODO: Make the contents responsive */
@@ -296,7 +315,12 @@ main code[class*="language-"], pre[class*="language-"] {
   }
 
   .sidebar {
+    width: 180px;
     transform: translateX(-100%);
+    transition: transform 0.3s ease;
+  }
+  .sidebar-active {
+    transform: translateX(0);
   }
 
   main {
@@ -304,5 +328,14 @@ main code[class*="language-"], pre[class*="language-"] {
     margin-left: 0;
     padding-right: 30px !important;
     padding-left: 30px !important;
+    transition: margin-left 0.3s ease;
+  }
+  .sidebar-active + aside + main {
+    margin-left: 180px;
+    width: calc(100% - 180px);
+  }
+
+  .sidebar-control {
+    display: initial;
   }
 }
