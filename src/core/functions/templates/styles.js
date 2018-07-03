@@ -19,6 +19,7 @@ export default function() {
 
   const css = (bundler([
     path.join(__dirname, '../../templates/css/reset.min.css'),
+    path.join(__dirname, '../../templates/css/prism.css'),
     path.join(__dirname, '../../templates/css/styles.css')
   ].concat(external), err => {
     console.log(err);

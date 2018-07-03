@@ -1,11 +1,11 @@
-import fs from 'fs';
 import path from 'path';
+import bundler from '../../utils/bundler';
 
 export default function() {
-  try {
-    return fs.readFileSync(path.join(__dirname, '../../templates/scripts.js')).toString();
-  }
-  catch (err) {
-    throw(err);
-  }
+  return bundler([
+    path.join(__dirname, '../../templates/js/scripts.js'),
+    path.join(__dirname, '../../templates/js/prism.js')
+  ], err => {
+    console.log(err);
+  });
 }
