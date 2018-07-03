@@ -21,7 +21,11 @@ export default function(meta) {
   else
     template = template.replace('{{ title }}', config.head ? config.head.title ? config.head.title : 'Docbook site' : 'Docbook site');
 
-  let tags = '';
+  /**
+   * Adds the theme-color meta tag if themeColor was added in the config file
+   * before adding meta tags defined in the config file
+   */
+  let tags = config.themeColor ? `<meta name="theme-color" content="${config.themeColor}">` : '';
   if (Array.isArray(config.head.meta)) {
     config.head.meta.forEach(metaInfo => {
 
@@ -129,6 +133,23 @@ export default function(meta) {
     }
   }
   template = template.replace('{{ sidebar }}', tags);
+
+  tags = '';
+  if (config.footer) {
+    for (let name in config.footer) {
+      const val = config.footer[name];
+
+      if (typeof val === 'string') {
+        tags += addAttributes('a', {
+          href: val
+        }) + name+'</a>';
+      }
+      else if (!val) {
+        tags += `<span>${name}</span>`;
+      }
+    }
+  }
+  template = template.replace('{{ footer }}', tags);
 
   return template;
 }
