@@ -39,6 +39,7 @@ export default function(path, data, options, callback) {
       useShortDoctype: true
     });
 
+    // Change the file extension and write it to the path
     fs.writeFile(path.replace(/\.[^/.]+$/, options.to), data, err => {
       if (err) callback(err);
     });

@@ -1,4 +1,5 @@
 import fs from 'fs';
+import path from 'path';
 
 /**
  * Simple recursive file reader. It returns a path to the file at a time to the
@@ -6,7 +7,14 @@ import fs from 'fs';
  */
 export default function recursiveRead(dir, options={}, callback, next) {
 
-  if (!fs.statSync(dir).isDirectory()) return callback('Invalid directory');
+  /**
+   * If the dir does not exist, send back an error, and call
+   * the next function
+   **/
+  if (!fs.existsSync(path.join(__base, dir))) {
+    callback('Directory not found');
+    return next();
+  }
   
   fs.readdir(dir, (err, files) => {
     if (err) return callback(err);

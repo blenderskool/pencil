@@ -1,4 +1,5 @@
 import fs from 'fs';
+import path from 'path';
 import showdown from 'showdown';
 
 import recursiveRead from './core/functions/recurRead';
@@ -35,7 +36,7 @@ export default function() {
   recursiveRead('dist/', {
     includeDir: true
   }, (err, filePath) => {
-    if (err) return console.log(err);
+    if (err) return; //console.log(err);
 
     fs.unlink(filePath, err => {
       if (err) {
@@ -62,7 +63,7 @@ export default function() {
         const html = converter.makeHtml(markdown);
         const metaData = converter.getMetadata();
     
-        const fullPath = basePath + '/dist/' + filePath.replace(dir, '');
+        const fullPath = path.join(__base, 'dist', filePath.replace(dir, ''));
         
         createHTML(fullPath, {html, meta: metaData}, { to: '.html' }, err => {
           console.log(err);
@@ -71,13 +72,18 @@ export default function() {
       });
     }, () => {
 
+      // If dist folder does not exist, then create it
+      const distPath = path.join(__base, 'dist/');
+      if (!fs.existsSync(distPath))
+        fs.mkdirSync(distPath);
+
       // Create a bundled styles file
-      fs.writeFile(__base+'/dist/styles.css', styles(), err => {
+      fs.writeFile(path.join(__base, 'dist/styles.css'), styles(), err => {
         if (err) console.log(err);
       });
 
       // Create scripts file
-      fs.writeFile(__base+'/dist/script.js', scripts(), err => {
+      fs.writeFile(path.join(__base, 'dist/script.js'), scripts(), err => {
         if (err) console.log(err);
       });
 
