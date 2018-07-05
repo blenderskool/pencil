@@ -29,6 +29,7 @@
     "chalk": "^2.4.1",
     "clean-css": "^4.1.11",
     "dom-parser": "^0.1.5",
+    "download-git-repo": "^1.0.2",
     "html-minifier": "^3.5.16",
     "mkdirp": "^0.5.1",
     "ncp": "^2.0.0",

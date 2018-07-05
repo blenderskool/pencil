@@ -1,14 +1,43 @@
 #!/usr/bin/env node
+const download = require('download-git-repo');
 const readline = require('readline');
+const { join } = require('path');
+const mkdirp = require('mkdirp');
 const chalk = require('chalk');
+const kebab = require('../build/core/utils/camelKebab').default;
 
 const path = process.cwd();
 const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout
 });
+const log = console.log;
 
-rl.question(chalk.blue.bold('Project Name: '), ans => {
+(function recurAsk() {
+  rl.question(chalk.blue.bold('Project Name: '), ans => {
+    if (!ans) {
+      log(chalk.red.bold('Project should have a valid name'));
+      return recurAsk();
+    }
 
-  rl.close();
-})
+    rl.close();
+    
+    const shtName = kebab(ans).replace(/ /g, '-');
+    const projPath = join(path, shtName);
+    mkdirp(projPath, err => {
+      if (err) return log(err);
+
+      log(chalk.blue.bold('Downloading template\n'));
+      download('blenderskool/docbook-template', projPath, err => {
+
+        if (err) return log(chalk.red.bold('There was an error'));
+
+        log(chalk.green.bold('Download successful! Use these commands to start working on the site\n'));
+        log(chalk.gray('cd '+shtName));
+        log(chalk.gray('docbook dev'));
+        log();
+      });
+    });
+
+  });
+})();
