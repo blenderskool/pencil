@@ -1,0 +1,14 @@
+#!/usr/bin/env node
+const readline = require('readline');
+const chalk = require('chalk');
+
+const path = process.cwd();
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout
+});
+
+rl.question(chalk.blue.bold('Project Name: '), ans => {
+
+  rl.close();
+})

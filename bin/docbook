@@ -1,6 +1,16 @@
 #!/usr/bin/env node
-'use strict';
+const path = require('path');
 
-var generate = require('../build/index.js').default;
+let opt = process.argv[2];
 
-generate();
+const defOpt = 'dev'
+const options = ['build', 'init', defOpt];
+
+if (options.includes(opt)) {
+  process.argv.splice(2, 1);
+}
+else {
+  opt = defOpt;
+}
+
+require(path.join(__dirname, 'docbook-'+opt));
