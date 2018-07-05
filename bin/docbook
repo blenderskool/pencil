@@ -1,16 +1,64 @@
 #!/usr/bin/env node
-const path = require('path');
+const chalk = require('chalk');
+const program = require('commander');
 
-let opt = process.argv[2];
+const log = console.log;
 
-const defOpt = 'dev'
-const options = ['build', 'init', defOpt];
+/**
+ * --version command
+ */
+program
+  .version(require('../package.json').version)
+  .description('Static documentation website generator');
 
-if (options.includes(opt)) {
-  process.argv.splice(2, 1);
-}
-else {
-  opt = defOpt;
-}
+/**
+ * init command
+ */
+program
+  .command('init')
+  .alias('i')
+  .description('Start a new DocBook project')
+  .action(() => {
+    require('./docbook-init');
+  });
 
-require(path.join(__dirname, 'docbook-'+opt));
+/**
+ * dev command
+ */
+program
+  .command('dev')
+  .alias('d')
+  .option('-p, --port <port>', 'Port', 2000)
+  .description('Run a local development server')
+  .action(cmd => {
+    /**
+     * Todo work on the dev command
+     */
+    log('Runs at ' + cmd.port);
+  });
+
+
+/**
+ * build command
+ */
+program
+  .command('build')
+  .alias('b')
+  .description('Build the website from the source')
+  .action(() => {
+    require('../build/index').default();
+  });
+
+
+/**
+ * Invalid command
+ */
+program
+  .on('command:*', () => {
+    log(chalk.red.bold('Invalid command'));
+    log(chalk.blue.bold('Use') + ' docbook --help' + chalk.blue.bold(' to view valid commands'));
+    log();
+  });
+
+
+program.parse(process.argv);
