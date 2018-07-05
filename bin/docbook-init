@@ -14,6 +14,9 @@ const rl = readline.createInterface({
 const log = console.log;
 
 (function recurAsk() {
+  /**
+   * Get the name of the project
+   */
   rl.question(chalk.blue.bold('Project Name: '), ans => {
     if (!ans) {
       log(chalk.red.bold('Project should have a valid name'));
@@ -22,16 +25,27 @@ const log = console.log;
 
     rl.close();
     
+    // Create a short kebab cased name for the folder
     const shtName = kebab(ans).replace(/ /g, '-');
     const projPath = join(path, shtName);
+
+    /**
+     * Create the project folder
+     */
     mkdirp(projPath, err => {
       if (err) return log(err);
 
+      /**
+       * Download the site template from GitHub
+       */
       log(chalk.blue.bold('Downloading template\n'));
       download('blenderskool/docbook-template', projPath, err => {
 
         if (err) return log(chalk.red.bold('There was an error'));
 
+        /**
+         * Further commands if download was successful
+         */
         log(chalk.green.bold('Download successful! Use these commands to start working on the site\n'));
         log(chalk.gray('cd '+shtName));
         log(chalk.gray('docbook dev'));
