@@ -8,15 +8,25 @@ export default function(data) {
   let index = '';
   let matches = [];
 
-  while ((matches = regex.exec(data.html)) !== null) {
-    index += `<div${matches[1] === '3' ? ' class="indent"' : ''}>
-    <a href="#${matches[2]}">${matches[3]}</a>
-    </div>`;
-  }
+  const option = data.frontMatter.contents.toLowerCase();
 
-  // This does the check if index of the page, must be shown or not
-  if (index)
-    index = '<div>Contents</div>' + index;
+  /**
+   * Contents is disabled for the page
+   */
+  if (option !== 'disable') {
+    while ((matches = regex.exec(data.html)) !== null) {
+
+      if (option === 'simple' && matches[1] === '3') continue;
+      
+      index += `<div${matches[1] === '3' ? ' class="indent"' : ''}>
+      <a href="#${matches[2]}">${matches[3]}</a>
+      </div>`;
+    }
+
+    // This does the check if index of the page, must be shown or not
+    if (index)
+      index = '<div>Contents</div>' + index;
+  }
 
   return data.html.replace('{{ index }}', index);
 }
