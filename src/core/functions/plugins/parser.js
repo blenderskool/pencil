@@ -9,7 +9,7 @@ export default function(data) {
 
   if (plugins && typeof plugins === 'object') {
     const parser = new domParser();
-    const dom = parser.parseFromString(data);
+    const dom = parser.parseFromString(data.html);
 
     Object.keys(plugins).forEach(tag => {
       dom.getElementsByTagName(tag).forEach(element => {
@@ -18,7 +18,7 @@ export default function(data) {
         /**
          * Replace the component content with plugin content after it is loaded
          */
-        data = data.replace(element.outerHTML, plugin);
+        data.html = data.html.replace(element.outerHTML, plugin);
       });
     })
   }

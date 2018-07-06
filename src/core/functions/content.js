@@ -8,7 +8,7 @@ export default function(data) {
   let index = '';
   let matches = [];
 
-  while ((matches = regex.exec(data)) !== null) {
+  while ((matches = regex.exec(data.html)) !== null) {
     index += `<div${matches[1] === '3' ? ' class="indent"' : ''}>
     <a href="#${matches[2]}">${matches[3]}</a>
     </div>`;
@@ -18,5 +18,5 @@ export default function(data) {
   if (index)
     index = '<div>Contents</div>' + index;
 
-  return data.replace('{{ index }}', index);
+  return data.html.replace('{{ index }}', index);
 }

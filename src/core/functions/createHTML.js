@@ -20,10 +20,10 @@ export default function(path, data, options, callback) {
      * being converted too
      */
     if (options.to && options.to === '.html') {
-      const htmlTemplate = templateHTML(data.meta);
+      const htmlTemplate = templateHTML(data.frontMatter);
 
       // Merge the data into the template
-      data = htmlTemplate.replace('{{ content }}', data.html);
+      data.html = htmlTemplate.replace('{{ content }}', data.html);
     }
 
     // Additional plugins that are being used are injected here

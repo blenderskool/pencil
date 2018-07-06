@@ -2,11 +2,15 @@ import fs from 'fs';
 import path from 'path';
 import addAttributes from '../../utils/attributes';
 
-export default function(meta) {
+export default function(frontMatter) {
   const config = require(__base+'/docbook.config');
 
   let template = '';
   template = fs.readFileSync(path.join(__dirname, '../../templates/html.html')).toString();
+
+  // lang of the page is set here
+  if (frontMatter.lang)
+    template = template.replace('lang="en"', `lang="${frontMatter.lang}"`);
 
   /**
    * 'meta', 'link' data is taken from the config file and added to the
@@ -14,12 +18,14 @@ export default function(meta) {
    */
 
   // If title is present in meta data for the page, then use it
-  if (meta.title) {
-    template = template.replace('{{ title }}', meta.title);
-    delete meta.title;
-  }
+  if (frontMatter.title)
+    template = template.replace('{{ title }}', frontMatter.title);
   else
-    template = template.replace('{{ title }}', config.head ? config.head.title ? config.head.title : 'Docbook site' : 'Docbook site');
+    template = template.replace('{{ title }}', config.head ?
+    config.head.title ?
+    config.head.title :
+    'DocBook site' :
+    'DocBook site');
 
   /**
    * Adds the theme-color meta tag if themeColor was added in the config file
@@ -30,10 +36,10 @@ export default function(meta) {
     config.head.meta.forEach(metaInfo => {
 
       // Page meta data overrides the global meta data
-      if (meta) {
-        if (meta.hasOwnProperty(metaInfo.name))
-          metaInfo.content = meta[metaInfo.name];
-          delete meta[metaInfo.name];
+      if (frontMatter.meta) {
+        if (frontMatter.meta.hasOwnProperty(metaInfo.name))
+          metaInfo.content = frontMatter.meta[metaInfo.name];
+          delete frontMatter.meta[metaInfo.name];
       }
 
       tags += addAttributes('meta', metaInfo)+'\n'
@@ -41,9 +47,12 @@ export default function(meta) {
   }
 
   // Additional page meta data is added here
-  if (meta) {
-    for (let metaName in meta) {
-      tags += addAttributes('meta', { name: metaName, content: meta[metaName] })+'\n';
+  if (frontMatter.meta) {
+    for (let metaName in frontMatter.meta) {
+      tags += addAttributes('meta', {
+        name: metaName,
+        content: frontMatter.meta[metaName]
+      })+'\n';
     }
   }
   template = template.replace('{{ meta }}', tags);
@@ -56,7 +65,7 @@ export default function(meta) {
   template = template.replace('{{ link }}', tags);
 
 
-  // Header is built here
+  // Header
   if (config.navigation || config.logo) {
     template = template.replace('{{ header }}',
       `<header>${config.logo ? `<a href="/" class="brand"><img alt="${config.head ? config.head.title : 'Docbook site'}" src=${config.logo}></a>` : ''}<nav>{{ nav }}</nav></header>`
@@ -68,7 +77,7 @@ export default function(meta) {
     template = template.replace('{{ header }}', '');
 
   
-  // Navigation is built here
+  // Navigation
   tags = '';
   if (config.navigation) {
     for (let name in config.navigation) {
@@ -103,7 +112,8 @@ export default function(meta) {
 
   template = template.replace('{{ body }}', tags);
 
-  // Sidebar is generated here
+
+  // Sidebar
   tags = '';
   if (config.sidebar && typeof config.sidebar === 'object') {
     for (let name in config.sidebar) {
@@ -134,6 +144,7 @@ export default function(meta) {
   }
   template = template.replace('{{ sidebar }}', tags);
 
+  // Footer
   tags = '';
   if (config.footer) {
     for (let name in config.footer) {
