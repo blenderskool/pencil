@@ -4,6 +4,7 @@ import mkdirp from 'mkdirp';
 import { minify } from "html-minifier";
 
 import templateHTML from './templates/html';
+import indexGen from './templates/html/content';
 import injectPlugins from './plugins/parser';
 
 /**
@@ -20,14 +21,17 @@ export default function(path, data, options, callback) {
      * being converted too
      */
     if (options.to && options.to === '.html') {
-      const htmlTemplate = templateHTML(data.meta);
+      const htmlTemplate = templateHTML(data.frontMatter);
 
       // Merge the data into the template
-      data = htmlTemplate.replace('{{ content }}', data.html);
+      data.html = htmlTemplate.replace('{{ content }}', data.html);
     }
 
-    // Additional plugins that are being used are injected here
-    data = injectPlugins(data);
+    // Additional plugins that are being used are injected
+    data.html = injectPlugins(data);
+
+    // Contents sidebar is added
+    data = indexGen(data);
 
     // Minify the html
     data = minify(data, {
