@@ -1,11 +1,9 @@
 import domParser from 'dom-parser';
 import pluginLoader from './loader';
-import indexGen from '../content';
 
 export default function(data) {
   const config = require(__base + '/docbook.config');
   const plugins = config.plugins;
-
 
   if (plugins && typeof plugins === 'object') {
     const parser = new domParser();
@@ -16,13 +14,13 @@ export default function(data) {
         const plugin = pluginLoader(`${__base}/${plugins[tag]}`, element);
         
         /**
-         * Replace the component content with plugin content after it is loaded
+         * Replace the component content with plugin content after it is
+         * loaded. Styles are appened separately
          */
         data.html = data.html.replace(element.outerHTML, plugin);
       });
     })
   }
 
-  // Contents sidebar will be generated and returned
-  return indexGen(data);
+  return data.html;
 }

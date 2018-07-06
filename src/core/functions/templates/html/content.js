@@ -7,8 +7,8 @@ const regex = /<h([2-3]) id="(.*?)".*?><a.*?>(.*?)<\/a><\/h[2-3]/g;
 export default function(data) {
   let index = '';
   let matches = [];
-
-  const option = data.frontMatter.contents.toLowerCase();
+  let option = data.frontMatter.contents;
+  option = typeof option === 'string' ? option.toLowerCase() : 'dense';
 
   /**
    * Contents is disabled for the page
@@ -27,6 +27,7 @@ export default function(data) {
     if (index)
       index = '<div>Contents</div>' + index;
   }
+
 
   return data.html.replace('{{ index }}', index);
 }

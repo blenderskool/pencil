@@ -1,13 +1,13 @@
 import fs from 'fs';
 import path from 'path';
-import addAttributes from '../../utils/attributes';
+import addAttributes from '../../../utils/attributes';
 
 export default function(frontMatter) {
   const config = require(__base+'/docbook.config');
 
   // Gets the HTML template
   let template = '';
-  template = fs.readFileSync(path.join(__dirname, '../../templates/html.html')).toString();
+  template = fs.readFileSync(path.join(__dirname, '../../../templates/html.html')).toString();
 
   // lang of the page is set here
   if (frontMatter.lang)
