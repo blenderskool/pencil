@@ -1,65 +1,84 @@
 import fs from 'fs';
 import path from 'path';
-import addAttributes from '../../utils/attributes';
+import addAttributes from '../../../utils/attributes';
 
-export default function(meta) {
+export default function(frontMatter) {
   const config = require(__base+'/docbook.config');
 
+  // Gets the HTML template
   let template = '';
-  template = fs.readFileSync(path.join(__dirname, '../../templates/html.html')).toString();
+  template = fs.readFileSync(path.join(__dirname, '../../../templates/html.html')).toString();
 
-  /**
-   * 'meta', 'link' data is taken from the config file and added to the
-   * html template
-   */
+  // lang of the page is set here
+  if (frontMatter.lang)
+    template = template.replace('lang="en"', `lang="${frontMatter.lang}"`);
+
 
   // If title is present in meta data for the page, then use it
-  if (meta.title) {
-    template = template.replace('{{ title }}', meta.title);
-    delete meta.title;
-  }
+  if (frontMatter.title)
+    template = template.replace('{{ title }}', frontMatter.title);
   else
-    template = template.replace('{{ title }}', config.head ? config.head.title ? config.head.title : 'Docbook site' : 'Docbook site');
+    template = template.replace('{{ title }}', config.head ?
+    config.head.title ?
+    config.head.title :
+    'DocBook site' :
+    'DocBook site');
 
   /**
    * Adds the theme-color meta tag if themeColor was added in the config file
    * before adding meta tags defined in the config file
    */
-  let tags = config.themeColor ? `<meta name="theme-color" content="${config.themeColor}">` : '';
-  if (Array.isArray(config.head.meta)) {
-    config.head.meta.forEach(metaInfo => {
+  let tags = config.themeColor ?
+  `<meta name="theme-color" content="${config.themeColor}">` : '';
+
+  /**
+   * Creates the <head> section of the site
+   */
+  if (config.head && typeof config.head === 'object') {
+    Object.keys(config.head).forEach(tag => {
+      // If the property is not of Array type
+      if (!Array.isArray(config.head[tag])) return;
+
+      if (tag === 'meta') {
+        return config.head.meta.forEach(metaInfo => {
 
       // Page meta data overrides the global meta data
-      if (meta) {
-        if (meta.hasOwnProperty(metaInfo.name))
-          metaInfo.content = meta[metaInfo.name];
-          delete meta[metaInfo.name];
+      if (frontMatter.meta) {
+        if (frontMatter.meta.hasOwnProperty(metaInfo.name))
+          metaInfo.content = frontMatter.meta[metaInfo.name];
+          delete frontMatter.meta[metaInfo.name];
       }
 
-      tags += addAttributes('meta', metaInfo)+'\n'
+          tags += addAttributes('meta', metaInfo);
+        });
+      }
+
+      config.head[tag].forEach(tagInfo => tags += addAttributes(tag, tagInfo));
+
     });
   }
 
   // Additional page meta data is added here
-  if (meta) {
-    for (let metaName in meta) {
-      tags += addAttributes('meta', { name: metaName, content: meta[metaName] })+'\n';
+  if (frontMatter.meta) {
+    for (let metaName in frontMatter.meta) {
+      tags += addAttributes('meta', {
+        name: metaName,
+        content: frontMatter.meta[metaName]
+      });
     }
   }
-  template = template.replace('{{ meta }}', tags);
-
-  // Link tags
-  tags = '';
-  if (Array.isArray(config.head.link))
-    config.head.link.forEach(linkInfo => tags += addAttributes('link', linkInfo)+'\n');
-
-  template = template.replace('{{ link }}', tags);
+  // Injects the head tags in the template
+  template = template.replace('{{ head }}', tags);
 
 
-  // Header is built here
-  if (config.navigation || config.logo) {
+  // Header
+  if ((config.navigation || config.logo) && frontMatter.header != 'disable') {
     template = template.replace('{{ header }}',
-      `<header>${config.logo ? `<a href="/" class="brand"><img alt="${config.head ? config.head.title : 'Docbook site'}" src=${config.logo}></a>` : ''}<nav>{{ nav }}</nav></header>`
+      `<header>${config.logo ?
+      `<a href="/" class="brand"><img alt="${config.head ?
+      config.head.title :
+      'Docbook site'}" src=${config.logo}></a>` :
+      ''}<nav>{{ nav }}</nav></header>`
     );
     // Adds a class to the container to accomodate for the fixed header height
     template = template.replace('<div class="container">', '<div class="container fixed-head">');
@@ -68,7 +87,7 @@ export default function(meta) {
     template = template.replace('{{ header }}', '');
 
   
-  // Navigation is built here
+  // Navigation
   tags = '';
   if (config.navigation) {
     for (let name in config.navigation) {
@@ -97,15 +116,16 @@ export default function(meta) {
   template = template.replace('{{ nav }}', tags);
 
   // Scripts for the body section
-  tags = '<script src="/script.js"></script>\n';
+  tags = '<script src="/script.js"></script>';
   if (Array.isArray(config.scripts))
-    config.scripts.forEach(scriptInfo => tags += addAttributes('script', scriptInfo)+'</script>\n');
+    config.scripts.forEach(scriptInfo => tags += addAttributes('script', scriptInfo)+'</script>');
 
   template = template.replace('{{ body }}', tags);
 
-  // Sidebar is generated here
+
+  // Sidebar
   tags = '';
-  if (config.sidebar && typeof config.sidebar === 'object') {
+  if (config.sidebar && typeof config.sidebar === 'object' && frontMatter.sidebar != 'disable') {
     for (let name in config.sidebar) {
       const val = config.sidebar[name];
 
@@ -134,6 +154,7 @@ export default function(meta) {
   }
   template = template.replace('{{ sidebar }}', tags);
 
+  // Footer
   tags = '';
   if (config.footer) {
     for (let name in config.footer) {
