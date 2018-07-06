@@ -1,4 +1,0 @@
-#!/usr/bin/env node
-
-var generate = require('../build/index').default;
-generate();
