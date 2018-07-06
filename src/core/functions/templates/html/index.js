@@ -72,7 +72,7 @@ export default function(frontMatter) {
 
 
   // Header
-  if (config.navigation || config.logo) {
+  if ((config.navigation || config.logo) && frontMatter.header != 'disable') {
     template = template.replace('{{ header }}',
       `<header>${config.logo ?
       `<a href="/" class="brand"><img alt="${config.head ?
