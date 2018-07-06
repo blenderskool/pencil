@@ -125,7 +125,7 @@ export default function(frontMatter) {
 
   // Sidebar
   tags = '';
-  if (config.sidebar && typeof config.sidebar === 'object') {
+  if (config.sidebar && typeof config.sidebar === 'object' && frontMatter.sidebar != 'disable') {
     for (let name in config.sidebar) {
       const val = config.sidebar[name];
 
