@@ -28,13 +28,14 @@ program
 program
   .command('dev')
   .alias('d')
-  .option('-p, --port <port>', 'Port', 2000)
+  .option('-p, --port <port>', 'Use a specific port (default: 2000)', 2000)
   .description('Run a local development server')
   .action(cmd => {
-    /**
-     * Todo work on the dev command
-     */
-    log('Runs at ' + cmd.port);
+    
+    log(chalk.blue.bold('Starting local server on port '+cmd.port));
+
+    const dev = require('./docbook-dev');
+    dev(cmd.port);
   });
 
 
