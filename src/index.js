@@ -29,7 +29,7 @@ const converter = new showdown.Converter({
   emoji: true
 });
 
-export default function() {
+export default function(devMode, callback) {
 
   global.__base = basePath;
 
@@ -43,10 +43,10 @@ export default function() {
         // Error due to directory
         if (err.errno === -21) {
           fs.rmdir(filePath, err => {
-            if (err) return console.log(err);
+            if (err) return callback(err);
           });
         }
-        else return console.log(err);
+        else return callback(err);
       }
     });
 
@@ -65,8 +65,8 @@ export default function() {
     
         const fullPath = path.join(__base, 'dist', filePath.replace(dir, ''));
         
-        createHTML(fullPath, {html, frontMatter: content.data}, { to: '.html' }, err => {
-          console.log(err);
+        createHTML(fullPath, {html, frontMatter: content.data}, { to: '.html', devMode }, err => {
+          callback(err);
         });
 
       });
@@ -79,21 +79,26 @@ export default function() {
 
       // Create a bundled styles file
       fs.writeFile(path.join(__base, 'dist/styles.css'), styles(), err => {
-        if (err) console.log(err);
+        if (err) callback(err);
       });
 
       // Create scripts file
       fs.writeFile(path.join(__base, 'dist/script.js'), scripts(), err => {
-        if (err) console.log(err);
+        if (err) callback(err);
       });
 
     });
 
     // Copy the files from the static folder to the final build as is
     copyStatic(err => {
-      console.log(err);
-    });
+      if (err) callback(err);
 
+      // Remove the cached config file
+      delete require.cache[require.resolve(__base + '/docbook.config')];
+
+      // Callback for completion of build process
+      if (typeof callback === "function") callback(null);
+    });
   });
 
 }

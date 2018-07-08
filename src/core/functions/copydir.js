@@ -11,6 +11,8 @@ export default function(callback) {
     if (err) {
       return callback(err)
     }
+
+    callback(null);
   });
 
 }
