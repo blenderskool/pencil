@@ -49,12 +49,8 @@ const log = console.log;
         /**
          * Change the name field of package.json file in the template
          */
-        try {
-          const pkg = readFileSync(pkg).toString();
-          writeFileSync(pkgPath, package.replace('{{ name }}', shtName));
-        } catch (err) {
-          log(chalk.red.bold('There was an error'));
-        }
+        const pkg = readFileSync(pkgPath).toString();
+        writeFileSync(pkgPath, pkg.replace('{{ name }}', shtName));
 
         /**
          * Further commands if download was successful
