@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+const { readFileSync, writeFileSync } = require('fs');
 const download = require('download-git-repo');
 const readline = require('readline');
 const { join } = require('path');
@@ -42,6 +43,18 @@ const log = console.log;
       download('blenderskool/docbook-template', projPath, err => {
 
         if (err) return log(chalk.red.bold('There was an error'));
+
+        const pkgPath = join(projPath, 'package.json');
+
+        /**
+         * Change the name field of package.json file in the template
+         */
+        try {
+          const pkg = readFileSync(pkg).toString();
+          writeFileSync(pkgPath, package.replace('{{ name }}', shtName));
+        } catch (err) {
+          log(chalk.red.bold('There was an error'));
+        }
 
         /**
          * Further commands if download was successful
