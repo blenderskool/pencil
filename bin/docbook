@@ -47,7 +47,14 @@ program
   .alias('b')
   .description('Build the website from the source')
   .action(() => {
-    require('../build/index').default();
+    const time = new Date();
+
+    log(chalk.blue.bold('Starting build in')+ ' /dist'+chalk.blue.bold(' directory'));
+    require('../build/index').default(false, (err) => {
+      if (err) return log(chalk.red.bold('There was an error\n'));
+
+      log(chalk.green.bold('Build successfull in '+((new Date()) - time)/1000+'s\n'));
+    });
   });
 
 
