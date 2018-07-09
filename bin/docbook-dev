@@ -4,21 +4,26 @@ const { join } = require('path');
 
 module.exports = function dev(port) {
 
+  const build = require('../build/index').default;
+
   /**
-   * Using BrowserSync to create a live server
+   * Run the build process once before starting the dev server
    */
-  bs.init({
-    server: join(process.cwd(), 'dist'),
-    port,
-    snippetOptions: {
-      rule: {
-        match: /<!-- browsersync -->/i,
-        fn: function (snippet, match) {
-          return snippet + match;
+  build(true, () => {
+    /**
+     * Using BrowserSync to create a live server
+     */
+    bs.init({
+      server: join(process.cwd(), 'dist'),
+      port,
+      snippetOptions: {
+        rule: {
+          match: /<!-- browsersync -->/i,
+          fn: (snippet, match) => snippet + match
         }
-      }
-    },
-    notify: false
+      },
+      notify: false
+    });
   });
 
   /**
@@ -29,7 +34,7 @@ module.exports = function dev(port) {
   })
   .on('change', (e, file) => 
     // Rebuild the files in devMode
-    require('../build/index').default(true, () => bs.reload())
+    build(true, () => bs.reload())
   );
 
 }
