@@ -1,0 +1,35 @@
+#!/usr/bin/env node
+const bs = require('browser-sync').create();
+const { join } = require('path');
+
+module.exports = function dev(port) {
+
+  /**
+   * Using BrowserSync to create a live server
+   */
+  bs.init({
+    server: join(process.cwd(), 'dist'),
+    port,
+    snippetOptions: {
+      rule: {
+        match: /<!-- browsersync -->/i,
+        fn: function (snippet, match) {
+          return snippet + match;
+        }
+      }
+    },
+    notify: false
+  });
+
+  /**
+   * Watch for the changes in the project root
+   */
+  bs.watch(process.cwd(), {
+    ignored: [join(process.cwd(), 'dist'), join(process.cwd(), 'node_modules')]
+  })
+  .on('change', (e, file) => 
+    // Rebuild the files in devMode
+    require('../build/index').default(true, () => bs.reload())
+  );
+
+}

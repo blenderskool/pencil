@@ -84,9 +84,12 @@ export default function(plugin, elemRef, type='html') {
     html.attributes.style = concat(html.attributes.style, elemRef.getAttribute('style'));
     html.attributes.class = concat(html.attributes.class, ' ', elemRef.getAttribute('class'));
   
+    // Delete the cached plugins data
+    delete require.cache[require.resolve(plugin)];
     return addChildren(html);  
   }
   else if (type === 'css') {
+    delete require.cache[require.resolve(plugin)];
     return parseStyles(mod.styles());
   }
 

@@ -1,6 +1,72 @@
 #!/usr/bin/env node
-'use strict';
+const chalk = require('chalk');
+const program = require('commander');
 
-var generate = require('../build/index.js').default;
+const log = console.log;
 
-generate();
+/**
+ * --version command
+ */
+program
+  .version(require('../package.json').version)
+  .description('Static documentation website generator');
+
+/**
+ * init command
+ */
+program
+  .command('init')
+  .alias('i')
+  .description('Start a new DocBook project')
+  .action(() => {
+    require('./docbook-init');
+  });
+
+/**
+ * dev command
+ */
+program
+  .command('dev')
+  .alias('d')
+  .option('-p, --port <port>', 'Use a specific port (default: 2000)', 2000)
+  .description('Run a local development server')
+  .action(cmd => {
+    
+    log(chalk.blue.bold('Starting local server on port '+cmd.port));
+
+    const dev = require('./docbook-dev');
+    dev(cmd.port);
+  });
+
+
+/**
+ * build command
+ */
+program
+  .command('build')
+  .alias('b')
+  .description('Build the website from the source')
+  .action(() => {
+    const time = new Date();
+
+    log(chalk.blue.bold('Starting build in')+ ' /dist'+chalk.blue.bold(' directory'));
+    require('../build/index').default(false, (err) => {
+      if (err) return log(chalk.red.bold('There was an error\n'));
+
+      log(chalk.green.bold('Build successfull in '+((new Date()) - time)/1000+'s\n'));
+    });
+  });
+
+
+/**
+ * Invalid command
+ */
+program
+  .on('command:*', () => {
+    log(chalk.red.bold('Invalid command'));
+    log(chalk.blue.bold('Use') + ' docbook --help' + chalk.blue.bold(' to view valid commands'));
+    log();
+  });
+
+
+program.parse(process.argv);

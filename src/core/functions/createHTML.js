@@ -36,7 +36,7 @@ export default function(path, data, options, callback) {
     // Minify the html
     data = minify(data, {
       collapseWhitespace: true,
-      removeComments: true,
+      removeComments: !options.devMode,
       removeOptionalTags: true,
       removeRedundantAttributes: true,
       removeScriptTypeAttributes: true,
