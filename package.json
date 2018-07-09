@@ -1,7 +1,7 @@
 {
   "name": "docbook",
-  "version": "0.3.0",
-  "description": "Static documentation generator",
+  "version": "0.4.0",
+  "description": "Static documentation website generator based on markdown",
   "scripts": {
     "babel": "babel ./src --out-dir build/ --copy-files",
     "minifyCSS": "cleancss -o build/core/templates/css/styles.css src/core/templates/css/styles.css",
@@ -15,6 +15,10 @@
     "type": "git",
     "url": "https://github.com/blenderskool/docbook"
   },
+  "bugs": {
+    "url": "https://github.com/blenderskool/docbook/issues"
+  },
+  "homepage": "https://github.com/blenderskool/docbook#readme",
   "author": "Akash Hamirwasia",
   "license": "MIT",
   "devDependencies": {
