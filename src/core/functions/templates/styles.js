@@ -19,8 +19,8 @@ export default function() {
 
   const css = (bundler([
     path.join(__dirname, '../../templates/css/reset.min.css'),
-    path.join(__dirname, '../../templates/css/prism.css'),
-    path.join(__dirname, '../../templates/css/styles.css')
+    path.join(__dirname, '../../templates/css/styles.css'),
+    ... config.darkTheme ? [path.join(__dirname, '../../templates/css/dark.css')] : []
   ].concat(external), err => {
     console.log(err);
   }) + pluginCSS).replace(/\[theme\]/gi, config.themeColor ? config.themeColor : '#1CA9F0');
