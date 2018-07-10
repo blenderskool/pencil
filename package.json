@@ -5,7 +5,7 @@
   "scripts": {
     "babel": "babel ./src --out-dir build/ --copy-files",
     "minifyCSS": "cleancss -o build/core/templates/css/styles.css src/core/templates/css/styles.css",
-    "minifyHTML": "html-minifier --collapse-whitespace --remove-optional-tags --remove-redundant-attributes --remove-script-type-attributes --remove-tag-whitespace --use-short-doctype src/core/templates/html.html -o build/core/templates/html.html",
+    "minifyHTML": "html-minifier --collapse-whitespace --remove-redundant-attributes --remove-script-type-attributes --remove-tag-whitespace --use-short-doctype src/core/templates/html.html -o build/core/templates/html.html",
     "build": "npm run babel && npm run minifyCSS && npm run minifyHTML"
   },
   "bin": {
