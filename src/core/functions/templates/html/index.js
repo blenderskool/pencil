@@ -136,9 +136,10 @@ export default function(frontMatter) {
 
   // Sidebar
   tags = '';
-  if (config.sidebar && typeof config.sidebar === 'object' && frontMatter.sidebar != 'disable') {
-    for (let name in config.sidebar) {
-      const val = config.sidebar[name];
+  if (Array.isArray(config.sidebar) && frontMatter.sidebar != 'disable') {
+    for (let item of config.sidebar) {
+      const name = item[0];
+      const val = item[1];
 
       if (config.plugins && typeof config.plugins === 'object' && config.plugins.hasOwnProperty(name)) {
         // This section adds plugin support to the sidebar
