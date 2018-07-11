@@ -120,7 +120,7 @@ export default function(frontMatter) {
   
   // If dark theme toggle button is enabled, then add it to the navBar
   if (config.darkTheme && typeof config.darkTheme === 'object' && config.darkTheme.toggle)
-    tags += `<button class="theme-toggle" onclick="toggleDark(this)">
+    tags += `<button class="theme-toggle" aria-label="Toggle dark theme" onclick="toggleDark(this)">
     <i class="icon ion-ios-${config.darkTheme.default ? 'sunny' : 'moon'}"></i>
     </button>`;
 
