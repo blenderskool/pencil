@@ -28,9 +28,15 @@ function toggleDark(ele) {
   const data = JSON.parse(sessionStorage.getItem('docbook-data'));
   if (!data) return;
 
-  if (data.darkTheme)
+  const button = document.querySelector('button.theme-toggle');
+
+  if (data.darkTheme) {
     document.body.classList.add('dark');
-  else if (data.darkTheme === false)
+    button.innerHTML = '<i class="icon ion-ios-sunny"></i>';
+  }
+  else if (data.darkTheme === false) {
     document.body.classList.remove('dark');
+    button.innerHTML = '<i class="icon ion-ios-moon"></i>';
+  }
 
 })();
