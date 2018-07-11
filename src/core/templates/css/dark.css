@@ -18,8 +18,8 @@ body.dark {
 
 /* Styles for Skip link for improved accessibility */
 .dark a.skip-link {
-  background-color: #ffffff;
-  box-shadow: 0 3px 10px rgba(30, 38, 36, 0.12);
+  background-color: #111418;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.21);
 }
 
 .dark code {
@@ -40,12 +40,12 @@ body.dark {
 .dark header {
   color: #F9F9F9;
   background-color: #191F24;
-  box-shadow: 0 2px 3px rgba(30, 38, 36, 0.12);
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.36);
 }
 
 .dark .sidebar {
   background-color: #111418;
-  box-shadow: inset -10px 0 50px 0 rgba(30, 38, 36, 0.12);
+  box-shadow: inset -10px 0 50px 0 rgba(0, 0, 0, 0.27);
 }
 .dark .sidebar a {
   color: #F9F9F9;
