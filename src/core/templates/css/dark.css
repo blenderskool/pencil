@@ -30,12 +30,6 @@ body.dark {
   color: #D4D6D7;
 }
 
-.dark blockquote {
-  border-left-color: #869095;
-}
-.dark blockquote p {
-  color: #869095;
-}
 
 .dark header {
   color: #F9F9F9;
@@ -59,16 +53,6 @@ body.dark {
 }
 .dark aside div a {
   color: #8E969B;
-}
-
-
-/**
-Prism JS overrides
-**/
-
-.dark main div.code-toolbar > .toolbar a, div.code-toolbar > .toolbar button, div.code-toolbar > .toolbar span {
-  color: #4D5A60 !important;
-  background: #ffffff !important;
 }
 
 
@@ -220,25 +204,4 @@ Generated with Base16 Builder (https://github.com/base16-builder/base16-builder)
 .dark pre > code.highlight {
   outline: .4em solid #34659d;
   outline-offset: .4em;
-}
-
-/* overrides color-values for the Line Numbers plugin
- * http://prismjs.com/plugins/line-numbers/
- */
-.dark .line-numbers .line-numbers-rows {
-  border-right-color: #27323f;
-}
-
-.dark .line-numbers-rows > span:before {
-  color: #27323f;
-}
-
-/* overrides color-values for the Line Highlight plugin
- * http://prismjs.com/plugins/line-highlight/
- * alpha transparency in 8 digits hex notation coming to a browser near you soon:
- * https://drafts.csswg.org/css-color/#hex-notation
- */
-.dark .line-highlight {
-  background: #0aa37033;
-  background: linear-gradient(to right, #0aa37033 70%, #0aa37000);
 }
