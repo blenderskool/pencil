@@ -1,0 +1,207 @@
+.dark *::selection {
+  background-color: #353c3e;
+}
+
+body.dark {
+  color: #F9F9F9;
+  background-color: #232A31;
+}
+
+
+.dark h2::after {
+  background-color: #4D5A60;
+}
+
+.dark p, .dark ul, .dark ol {
+  color: #8E969B;
+}
+
+/* Styles for Skip link for improved accessibility */
+.dark a.skip-link {
+  background-color: #111418;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.21);
+}
+
+.dark code {
+  background-color: #191F24;
+}
+
+.dark b, .dark strong {
+  color: #D4D6D7;
+}
+
+
+.dark header {
+  color: #F9F9F9;
+  background-color: #191F24;
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.36);
+}
+
+.dark .sidebar {
+  background-color: #111418;
+  box-shadow: inset -10px 0 50px 0 rgba(0, 0, 0, 0.27);
+}
+.dark .sidebar a {
+  color: #F9F9F9;
+}
+.dark .sidebar .indent a {
+  color: #8E969B;
+}
+
+.dark aside {
+  border-left-color: #4D5A60;
+}
+.dark aside div a {
+  color: #8E969B;
+}
+
+
+/*
+Name:   Base2Tone-Sea Dark
+Author: by Bram de Haan, adapted from DuoTone themes by Simurai (http://simurai.com/projects/2016/01/01/duotone-themes)
+
+http://atelierbram.github.io/Base2Tone-prism/demo/evening/dark/
+Prism template for Base2Tone by Bram de Haan (https://github.com/atelierbram/Base2Tone-prism)
+Generated with Base16 Builder (https://github.com/base16-builder/base16-builder)
+*/
+
+.dark code[class*="language-"],
+.dark pre[class*="language-"] {
+  font-family: Consolas, Menlo, Monaco, "Andale Mono WT", "Andale Mono", "Lucida Console", "Lucida Sans Typewriter", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Liberation Mono", "Nimbus Mono L", "Courier New", Courier, monospace;
+  font-size: 14px;
+  line-height: 1.375;
+  direction: ltr;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+
+  -moz-tab-size: 4;
+  -o-tab-size: 4;
+  tab-size: 4;
+
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+  background: #1d262f;
+  color: #57718e;
+}
+
+.dark pre[class*="language-"]::-moz-selection, .dark pre[class*="language-"] ::-moz-selection,
+.dark code[class*="language-"]::-moz-selection, .dark code[class*="language-"] ::-moz-selection {
+  text-shadow: none;
+  background: #004a9e;
+}
+
+.dark pre[class*="language-"]::selection, .dark pre[class*="language-"] ::selection,
+.dark code[class*="language-"]::selection, .dark code[class*="language-"] ::selection {
+  text-shadow: none;
+  background: #004a9e;
+}
+
+/* Code blocks */
+.dark pre[class*="language-"] {
+  padding: 1em;
+  margin: .5em 0;
+  overflow: auto;
+}
+
+/* Inline code */
+.dark :not(pre) > code[class*="language-"] {
+  padding: .1em;
+  border-radius: .3em;
+}
+
+.dark .token.comment,
+.dark .token.prolog,
+.dark .token.doctype,
+.dark .token.cdata {
+  color: #4a5f78;
+}
+
+.dark .token.punctuation {
+  color: #4a5f78;
+}
+
+.dark .token.namespace {
+  opacity: .7;
+}
+
+.dark .token.tag,
+.dark .token.operator,
+.dark .token.number {
+  color: #0aa370;
+}
+
+.dark .token.property,
+.dark .token.function {
+  color: #57718e;
+}
+
+.dark .token.tag-id,
+.dark .token.selector,
+.dark .token.atrule-id {
+  color: #ebf4ff;
+}
+
+.dark code.language-javascript,
+.dark .token.attr-name {
+  color: #7eb6f6;
+}
+
+.dark code.language-css,
+.dark code.language-scss,
+.dark .token.boolean,
+.dark .token.string,
+.dark .token.entity,
+.dark .token.url,
+.dark .language-css .token.string,
+.dark .language-scss .token.string,
+.dark .style .token.string,
+.dark .token.attr-value,
+.dark .token.keyword,
+.dark .token.control,
+.dark .token.directive,
+.dark .token.unit,
+.dark .token.statement,
+.dark .token.regex,
+.dark .token.atrule {
+  color: #47ebb4;
+}
+
+.dark .token.placeholder,
+.dark .token.variable {
+  color: #47ebb4;
+}
+
+.dark .token.deleted {
+  text-decoration: line-through;
+}
+
+.dark .token.inserted {
+  border-bottom: 1px dotted #ebf4ff;
+  text-decoration: none;
+}
+
+.dark .token.italic {
+  font-style: italic;
+}
+
+.dark .token.important,
+.dark .token.bold {
+  font-weight: bold;
+}
+
+.dark .token.important {
+  color: #7eb6f6;
+}
+
+.dark .token.entity {
+  cursor: help;
+}
+
+.dark pre > code.highlight {
+  outline: .4em solid #34659d;
+  outline-offset: .4em;
+}
