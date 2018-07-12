@@ -120,6 +120,9 @@ a.brand img {
   border-radius: 0;
   height: 25px;
 }
+img.emoji {
+  height: 20px;
+}
 
 blockquote {
   border-left: 3px solid #869095;

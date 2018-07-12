@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import showdown from 'showdown';
 import matter from 'gray-matter';
+import showdownEmoji from 'showdown-emoji';
 
 import recursiveRead from './core/functions/recurRead';
 import createHTML from './core/functions/createHTML';
@@ -25,8 +26,7 @@ showdown.extension('heading-anchor', () =>
 
 const converter = new showdown.Converter({
   ghCompatibleHeaderId: true,
-  extensions: ['heading-anchor'],
-  emoji: true
+  extensions: ['heading-anchor', showdownEmoji],
 });
 
 export default function(devMode, callback) {

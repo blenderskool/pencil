@@ -39,6 +39,7 @@
     "html-minifier": "^3.5.16",
     "mkdirp": "^0.5.1",
     "ncp": "^2.0.0",
-    "showdown": "^1.8.6"
+    "showdown": "^1.8.6",
+    "showdown-emoji": "^1.0.5"
   }
 }
