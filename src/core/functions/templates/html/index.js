@@ -89,9 +89,10 @@ export default function(frontMatter) {
   
   // Navigation
   tags = '';
-  if (config.navigation) {
-    for (let name in config.navigation) {
-      const val = config.navigation[name];
+  if (Array.isArray(config.navigation)) {
+    for (let item of config.navigation) {
+      const name = item[0];
+      const val = item[1];
 
       if (typeof val === 'string') {
         tags += addAttributes('a', {
