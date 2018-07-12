@@ -2,6 +2,36 @@ import fs from 'fs';
 import path from 'path';
 import addAttributes from '../../../utils/attributes';
 
+function navCreator(nav, type) {
+  let tags = '';
+
+  if (Array.isArray(nav)) {
+    for (let item of nav) {
+      const name = item[0];
+      const val = item[1];
+
+      if (typeof val === 'string') {
+        tags += addAttributes('a', {
+          href: val
+        }) + name+'</a>';
+      }
+      else if (!val) {
+        tags += `<span>${name}</span>`;
+      }
+      else if (typeof val === 'object') {
+        // If the link is supposed to open in a new tab
+        tags += addAttributes('a', {
+          href: val.link, target: val.newTab ? '_blank' : ''
+        }) + name+'</a>';
+
+        // TODO: Implement dropdown menu
+      }
+    }
+  }
+
+  return tags;
+}
+
 export default function(frontMatter) {
   const config = require(__base+'/docbook.config');
 
@@ -92,32 +122,7 @@ export default function(frontMatter) {
 
   
   // Navigation
-  tags = '';
-  if (Array.isArray(config.navigation)) {
-    for (let item of config.navigation) {
-      const name = item[0];
-      const val = item[1];
-
-      if (typeof val === 'string') {
-        tags += addAttributes('a', {
-          href: val
-        }) + name+'</a>';
-      }
-      else if (!val) {
-        tags += `<span>${name}</span>`;
-      }
-      else if (typeof val === 'object') {
-        // If the link is supposed to open in a new tab
-        if (val.newTab && val.link) {
-          tags += addAttributes('a', {
-            href: val.link, target: '_blank'
-          }) + name+'</a>';
-        }
-
-        // TODO: Implement dropdown menu
-      }
-    }
-  }
+  tags = navCreator(config.navigation);
   
   // If dark theme toggle button is enabled, then add it to the navBar
   if (config.darkTheme && typeof config.darkTheme === 'object' && config.darkTheme.toggle)
@@ -174,22 +179,7 @@ export default function(frontMatter) {
 
 
   // Footer
-  tags = '';
-  if (config.footer) {
-    for (let name in config.footer) {
-      const val = config.footer[name];
-
-      if (typeof val === 'string') {
-        tags += addAttributes('a', {
-          href: val
-        }) + name+'</a>';
-      }
-      else if (!val) {
-        tags += `<span>${name}</span>`;
-      }
-    }
-  }
-  template = template.replace('{{ footer }}', tags);
+  template = template.replace('{{ footer }}', navCreator(config.footer));
 
   return template;
 }
