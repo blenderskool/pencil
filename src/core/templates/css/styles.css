@@ -168,7 +168,8 @@ header nav button.theme-toggle {
 header nav button.theme-toggle:hover {
   background-color: rgba(0, 0, 0, 0.1);
 }
-header nav a, header nav span {
+header nav a, header nav span,
+footer a, footer span {
   padding: 0 10px;
   font-weight: 600;
 }
@@ -176,6 +177,10 @@ header nav a, header nav span {
 footer {
   height: 50px;
   width: 100%;
+  font-size: 16px;
+  padding: 0 30px;
+  text-align: right;
+  color: #869095;
 }
 
 .container {
