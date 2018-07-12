@@ -72,7 +72,11 @@ export default function(frontMatter) {
 
 
   // Header
-  if ((config.navigation || config.logo) && frontMatter.header != 'disable') {
+  if ((config.navigation ||
+    config.logo ||
+    (config.darkTheme && config.darkTheme.toggle))
+    && frontMatter.header != 'disable'
+  ) {
     template = template.replace('{{ header }}',
       `<header>${config.logo ?
       `<a href="/" class="brand"><img alt="${config.head ?
@@ -114,6 +118,13 @@ export default function(frontMatter) {
       }
     }
   }
+  
+  // If dark theme toggle button is enabled, then add it to the navBar
+  if (config.darkTheme && typeof config.darkTheme === 'object' && config.darkTheme.toggle)
+    tags += `<button class="theme-toggle" aria-label="Toggle dark theme" onclick="toggleDark(this)">
+    <i class="icon ion-ios-${config.darkTheme.default ? 'sunny' : 'moon'}"></i>
+    </button>`;
+
   template = template.replace('{{ nav }}', tags);
 
   // Scripts for the body section
@@ -155,6 +166,12 @@ export default function(frontMatter) {
     }
   }
   template = template.replace('{{ sidebar }}', tags);
+
+
+  // Enable the dark theme if set true for default
+  if (config.darkTheme === true || config.darkTheme.default)
+    template = template.replace('<body', '<body class="dark"');
+
 
   // Footer
   tags = '';
