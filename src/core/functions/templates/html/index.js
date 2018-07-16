@@ -172,9 +172,10 @@ export default function(frontMatter) {
   }
   template = template.replace('{{ sidebar }}', tags);
 
-
   // Enable the dark theme if set true for default
-  if (config.darkTheme === true || config.darkTheme.default)
+  if ((config.darkTheme === true ||
+      config.darkTheme.default ||
+      frontMatter.darkTheme) && frontMatter.darkTheme !== false)
     template = template.replace('<body', '<body class="dark"');
 
 

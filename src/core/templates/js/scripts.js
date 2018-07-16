@@ -26,17 +26,18 @@ function toggleDark(ele) {
  */
 (function() {
   const data = JSON.parse(sessionStorage.getItem('docbook-data'));
-  if (!data) return;
-
   const button = document.querySelector('button.theme-toggle');
 
-  if (data.darkTheme) {
-    document.body.classList.add('dark');
+  if (data) {
+    if (data.darkTheme)
+      document.body.classList.add('dark');
+    else if (data.darkTheme === false)
+      document.body.classList.remove('dark');
+  }
+
+  if (document.body.classList.contains('dark'))
     button.innerHTML = '<i class="icon ion-ios-sunny"></i>';
-  }
-  else if (data.darkTheme === false) {
-    document.body.classList.remove('dark');
+  else
     button.innerHTML = '<i class="icon ion-ios-moon"></i>';
-  }
 
 })();
