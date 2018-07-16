@@ -6,38 +6,45 @@ function navCreator(nav, type, recurLevel = 1) {
   let tags = '';
 
   if (Array.isArray(nav)) {
-    for (let item of nav) {
+    nav.forEach(item => {
+
+      if (typeof item === 'string')
+        return tags += `<span>${item}</span>`;
+
       const name = item[0];
       const val = item[1];
 
       if (typeof val === 'string') {
-        tags += addAttributes('a', {
+        return tags += addAttributes('a', {
           href: val
         }) + name+'</a>';
       }
-      else if (!val) {
-        tags += `<span>${name}</span>`;
-      }
-      else if (Array.isArray(val) && recurLevel < 3) {
+
+      if (!val)
+        return tags += `<span>${name}</span>`;
+
+      if (Array.isArray(val) && recurLevel < 3) {
         /**
          * Drop down menu is setup
          */
-        tags += `<span tabindex="0">${name}
+        return tags += `<span tabindex="0">${name}
           <i class="icon ion-ios-arrow-down"></i>
           <div class="drop-menu">
             ${navCreator(val, null, ++recurLevel)}
           </div>
           </span>`;
       }
-      else if (typeof val === 'object') {
+
+      if (typeof val === 'object') {
         /**
          * If the link is supposed to open in a new tab
          */
-        tags += addAttributes('a', {
+        return tags += addAttributes('a', {
           href: val.link, target: val.newTab ? '_blank' : ''
         }) + name+'</a>';
       }
-    }
+
+    });
   }
 
   return tags;
