@@ -32,5 +32,5 @@
 
 **Customization**
 - Control theme color
-- _Upcoming_ - Dark theme
+- Dark theme :dark_sunglasses:
 - Custom plugins support
