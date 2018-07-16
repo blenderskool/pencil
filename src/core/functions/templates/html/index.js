@@ -174,7 +174,7 @@ export default function(frontMatter) {
 
   // Enable the dark theme if set true for default
   if ((config.darkTheme === true ||
-      config.darkTheme.default ||
+      (config.darkTheme && config.darkTheme.default) ||
       frontMatter.darkTheme) && frontMatter.darkTheme !== false)
     template = template.replace('<body', '<body class="dark"');
 
