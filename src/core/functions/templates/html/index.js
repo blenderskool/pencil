@@ -28,9 +28,9 @@ function navCreator(nav, type, recurLevel = 1) {
          * Drop down menu is setup
          */
         return tags += `<span tabindex="0">${name}
-          <i class="icon ion-ios-arrow-down"></i>
+          <i class="icon ion-ios-arrow-${type === 'footer' ? 'up' : 'down'}"></i>
           <div class="drop-menu">
-            ${navCreator(val, null, ++recurLevel)}
+            ${navCreator(val, 'sub', ++recurLevel)}
           </div>
           </span>`;
       }
@@ -197,7 +197,7 @@ export default function(frontMatter) {
 
 
   // Footer
-  template = template.replace('{{ footer }}', navCreator(config.footer));
+  template = template.replace('{{ footer }}', navCreator(config.footer, 'footer'));
 
   return template;
 }

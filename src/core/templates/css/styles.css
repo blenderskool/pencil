@@ -170,7 +170,7 @@ header nav button.theme-toggle:hover {
 }
 header nav a, header nav span {
   height: 60px;
-  display: flex;
+  display: inline-flex;
   align-items: center;
 }
 header nav a, header nav span,
@@ -178,19 +178,20 @@ footer a, footer span {
   padding: 0 10px;
   font-weight: 600;
 }
-header nav span {
+header nav span,
+footer span {
   position: relative;
 }
-header nav span .ion-ios-arrow-down {
+span i[class*="ion-ios-arrow-"] {
   margin-left: 8px;
   font-size: 12px;
 }
-header nav span:hover div.drop-menu,
-header nav span:focus div.drop-menu {
+span:hover div.drop-menu,
+span:focus div.drop-menu {
   visibility: visible;
   opacity: 1;
 }
-header nav span div.drop-menu {
+span div.drop-menu {
   opacity: 0;
   visibility: hidden;
 
@@ -205,8 +206,8 @@ header nav span div.drop-menu {
   box-shadow: 0 3px 8px rgba(30, 38, 36, .12);
   transition: all 0.2s ease;
 }
-header nav span div.drop-menu span,
-header nav span div.drop-menu a {
+span div.drop-menu span,
+span div.drop-menu a {
   padding: 10px 15px;
   display: block;
   height: auto;
@@ -219,6 +220,16 @@ footer {
   padding: 0 30px;
   text-align: right;
   color: #869095;
+}
+footer span {
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+}
+footer span div.drop-menu {
+  top: auto;
+  bottom: 40px;
+  box-shadow: 0 3px 3px rgba(30, 38, 36, .05);
 }
 
 .container {
