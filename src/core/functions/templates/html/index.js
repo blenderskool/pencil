@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import addAttributes from '../../../utils/attributes';
 
-function navCreator(nav, type) {
+function navCreator(nav, type, recurLevel = 1) {
   let tags = '';
 
   if (Array.isArray(nav)) {
@@ -18,13 +18,24 @@ function navCreator(nav, type) {
       else if (!val) {
         tags += `<span>${name}</span>`;
       }
+      else if (Array.isArray(val) && recurLevel < 3) {
+        /**
+         * Drop down menu is setup
+         */
+        tags += `<span tabindex="0">${name}
+          <i class="icon ion-ios-arrow-down"></i>
+          <div class="drop-menu">
+            ${navCreator(val, null, ++recurLevel)}
+          </div>
+          </span>`;
+      }
       else if (typeof val === 'object') {
-        // If the link is supposed to open in a new tab
+        /**
+         * If the link is supposed to open in a new tab
+         */
         tags += addAttributes('a', {
           href: val.link, target: val.newTab ? '_blank' : ''
         }) + name+'</a>';
-
-        // TODO: Implement dropdown menu
       }
     }
   }

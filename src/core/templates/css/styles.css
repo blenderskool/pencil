@@ -168,10 +168,44 @@ header nav button.theme-toggle {
 header nav button.theme-toggle:hover {
   background-color: rgba(0, 0, 0, 0.1);
 }
+header nav a, header nav span {
+  height: 60px;
+  display: flex;
+  align-items: center;
+}
 header nav a, header nav span,
 footer a, footer span {
   padding: 0 10px;
   font-weight: 600;
+}
+header nav span {
+  position: relative;
+}
+header nav span .ion-ios-arrow-down {
+  margin-left: 5px;
+  font-size: 16px;
+}
+header nav span:hover div.drop-menu,
+header nav span:focus div.drop-menu {
+  display: block;
+}
+header nav span div.drop-menu {
+  display: none;
+  position: absolute;
+  top: 60px;
+  right: 0;
+  min-width: 100px;
+  width: 100%;
+  background-color: #ffffff;
+  border: 1px solid #E1E8E8;
+  border-radius: 3px;
+  box-shadow: 0 3px 8px rgba(30, 38, 36, .12);
+}
+header nav span div.drop-menu span,
+header nav span div.drop-menu a {
+  padding: 10px 15px;
+  display: block;
+  height: auto;
 }
 
 footer {
