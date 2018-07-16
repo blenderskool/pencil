@@ -23,7 +23,7 @@ export default function() {
     ... config.darkTheme ? [path.join(__dirname, '../../templates/css/dark.css')] : []
   ].concat(external), err => {
     console.log(err);
-  }) + pluginCSS).replace(/\[theme\]/gi, config.themeColor ? config.themeColor : '#1CA9F0');
+  }) + pluginCSS).replace(/\[theme\]/gi, config.themeColor ? config.themeColor : '#287BE1');
 
   return new cleanCSS({}).minify(css).styles;
 }

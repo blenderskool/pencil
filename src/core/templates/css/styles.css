@@ -286,8 +286,10 @@ aside {
   top: 0;
   right: 0;
   width: calc(100% - 19% - 30px - (34em + 150px));
+  max-height: calc(100vh - 150px);
   font-size: 16px;
   font-weight: 600;
+  overflow-y: auto;
 
   margin-top: 50px;
   padding: 0 20px 0 30px;
