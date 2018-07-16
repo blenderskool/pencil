@@ -182,15 +182,18 @@ header nav span {
   position: relative;
 }
 header nav span .ion-ios-arrow-down {
-  margin-left: 5px;
-  font-size: 16px;
+  margin-left: 8px;
+  font-size: 12px;
 }
 header nav span:hover div.drop-menu,
 header nav span:focus div.drop-menu {
-  display: block;
+  visibility: visible;
+  opacity: 1;
 }
 header nav span div.drop-menu {
-  display: none;
+  opacity: 0;
+  visibility: hidden;
+
   position: absolute;
   top: 60px;
   right: 0;
@@ -200,6 +203,7 @@ header nav span div.drop-menu {
   border: 1px solid #E1E8E8;
   border-radius: 3px;
   box-shadow: 0 3px 8px rgba(30, 38, 36, .12);
+  transition: all 0.2s ease;
 }
 header nav span div.drop-menu span,
 header nav span div.drop-menu a {
