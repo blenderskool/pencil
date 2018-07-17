@@ -90,10 +90,24 @@ export default function(frontMatter) {
     'DocBook site');
 
   /**
-   * Adds the theme-color meta tag if themeColor was added in the config file
-   * before adding meta tags defined in the config file
+   * Adds the theme-color meta tag based on following order
+   *  - Front matter themeColor
+   *  - Front matter meta tag
+   *  - Config themeColor
+   *  - Fallback
    */
-  let tags = `<meta name="theme-color" content="${config.themeColor ? config.themeColor : '#287BE1'}">`;
+  let tags = `<meta name="theme-color" content="${(() => {
+    const meta = frontMatter.meta;
+    
+    if (frontMatter.themeColor)
+      return frontMatter.themeColor;
+    else if (meta && meta['theme-color'])
+        return meta['theme-color'];
+    else if (config.themeColor)
+      return config.themeColor;
+    else
+      return '#287BE1';
+  })()}">`;
 
   /**
    * Creates the <head> section of the site
