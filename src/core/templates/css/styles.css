@@ -168,10 +168,50 @@ header nav button.theme-toggle {
 header nav button.theme-toggle:hover {
   background-color: rgba(0, 0, 0, 0.1);
 }
+header nav a, header nav span {
+  height: 60px;
+  display: inline-flex;
+  align-items: center;
+}
 header nav a, header nav span,
 footer a, footer span {
   padding: 0 10px;
   font-weight: 600;
+}
+header nav span,
+footer span {
+  position: relative;
+}
+span i[class*="ion-ios-arrow-"] {
+  margin-left: 8px;
+  font-size: 12px;
+}
+span:hover div.drop-menu,
+span:focus div.drop-menu,
+span div.drop-menu.focused {
+  visibility: visible;
+  opacity: 1;
+}
+span div.drop-menu {
+  opacity: 0;
+  visibility: hidden;
+
+  position: absolute;
+  top: 60px;
+  right: 0;
+  min-width: 100px;
+  width: 100%;
+  background-color: #ffffff;
+  border: 1px solid #E1E8E8;
+  border-radius: 3px;
+  box-shadow: 0 3px 8px rgba(30, 38, 36, .12);
+  transition: all 0.2s ease;
+}
+span div.drop-menu span,
+span div.drop-menu a {
+  padding: 10px 15px;
+  display: block;
+  height: auto;
 }
 
 footer {
@@ -181,6 +221,16 @@ footer {
   padding: 0 30px;
   text-align: right;
   color: #869095;
+}
+footer span {
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+}
+footer span div.drop-menu {
+  top: auto;
+  bottom: 40px;
+  box-shadow: 0 3px 3px rgba(30, 38, 36, .05);
 }
 
 .container {
