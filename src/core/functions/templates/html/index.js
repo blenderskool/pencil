@@ -2,35 +2,44 @@ import fs from 'fs';
 import path from 'path';
 import addAttributes from '../../../utils/attributes';
 
-function navCreator(nav, type, recurLevel = 1) {
+/**
+ * Creates the Navigation for the page.
+ * 
+ * @param {Array} nav Data for creating the navigation
+ * @param {String} type Defines the type of navigation. (sub | footer | (default: nav))
+ * @param {Boolean} aria Toggle the ARIA labels for the items in navigation
+ * @param {Number} recurLevel Defines the recursion depth to limit drop menu depths
+ */
+function navCreator(nav, type, aria, recurLevel = 1) {
   let tags = '';
 
   if (Array.isArray(nav)) {
     nav.forEach(item => {
 
       if (typeof item === 'string')
-        return tags += `<span>${item}</span>`;
+        return tags += `<span ${aria ? 'role="menuitem"' : ''}>${item}</span>`;
 
       const name = item[0];
       const val = item[1];
 
       if (typeof val === 'string') {
         return tags += addAttributes('a', {
-          href: val
+          href: val,
+          ...(aria && {role: 'menuitem'})
         }) + name+'</a>';
       }
 
       if (!val)
-        return tags += `<span>${name}</span>`;
+        return tags += `<span ${aria ? 'role="menuitem"' : ''}>${name}</span>`;
 
       if (Array.isArray(val) && recurLevel < 3) {
         /**
          * Drop down menu is setup
          */
-        return tags += `<span tabindex="0">${name}
+        return tags += `<span tabindex="0" aria-haspopup="true" aria-expanded="false">${name}
           <i class="icon ion-ios-arrow-${type === 'footer' ? 'up' : 'down'}"></i>
-          <div class="drop-menu">
-            ${navCreator(val, 'sub', ++recurLevel)}
+          <div class="drop-menu" role="menu">
+            ${navCreator(val, 'sub', true, ++recurLevel)}
           </div>
           </span>`;
       }
@@ -40,7 +49,9 @@ function navCreator(nav, type, recurLevel = 1) {
          * If the link is supposed to open in a new tab
          */
         return tags += addAttributes('a', {
-          href: val.link, target: val.newTab ? '_blank' : ''
+          href: val.link,
+          target: val.newTab ? '_blank' : '',
+          ...(aria && {role: 'menuitem'})
         }) + name+'</a>';
       }
 
@@ -50,6 +61,12 @@ function navCreator(nav, type, recurLevel = 1) {
   return tags;
 }
 
+/**
+ * Prepares the main template with the config, frontMatter data for the actual
+ * content to be added
+ * 
+ * @param {Object} frontMatter Additional options for each page
+ */
 export default function(frontMatter) {
   const config = require(__base+'/docbook.config');
 
@@ -149,12 +166,21 @@ export default function(frontMatter) {
 
   template = template.replace('{{ nav }}', tags);
 
-  // Scripts for the body section
+
+  /**
+   * Additional body section hook for future use
+   */
+  template = template.replace('{{ body }}', '');
+
+
+  /**
+   * Scripts added just before <body> is closed
+   */
   tags = '<script src="/script.js"></script>';
   if (Array.isArray(config.scripts))
     config.scripts.forEach(scriptInfo => tags += addAttributes('script', scriptInfo)+'</script>');
 
-  template = template.replace('{{ body }}', tags);
+  template = template.replace('{{ scripts }}', tags);
 
 
   // Sidebar

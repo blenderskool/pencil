@@ -27,13 +27,16 @@
       {{ content }}
     </main>
 
-    <button class="sidebar-control" onclick="toggleSidebar()"><i class="icon ion-md-menu"></i></button>
+    <button class="sidebar-control" aria-label="Toggle sidebar" onclick="toggleSidebar()">
+      <i class="icon ion-md-menu"></i>
+    </button>
   </div>
   {{ body }}
 
   <footer>
     {{ footer }}
   </footer>
+  {{ scripts }}
   <!-- browsersync -->
 </body>
 </html>

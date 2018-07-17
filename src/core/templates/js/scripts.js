@@ -4,6 +4,11 @@ function toggleSidebar() {
   sidebar.classList.toggle('sidebar-active');
 }
 
+function toggleFocus() {
+  const classList = this.parentElement.classList;
+  classList.toggle('focused');
+}
+
 function toggleDark(ele) {
   document.body.classList.toggle('dark');
   
@@ -39,5 +44,20 @@ function toggleDark(ele) {
     button.innerHTML = '<i class="icon ion-ios-sunny"></i>';
   else
     button.innerHTML = '<i class="icon ion-ios-moon"></i>';
+
+})();
+
+/**
+ * Keep drop down menu visible when focussing the menu items
+ */
+(function() {
+  const menus = document.querySelectorAll('span div.drop-menu');
+
+  for (const menu of menus) {
+    for (const child of menu.children) {
+      child.addEventListener('focus', toggleFocus);
+      child.addEventListener('blur', toggleFocus);
+    }
+  }
 
 })();

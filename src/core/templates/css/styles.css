@@ -187,7 +187,8 @@ span i[class*="ion-ios-arrow-"] {
   font-size: 12px;
 }
 span:hover div.drop-menu,
-span:focus div.drop-menu {
+span:focus div.drop-menu,
+span div.drop-menu.focused {
   visibility: visible;
   opacity: 1;
 }
