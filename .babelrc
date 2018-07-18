@@ -3,11 +3,5 @@
     "es2015",
     "minify"
   ],
-  "plugins": ["transform-object-rest-spread"],
-  "ignore": [
-    "./node_modules",
-    "./.babelrc",
-    "./package.json",
-    "./npm-debug.log"
-  ]
+  "plugins": ["transform-object-rest-spread"]
 }
