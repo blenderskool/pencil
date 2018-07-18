@@ -71,10 +71,16 @@ function parseStyles(styles) {
 }
 
 export default function(plugin, elemRef, type='html') {
+  const config = require(__base + '/docbook.config');
   const mod = require(plugin);
 
   if (type === 'html') {
-    const html = mod.data(elemRef);
+    /**
+     * Get the static element of the plugin.
+     * JSON methods are used to send a deep copy of config data to the plugins
+     * to prevent mutability.
+     */
+    const html = mod.data(elemRef, JSON.parse(JSON.stringify(config)));
 
     /**
      * We add user specified inline styles and class list to the plugin element.
