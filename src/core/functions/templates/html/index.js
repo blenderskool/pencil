@@ -81,9 +81,9 @@ export default function(frontMatter) {
 
   // If title is present in meta data for the page, then use it
   if (frontMatter.title)
-    template = template.replace('{{ title }}', frontMatter.title);
+    template = template.loadHook('title', frontMatter.title);
   else
-    template = template.replace('{{ title }}', config.head ?
+    template = template.loadHook('title', config.head ?
     config.head.title ?
     config.head.title :
     'DocBook site' :
@@ -146,7 +146,7 @@ export default function(frontMatter) {
     }
   }
   // Injects the head tags in the template
-  template = template.replace('{{ head }}', tags);
+  template = template.loadHook('head', tags);
 
 
   // Header
@@ -155,7 +155,7 @@ export default function(frontMatter) {
     (config.darkTheme && config.darkTheme.toggle))
     && frontMatter.header != 'disable'
   ) {
-    template = template.replace('{{ header }}',
+    template = template.loadHook('header',
       `<header>${config.logo ?
       `<a href="/" class="brand"><img alt="${config.head ?
       config.head.title :
@@ -166,7 +166,7 @@ export default function(frontMatter) {
     template = template.replace('<div class="container">', '<div class="container fixed-head">');
   }
   else
-    template = template.replace('{{ header }}', '');
+    template = template.loadHook('header', '');
 
   
   // Navigation
@@ -178,13 +178,13 @@ export default function(frontMatter) {
     <i class="icon ion-ios-${config.darkTheme.default ? 'sunny' : 'moon'}"></i>
     </button>`;
 
-  template = template.replace('{{ nav }}', tags);
+  template = template.loadHook('nav', tags);
 
 
   /**
    * Additional body section hook for future use
    */
-  template = template.replace('{{ body }}', '');
+  template = template.loadHook('body', '');
 
 
   /**
@@ -194,7 +194,7 @@ export default function(frontMatter) {
   if (Array.isArray(config.scripts))
     config.scripts.forEach(scriptInfo => tags += addAttributes('script', scriptInfo)+'</script>');
 
-  template = template.replace('{{ scripts }}', tags);
+  template = template.loadHook('scripts', tags);
 
 
   // Sidebar
@@ -227,7 +227,7 @@ export default function(frontMatter) {
 
     }
   }
-  template = template.replace('{{ sidebar }}', tags);
+  template = template.loadHook('sidebar', tags);
 
   // Enable the dark theme if set true for default
   if ((config.darkTheme === true ||
@@ -237,7 +237,7 @@ export default function(frontMatter) {
 
 
   // Footer
-  template = template.replace('{{ footer }}', navCreator(config.footer, 'footer'));
+  template = template.loadHook('footer', navCreator(config.footer, 'footer'));
 
   return template;
 }

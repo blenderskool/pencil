@@ -24,7 +24,7 @@ export default function(path, data, options, callback) {
       const htmlTemplate = templateHTML(data.frontMatter);
 
       // Merge the data into the template
-      data.html = htmlTemplate.replace('{{ content }}', data.html);
+      data.html = htmlTemplate.loadHook('content', data.html);
     }
 
     // Additional plugins that are being used are injected

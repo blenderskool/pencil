@@ -9,12 +9,14 @@ import createHTML from './core/functions/createHTML';
 import copyStatic from './core/functions/copydir';
 import styles from './core/functions/templates/styles';
 import scripts from './core/functions/templates/javascript';
+import loadHook from './core/utils/loadHook';
 
 const basePath = process.env.PWD;
 const dir = 'src/';
 
 /**
- * Showdown extension that is used to make h1, h2, h3 elements anchored links
+ * Showdown extension that is used to make h1, h2, h3
+ * elements anchored links
  */
 showdown.extension('heading-anchor', () =>
   [{
@@ -23,12 +25,22 @@ showdown.extension('heading-anchor', () =>
     replace: '$1<a class="anchor" href="#$3" aria-hidden="true" tabindex="-1">$4</a>$5'
   }]
 );
-
 const converter = new showdown.Converter({
   ghCompatibleHeaderId: true,
   extensions: ['heading-anchor', showdownEmoji],
 });
 
+/**
+ * Sets the custom functions in String prototype
+ */
+String.prototype.loadHook = loadHook;
+
+
+/**
+ * Main build function
+ * @param {Boolean} devMode Toggles the development mode of the build process
+ * @param {Function} callback Callback function once build is complete
+ */
 export default function(devMode, callback) {
 
   global.__base = basePath;
