@@ -13,7 +13,7 @@ export default function() {
   let pluginCSS = '';
   if (config.plugins && typeof config.plugins === "object") {
     for (let tag in config.plugins) {
-      pluginCSS += loader(`${__base}/${config.plugins[tag]}`, null, 'css');
+      pluginCSS += loader(config.plugins[tag], null, 'css');
     }
   }
 

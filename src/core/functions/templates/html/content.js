@@ -29,5 +29,5 @@ export default function(data) {
   }
 
 
-  return data.html.replace('{{ index }}', index);
+  return data.html.loadHook('index', index);
 }
