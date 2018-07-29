@@ -1,6 +1,7 @@
 import addAttributes from '../../utils/attributes';
 import camelKebab from '../../utils/camelKebab';
 import concat from '../../utils/concat';
+import requireURL from 'require-from-url/sync';
 
 /**
  * This function takes a children object which includes the properties for that
@@ -70,17 +71,19 @@ function parseStyles(styles) {
   return css;
 }
 
+
 export default function(plugin, elemRef, type='html') {
   const config = require(__base + '/docbook.config');
-  const mod = require(plugin);
-
+  const pluginPath = `${__base}/${plugin}`;
+  const mod = plugin.startsWith('http') ? requireURL(plugin) : require(pluginPath);
+  
   if (type === 'html') {
     /**
      * Get the static element of the plugin.
      * JSON methods are used to send a deep copy of config data to the plugins
      * to prevent mutability.
      */
-    const html = mod.data(elemRef, JSON.parse(JSON.stringify(config)));
+    const html = mod.template(elemRef, JSON.parse(JSON.stringify(config)));
 
     /**
      * We add user specified inline styles and class list to the plugin element.
@@ -90,12 +93,18 @@ export default function(plugin, elemRef, type='html') {
     html.attributes.style = concat(html.attributes.style, elemRef.getAttribute('style'));
     html.attributes.class = concat(html.attributes.class, ' ', elemRef.getAttribute('class'));
   
-    // Delete the cached plugins data
-    delete require.cache[require.resolve(plugin)];
+    /**
+     * Remove the cached data of locally stored plugins
+     */
+    if (!plugin.startsWith('http'))
+      delete require.cache[require.resolve(pluginPath)];
+
     return addChildren(html);  
   }
   else if (type === 'css') {
-    delete require.cache[require.resolve(plugin)];
+    if (!plugin.startsWith('http'))
+      delete require.cache[require.resolve(pluginPath)];
+
     return parseStyles(mod.styles());
   }
 

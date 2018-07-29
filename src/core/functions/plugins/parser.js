@@ -11,7 +11,7 @@ export default function(data) {
 
     Object.keys(plugins).forEach(tag => {
       dom.getElementsByTagName(tag).forEach(element => {
-        const plugin = pluginLoader(`${__base}/${plugins[tag]}`, element);
+        const plugin = pluginLoader(plugins[tag], element);
         
         /**
          * Replace the component content with plugin content after it is
