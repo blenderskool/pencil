@@ -83,15 +83,18 @@ export default function(plugin, elemRef, type='html') {
      * JSON methods are used to send a deep copy of config data to the plugins
      * to prevent mutability.
      */
-    const html = mod.template(elemRef, JSON.parse(JSON.stringify(config)));
+    let html = '';
+    if (typeof mod.template === 'function') {
+      html = mod.template(elemRef, JSON.parse(JSON.stringify(config)));
 
-    /**
-     * We add user specified inline styles and class list to the plugin element.
-     * This gives customizability to the user.
-     */
+      /**
+       * We add user specified inline styles and class list to the plugin element.
+       * This gives customizability to the user.
+       */
 
-    html.attributes.style = concat(html.attributes.style, elemRef.getAttribute('style'));
-    html.attributes.class = concat(html.attributes.class, ' ', elemRef.getAttribute('class'));
+      html.attributes.style = concat(html.attributes.style, elemRef.getAttribute('style'));
+      html.attributes.class = concat(html.attributes.class, ' ', elemRef.getAttribute('class'));
+    }
   
     /**
      * Remove the cached data of locally stored plugins
@@ -105,7 +108,10 @@ export default function(plugin, elemRef, type='html') {
     if (!plugin.startsWith('http'))
       delete require.cache[require.resolve(pluginPath)];
 
-    return parseStyles(mod.styles());
+    if (typeof mod.styles === 'function')
+      return parseStyles(mod.styles());
+    else
+      return '';
   }
 
 }
