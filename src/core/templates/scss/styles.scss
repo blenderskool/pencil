@@ -183,7 +183,7 @@ header {
     a, span {
       height: 60px;
       display: inline-flex;
-      align-items: center;    
+      align-items: center;
     }
   }
 }
@@ -196,7 +196,11 @@ header nav, footer {
 
   a, span {
     padding: 0 10px;
-    font-weight: 600;  
+    font-weight: 600;
+
+    i[class*="ion-"]:not([class*="ion-ios-arrow-"]) {
+      margin: 0 4px;
+    }
   }
 }
 
