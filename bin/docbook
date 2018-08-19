@@ -51,7 +51,11 @@ program
 
     log(chalk.blue.bold('Starting build in')+ ' /dist'+chalk.blue.bold(' directory'));
     require('../build/index').default(false, (err) => {
-      if (err) return log(chalk.red.bold('There was an error\n'));
+      if (err) {
+        log(chalk.red.bold('There was an error\n'));
+        log(err);
+        return;
+      }
 
       log(chalk.green.bold('Build successfull in '+((new Date()) - time)/1000+'s\n'));
     });
