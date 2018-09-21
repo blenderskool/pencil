@@ -1,15 +1,12 @@
-import path from 'path';
-import { ncp } from "ncp";
+import { ncp } from 'ncp';
 import { existsSync } from 'fs';
 
-export default function(callback) {
-  const staticPath = path.join(__base, 'static');
+export default function(srcPath, dstPath, callback) {
+  if (!existsSync(srcPath)) return callback('Path not found');
 
-  if (!existsSync(staticPath)) return callback('Path not found');
-
-  ncp(staticPath, path.join(__base, 'dist'), err => {
+  ncp(srcPath, dstPath, err => {
     if (err) {
-      return callback(err)
+      return callback(err);
     }
 
     callback(null);
