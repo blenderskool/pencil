@@ -40,10 +40,12 @@ function toggleDark(ele) {
       document.body.classList.remove('dark');
   }
 
-  if (document.body.classList.contains('dark'))
-    button.innerHTML = '<i class="icon ion-ios-sunny"></i>';
-  else
-    button.innerHTML = '<i class="icon ion-ios-moon"></i>';
+  if (button) {
+    if (document.body.classList.contains('dark'))
+      button.innerHTML = '<i class="icon ion-ios-sunny"></i>';
+    else
+      button.innerHTML = '<i class="icon ion-ios-moon"></i>';
+  }
 
 })();
 

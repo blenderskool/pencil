@@ -101,10 +101,11 @@ export default function(devMode, callback) {
 
     });
 
-    // Copy the files from the static folder to the final build as is
-    copyStatic(err => {
-      if (err) callback(err);
-
+    /**
+     * Copy the files from the static folder to the final build.
+     * Since the static folder is optional, the error is ignored
+     */
+    copyStatic(path.join(__base, 'static'), path.join(__base, 'dist'), () => {
       // Remove the cached config file
       delete require.cache[require.resolve(__base + '/docbook.config')];
 

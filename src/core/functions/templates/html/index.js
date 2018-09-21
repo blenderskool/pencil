@@ -188,12 +188,10 @@ export default function(frontMatter) {
 
 
   /**
-   * Scripts added just before <body> is closed
+   * Bundles script file is linked.
+   * In the future, custom scripts linking may be added.
    */
   tags = '<script src="/script.js"></script>';
-  if (Array.isArray(config.scripts))
-    config.scripts.forEach(scriptInfo => tags += addAttributes('script', scriptInfo)+'</script>');
-
   template = template.loadHook('scripts', tags);
 
 
