@@ -28,7 +28,6 @@ gulp.task('html', function() {
   gulp.src('src/core/templates/**/*.html')
     .pipe(htmlmin({
       collapseWhitespace: true,
-      removeOptionalTags: true,
       removeRedundantAttributes: true,
       removeScriptTypeAttributes: true,
       useShortDoctype: true
