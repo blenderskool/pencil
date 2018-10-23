@@ -6,11 +6,15 @@ module.exports = function dev(port) {
 
   const build = require('../build/index').default;
   const devFolder = '.dev';
+  const buildOptions = {
+    dev: true,
+    deployDir: devFolder
+  }
 
   /**
    * Run the build process once before starting the dev server
    */
-  build({ dev:true, deployDir:devFolder }, () => {
+  build(buildOptions, () => {
     /**
      * Using BrowserSync to create a live server
      */
@@ -35,7 +39,7 @@ module.exports = function dev(port) {
   })
   .on('change', () => 
     // Rebuild the files in devMode
-    build(true, () => bs.reload())
+    build(buildOptions, () => bs.reload())
   );
 
 }
