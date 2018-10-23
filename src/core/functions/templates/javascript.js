@@ -5,7 +5,7 @@ export default function() {
   /**
    * Bundle the default, prism, external js files
    */
-  const config = require(__base+'/docbook.config');
+  const config = require(__config);
   const external = Array.isArray(config.scripts) ? config.scripts : [];
 
   return bundler([

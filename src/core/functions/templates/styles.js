@@ -7,7 +7,7 @@ export default function() {
   /**
    * Bundle the default, external css files into one single file
    */
-  const config = require(__base+'/docbook.config');
+  const config = require(__config);
   const external = Array.isArray(config.styles) ? config.styles : [];
   
   let pluginCSS = '';

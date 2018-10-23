@@ -68,7 +68,7 @@ function navCreator(nav, type, aria, recurLevel = 1) {
  * @param {Object} frontMatter Additional options for each page
  */
 export default function(frontMatter) {
-  const config = require(__base+'/docbook.config');
+  const config = require(__config);
 
   // Gets the HTML template
   let template = '';

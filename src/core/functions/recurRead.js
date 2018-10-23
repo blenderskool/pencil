@@ -27,7 +27,7 @@ export default function recursiveRead(dir, options={}, callback, next) {
         if (options.ignore.includes(fileName)) return;
       }
 
-      const filePath = dir + fileName;
+      const filePath = path.join(dir, fileName);
 
       /**
        * If the path is a directory, then again call this function with the
