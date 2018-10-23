@@ -1,6 +1,6 @@
 {
   "name": "docbook",
-  "version": "0.6.2",
+  "version": "0.6.3",
   "description": "Static documentation website generator based on markdown",
   "scripts": {
     "build": "gulp",
