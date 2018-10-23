@@ -69,7 +69,6 @@ export default function(options, callback) {
   }, () => {
     recursiveRead(dir, {
       include: 'md',
-      ignore: ['sidebar.md']
     }, (err, filePath) => {
 
       fs.readFile(filePath, (err, fileBuf) => {
