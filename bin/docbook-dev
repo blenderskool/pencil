@@ -5,16 +5,17 @@ const { join } = require('path');
 module.exports = function dev(port) {
 
   const build = require('../build/index').default;
+  const devFolder = '.dev';
 
   /**
    * Run the build process once before starting the dev server
    */
-  build(true, () => {
+  build({ dev:true, deployDir:devFolder }, () => {
     /**
      * Using BrowserSync to create a live server
      */
     bs.init({
-      server: join(process.cwd(), 'dist'),
+      server: join(process.cwd(), devFolder),
       port,
       snippetOptions: {
         rule: {
@@ -30,9 +31,9 @@ module.exports = function dev(port) {
    * Watch for the changes in the project root
    */
   bs.watch(process.cwd(), {
-    ignored: [join(process.cwd(), 'dist'), join(process.cwd(), 'node_modules')]
+    ignored: [join(process.cwd(), devFolder), join(process.cwd(), 'node_modules')]
   })
-  .on('change', (e, file) => 
+  .on('change', () => 
     // Rebuild the files in devMode
     build(true, () => bs.reload())
   );

@@ -12,7 +12,7 @@ import scripts from './core/functions/templates/javascript';
 import loadHook from './core/utils/loadHook';
 
 const basePath = process.env.PWD;
-const dir = 'src/';
+const dir = 'src';
 
 /**
  * Showdown extension that is used to make h1, h2, h3
@@ -38,14 +38,18 @@ String.prototype.loadHook = loadHook;
 
 /**
  * Main build function
- * @param {Boolean} devMode Toggles the development mode of the build process
- * @param {Function} callback Callback function once build is complete
+ * @param {Object} options deployDir: String - the directory to output the built files, dev: Boolean - run in dev mode
+ * @param {Function} callback Callback function once build is complete 
  */
-export default function(devMode, callback) {
+export default function(options, callback) {
+
+  const deployDir = options.deployDir || 'dist';
+  const deployPath = path.join(basePath, deployDir);
 
   global.__base = basePath;
+  global.__config = path.join(basePath, 'docbook.config');
 
-  recursiveRead('dist/', {
+  recursiveRead(deployDir, {
     includeDir: true
   }, (err, filePath) => {
     if (err) return; //console.log(err);
@@ -75,27 +79,26 @@ export default function(devMode, callback) {
         const content = matter(markdown);
         const html = converter.makeHtml(content.content);
     
-        const fullPath = path.join(__base, 'dist', filePath.replace(dir, ''));
+        const fullPath = path.join(__base, deployDir, filePath.replace(dir, ''));
         
-        createHTML(fullPath, {html, frontMatter: content.data}, { to: '.html', devMode }, err => {
+        createHTML(fullPath, {html, frontMatter: content.data}, { to: '.html', devMode: options.dev }, err => {
           callback(err);
         });
 
       });
     }, () => {
 
-      // If dist folder does not exist, then create it
-      const distPath = path.join(__base, 'dist/');
-      if (!fs.existsSync(distPath))
-        fs.mkdirSync(distPath);
+      // If output folder does not exist, then create it
+      if (!fs.existsSync(deployPath))
+        fs.mkdirSync(deployPath);
 
       // Create a bundled styles file
-      fs.writeFile(path.join(__base, 'dist/styles.css'), styles(), err => {
+      fs.writeFile(path.join(deployPath, 'styles.css'), styles(), err => {
         if (err) callback(err);
       });
 
       // Create scripts file
-      fs.writeFile(path.join(__base, 'dist/script.js'), scripts(), err => {
+      fs.writeFile(path.join(deployPath, 'script.js'), scripts(), err => {
         if (err) callback(err);
       });
 
@@ -105,9 +108,9 @@ export default function(devMode, callback) {
      * Copy the files from the static folder to the final build.
      * Since the static folder is optional, the error is ignored
      */
-    copyStatic(path.join(__base, 'static'), path.join(__base, 'dist'), () => {
+    copyStatic(path.join(__base, 'static'), deployPath, () => {
       // Remove the cached config file
-      delete require.cache[require.resolve(__base + '/docbook.config')];
+      delete require.cache[require.resolve(__config)];
 
       // Callback for completion of build process
       if (typeof callback === "function") callback(null);
