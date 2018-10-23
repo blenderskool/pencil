@@ -11,7 +11,7 @@ import styles from './core/functions/templates/styles';
 import scripts from './core/functions/templates/javascript';
 import loadHook from './core/utils/loadHook';
 
-const basePath = process.env.PWD;
+const basePath = process.cwd();
 const dir = 'src';
 
 /**
