@@ -2,7 +2,7 @@ import domParser from 'dom-parser';
 import pluginLoader from './loader';
 
 export default function(data) {
-  const config = require(__base + '/docbook.config');
+  const config = require(__config);
   const plugins = config.plugins;
 
   if (plugins && typeof plugins === 'object') {

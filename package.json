@@ -1,6 +1,6 @@
 {
   "name": "docbook",
-  "version": "0.6.2",
+  "version": "0.6.3",
   "description": "Static documentation website generator based on markdown",
   "scripts": {
     "build": "gulp",
@@ -32,7 +32,7 @@
     "gulp-sass": "^4.0.1"
   },
   "dependencies": {
-    "browser-sync": "^2.24.5",
+    "browser-sync": "^2.26.3",
     "chalk": "^2.4.1",
     "clean-css": "^4.1.11",
     "commander": "^2.16.0",

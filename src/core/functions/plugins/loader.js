@@ -2,6 +2,7 @@ import addAttributes from '../../utils/attributes';
 import camelKebab from '../../utils/camelKebab';
 import concat from '../../utils/concat';
 import requireURL from 'require-from-url/sync';
+import { join } from 'path';
 
 /**
  * This function takes a children object which includes the properties for that
@@ -73,8 +74,8 @@ function parseStyles(styles) {
 
 
 export default function(plugin, elemRef, type='html') {
-  const config = require(__base + '/docbook.config');
-  const pluginPath = `${__base}/${plugin}`;
+  const config = require(__config);
+  const pluginPath = join(__base, plugin);
   const mod = plugin.startsWith('http') ? requireURL(plugin) : require(pluginPath);
   
   if (type === 'html') {
