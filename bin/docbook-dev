@@ -14,7 +14,8 @@ module.exports = function dev(port) {
   /**
    * Run the build process once before starting the dev server
    */
-  build(buildOptions, () => {
+  build(buildOptions)
+  .then(() => {
     /**
      * Using BrowserSync to create a live server
      */
@@ -29,6 +30,9 @@ module.exports = function dev(port) {
       },
       notify: false
     });
+  })
+  .catch(err => {
+    console.log(err);
   });
 
   /**
@@ -37,9 +41,16 @@ module.exports = function dev(port) {
   bs.watch(process.cwd(), {
     ignored: [join(process.cwd(), devFolder), join(process.cwd(), 'node_modules')]
   })
-  .on('change', () => 
-    // Rebuild the files in devMode
-    build(buildOptions, () => bs.reload())
-  );
+  .on('change', () => {
+    /**
+     * Rebuild the files in devMode
+     */
+    build(buildOptions)
+    .then(bs.reload)
+    .catch(err => {
+      console.log(err);
+    });
+
+  });
 
 }

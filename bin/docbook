@@ -50,14 +50,14 @@ program
     const time = new Date();
 
     log(chalk.blue.bold('Starting build in')+ ' /dist'+chalk.blue.bold(' directory'));
-    require('../build/index').default({ dev:false }, (err) => {
-      if (err) {
-        log(chalk.red.bold('There was an error\n'));
-        log(err);
-        return;
-      }
 
+    require('../build/index').default({ dev:false })
+    .then(() => {
       log(chalk.green.bold('Build successfull in '+((new Date()) - time)/1000+'s\n'));
+    })
+    .catch(err => {
+      log(chalk.red.bold('There was an error\n'));
+      throw(err);
     });
   });
 
