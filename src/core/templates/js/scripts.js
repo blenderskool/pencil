@@ -19,18 +19,18 @@ function toggleDark(ele) {
   '<i class="icon ion-ios-moon"></i>' : '<i class="icon ion-ios-sunny"></i>';
 
   /**
-   * Store this in session storage
+   * Store this in local storage
    */
-  sessionStorage.setItem('docbook-data', JSON.stringify({
+  localStorage.setItem('docbook-data', JSON.stringify({
     darkTheme: document.body.classList.contains('dark')
   }));
 }
 
 /**
- * Use the session storage data on page load
+ * Use the local storage data on page load
  */
 (function() {
-  const data = JSON.parse(sessionStorage.getItem('docbook-data'));
+  const data = JSON.parse(localStorage.getItem('docbook-data'));
   const button = document.querySelector('button.theme-toggle');
 
   if (data) {
