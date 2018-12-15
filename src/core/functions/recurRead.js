@@ -28,6 +28,7 @@ export default function recursiveRead(dir, options={}, callback, next) {
       }
 
       const filePath = path.join(dir, fileName);
+      if (!fs.existsSync(filePath)) return;
 
       /**
        * If the path is a directory, then again call this function with the

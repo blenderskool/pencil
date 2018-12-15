@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 const bs = require('browser-sync').create();
 const { join } = require('path');
+const vm = require('vm');
+const chalk = require('chalk');
 
 module.exports = function dev(port) {
 
@@ -14,7 +16,8 @@ module.exports = function dev(port) {
   /**
    * Run the build process once before starting the dev server
    */
-  build(buildOptions, () => {
+  build(buildOptions)
+  .then(() => {
     /**
      * Using BrowserSync to create a live server
      */
@@ -29,6 +32,9 @@ module.exports = function dev(port) {
       },
       notify: false
     });
+  })
+  .catch(err => {
+    console.log(err);
   });
 
   /**
@@ -37,9 +43,28 @@ module.exports = function dev(port) {
   bs.watch(process.cwd(), {
     ignored: [join(process.cwd(), devFolder), join(process.cwd(), 'node_modules')]
   })
-  .on('change', () => 
-    // Rebuild the files in devMode
-    build(buildOptions, () => bs.reload())
-  );
+  .on('change', () => {
+
+    /**
+     * Check if the config file is syntactically correct before rebuild
+     */
+    try {
+      const script = vm.runInNewContext('require(join(process.cwd(), "docbook.config"))', {require, join, process});
+    }
+    catch(e) {
+      console.log(chalk.red(e.stack));
+      return;
+    }
+
+    /**
+     * Rebuild the files in devMode
+     */
+    build(buildOptions)
+    .then(bs.reload)
+    .catch(err => {
+      console.log(err);
+    });
+
+  });
 
 }

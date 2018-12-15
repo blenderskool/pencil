@@ -11,7 +11,7 @@ import styles from './core/functions/templates/styles';
 import scripts from './core/functions/templates/javascript';
 import loadHook from './core/utils/loadHook';
 
-const basePath = process.env.PWD;
+const basePath = process.cwd();
 const dir = 'src';
 
 /**
@@ -39,81 +39,95 @@ String.prototype.loadHook = loadHook;
 /**
  * Main build function
  * @param {Object} options deployDir: String - the directory to output the built files, dev: Boolean - run in dev mode
- * @param {Function} callback Callback function once build is complete 
  */
-export default function(options, callback) {
+export default function(options) {
 
-  const deployDir = options.deployDir || 'dist';
-  const deployPath = path.join(basePath, deployDir);
+  return new Promise((resolve, reject) => {
 
-  global.__base = basePath;
-  global.__config = path.join(basePath, 'docbook.config');
+    const deployDir = options.deployDir || 'dist';
+    const deployPath = path.join(basePath, deployDir);
 
-  recursiveRead(deployDir, {
-    includeDir: true
-  }, (err, filePath) => {
-    if (err) return; //console.log(err);
+    global.__base = basePath;
+    global.__config = path.join(basePath, 'docbook.config');
 
-    fs.unlink(filePath, err => {
-      if (err) {
-        // Error due to directory
-        if (err.errno === -21) {
-          fs.rmdir(filePath, err => {
-            if (err) return callback(err);
-          });
-        }
-        else return callback(err);
-      }
-    });
-
-  }, () => {
-    recursiveRead(dir, {
-      include: 'md',
+    recursiveRead(deployDir, {
+      includeDir: true
     }, (err, filePath) => {
+      if (err || !fs.existsSync(filePath)) return; //console.log(err);
 
-      fs.readFile(filePath, (err, fileBuf) => {
-        const file = Buffer.from(fileBuf);
-        const markdown = file.toString();
-    
-        const content = matter(markdown);
-        const html = converter.makeHtml(content.content);
-    
-        const fullPath = path.join(__base, deployDir, filePath.replace(dir, ''));
-        
-        createHTML(fullPath, {html, frontMatter: content.data}, { to: '.html', devMode: options.dev }, err => {
-          callback(err);
-        });
-
+      fs.unlink(filePath, err => {
+        if (err) {
+          // Error due to directory
+          if (err.errno === -21) {
+            fs.rmdir(filePath, err => {
+              if (err) return reject(err);
+            });
+          }
+          else return reject(err);
+        }
       });
+
     }, () => {
+      recursiveRead(dir, {
+        include: 'md',
+      }, (err, filePath) => {
 
-      // If output folder does not exist, then create it
-      if (!fs.existsSync(deployPath))
-        fs.mkdirSync(deployPath);
+        fs.readFile(filePath, (err, fileBuf) => {
+          const file = Buffer.from(fileBuf);
+          const markdown = file.toString();
+      
+          const content = matter(markdown);
+          const html = converter.makeHtml(content.content);
+      
+          const fullPath = path.join(__base, deployDir, filePath.replace(dir, ''));
+          
+          createHTML(fullPath, {html, frontMatter: content.data}, { to: '.html', devMode: options.dev })
+          .catch(reject);
 
-      // Create a bundled styles file
-      fs.writeFile(path.join(deployPath, 'styles.css'), styles(), err => {
-        if (err) callback(err);
+
+        });
+      }, () => {
+
+        // If output folder does not exist, then create it
+        if (!fs.existsSync(deployPath))
+          fs.mkdirSync(deployPath);
+
+        // Create a bundled styles file
+        styles()
+        .then(cssData => {
+          fs.writeFile(path.join(deployPath, 'styles.css'), cssData, err => {
+            if (err) reject(err);
+          });
+        })
+        .catch(reject);
+        
+        // Create scripts file
+        scripts()
+        .then(scriptData => {
+          fs.writeFile(path.join(deployPath, 'script.js'), scriptData, err => {
+            if (err) reject(err);
+          });
+        })
+        .catch(reject);
+
+
       });
 
-      // Create scripts file
-      fs.writeFile(path.join(deployPath, 'script.js'), scripts(), err => {
-        if (err) callback(err);
-      });
+      /**
+       * Copy the files from the static folder to the final build.
+       * Since the static folder is optional, the error is ignored
+       */
+      copyStatic(path.join(__base, 'static'), deployPath)
+      .then(() => {
+        // Remove the cached config file
+        delete require.cache[require.resolve(__config)];
+
+        // Callback for completion of build process
+        resolve();
+      })
+      .catch(reject);
 
     });
 
-    /**
-     * Copy the files from the static folder to the final build.
-     * Since the static folder is optional, the error is ignored
-     */
-    copyStatic(path.join(__base, 'static'), deployPath, () => {
-      // Remove the cached config file
-      delete require.cache[require.resolve(__config)];
-
-      // Callback for completion of build process
-      if (typeof callback === "function") callback(null);
-    });
-  });
-
+  })
 }

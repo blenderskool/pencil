@@ -1,18 +1,20 @@
 import fs from 'fs';
 import concat from './concat'
 
-export default function(paths=[], callback) {
+export default function(paths=[]) {
 
-  let data = '';
-  for (let path of paths) {
-    try {
-      const file = fs.readFileSync(path).toString();
-      data = concat(data, ' ', file);
+  return new Promise((resolve, reject) => {
+    let data = '';
+    for (let path of paths) {
+      try {
+        const file = fs.readFileSync(path).toString();
+        data = concat(data, ' ', file);
+      }
+      catch (err) {
+        return reject(err);
+      }
     }
-    catch (err) {
-      callback(err);
-    }
-  }
 
-  return data;
+    resolve(data);
+  });
 }

@@ -12,40 +12,44 @@ import injectPlugins from './plugins/parser';
  * exist, it is created. Options include a 'to' property which saves
  * the file in the specified format
  */
-export default function(path, data, options, callback) {
-  mkdirp(pathMod.dirname(path), err => {
-    if (err) callback(err);
+export default function(path, data, options) {
+  return new Promise((resolve, reject) => {
 
-    /**
-     * We get the required template based on the extension of file it is
-     * being converted too
-     */
-    if (options.to && options.to === '.html') {
-      const htmlTemplate = templateHTML(data.frontMatter);
+    mkdirp(pathMod.dirname(path), err => {
+      if (err) return reject(err);
 
-      // Merge the data into the template
-      data.html = htmlTemplate.loadHook('content', data.html);
-    }
+      /**
+       * We get the required template based on the extension of file it is
+       * being converted too
+       */
+      if (options.to && options.to === '.html') {
+        const htmlTemplate = templateHTML(data.frontMatter);
 
-    // Additional plugins that are being used are injected
-    data.html = injectPlugins(data);
+        // Merge the data into the template
+        data.html = htmlTemplate.loadHook('content', data.html);
+      }
 
-    // Contents sidebar is added
-    data = indexGen(data);
+      // Additional plugins that are being used are injected
+      data.html = injectPlugins(data);
 
-    // Minify the html
-    data = minify(data, {
-      collapseWhitespace: true,
-      removeComments: !options.devMode,
-      removeOptionalTags: true,
-      removeRedundantAttributes: true,
-      removeScriptTypeAttributes: true,
-      useShortDoctype: true
-    });
+      // Contents sidebar is added
+      data = indexGen(data);
 
-    // Change the file extension and write it to the path
-    fs.writeFile(path.replace(/\.[^/.]+$/, options.to), data, err => {
-      if (err) callback(err);
+      // Minify the html
+      data = minify(data, {
+        collapseWhitespace: true,
+        removeComments: !options.devMode,
+        removeOptionalTags: true,
+        removeRedundantAttributes: true,
+        removeScriptTypeAttributes: true,
+        useShortDoctype: true
+      });
+
+      // Change the file extension and write it to the path
+      fs.writeFile(path.replace(/\.[^/.]+$/, options.to), data, err => {
+        if (err) reject(err);
+      });
+
     });
   });
 }
