@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 const bs = require('browser-sync').create();
 const { join } = require('path');
+const vm = require('vm');
+const chalk = require('chalk');
 
 module.exports = function dev(port) {
 
@@ -42,6 +44,18 @@ module.exports = function dev(port) {
     ignored: [join(process.cwd(), devFolder), join(process.cwd(), 'node_modules')]
   })
   .on('change', () => {
+
+    /**
+     * Check if the config file is syntactically correct before rebuild
+     */
+    try {
+      const script = vm.runInNewContext('require(join(process.cwd(), "docbook.config"))', {require, join, process});
+    }
+    catch(e) {
+      console.log(chalk.red(e.stack));
+      return;
+    }
+
     /**
      * Rebuild the files in devMode
      */
