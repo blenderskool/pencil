@@ -53,7 +53,7 @@ export default function(options) {
     recursiveRead(deployDir, {
       includeDir: true
     }, (err, filePath) => {
-      if (err) return; //console.log(err);
+      if (err || !fs.existsSync(filePath)) return; //console.log(err);
 
       fs.unlink(filePath, err => {
         if (err) {
