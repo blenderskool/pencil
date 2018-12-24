@@ -47,8 +47,12 @@ export default function(options) {
     const deployDir = options.deployDir || 'dist';
     const deployPath = path.join(basePath, deployDir);
 
+    /**
+     * Global read only variables are set here
+     */
     global.__base = basePath;
     global.__config = path.join(basePath, 'docbook.config');
+    global.__deploy = deployDir;
 
     recursiveRead(deployDir, {
       includeDir: true
