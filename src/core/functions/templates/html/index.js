@@ -153,7 +153,7 @@ export default function(frontMatter) {
   if ((config.navigation ||
     config.logo ||
     (config.darkTheme && config.darkTheme.toggle))
-    && frontMatter.header != 'disable'
+    && frontMatter.header !== false
   ) {
     template = template.loadHook('header',
       `<header>${config.logo ?
@@ -197,7 +197,7 @@ export default function(frontMatter) {
 
   // Sidebar
   tags = '';
-  if (Array.isArray(config.sidebar) && frontMatter.sidebar != 'disable') {
+  if (Array.isArray(config.sidebar) && frontMatter.sidebar !== false) {
     for (let item of config.sidebar) {
       const name = item[0];
       const val = item[1];
