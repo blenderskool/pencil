@@ -6,7 +6,7 @@ const chalk = require('chalk');
 
 module.exports = function dev(port) {
 
-  const build = require('../build/index').default;
+  const build = require('../build').default;
   const devFolder = '.dev';
   const buildOptions = {
     dev: true,

@@ -46,7 +46,9 @@
     "html-minifier": "^3.5.16",
     "mkdirp": "^0.5.1",
     "ncp": "^2.0.0",
+    "recursive-readdir": "^2.2.2",
     "require-from-url": "^3.1.2",
+    "rimraf": "^2.6.3",
     "showdown": "^1.8.6",
     "showdown-emoji": "^1.0.5"
   }

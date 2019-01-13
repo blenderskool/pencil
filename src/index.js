@@ -3,16 +3,14 @@ import path from 'path';
 import showdown from 'showdown';
 import matter from 'gray-matter';
 import showdownEmoji from 'showdown-emoji';
+import recursive from 'recursive-readdir';
+import rimraf from 'rimraf';
 
-import recursiveRead from './core/functions/recurRead';
 import createHTML from './core/functions/createHTML';
 import copyStatic from './core/functions/copydir';
 import styles from './core/functions/templates/styles';
 import scripts from './core/functions/templates/javascript';
 import loadHook from './core/utils/loadHook';
-
-const basePath = process.cwd();
-const dir = 'src';
 
 /**
  * Showdown extension that is used to make h1, h2, h3
@@ -38,59 +36,51 @@ String.prototype.loadHook = loadHook;
 
 /**
  * Main build function
- * @param {Object} options deployDir: String - the directory to output the built files, dev: Boolean - run in dev mode
+ * @param {Object} options
+ * deployDir: String - the directory to output the built files,
+ * dev: Boolean - run in dev mode,
+ * basePath: String - Path to the root of the project
  */
 export default function(options) {
 
   return new Promise((resolve, reject) => {
 
-    const deployDir = options.deployDir || 'dist';
-    const deployPath = path.join(basePath, deployDir);
+    const basePath = options.basePath || process.cwd();
+    const deployPath = path.join(basePath, options.deployDir || 'dist');
+    const srcDir = options.src || 'src';
 
     /**
      * Global read only variables are set here
      */
     global.__base = basePath;
-    global.__config = path.join(basePath, 'docbook.config');
-    global.__deploy = deployDir;
+    global.__config = path.join(__base, 'docbook.config');
+    global.__deploy = deployPath;
 
-    recursiveRead(deployDir, {
-      includeDir: true
-    }, (err, filePath) => {
-      if (err || !fs.existsSync(filePath)) return; //console.log(err);
+    /**
+     * Remove the old deploy files
+     */
+    rimraf(__deploy, err => {
 
-      fs.unlink(filePath, err => {
-        if (err) {
-          // Error due to directory
-          if (err.errno === -21) {
-            fs.rmdir(filePath, err => {
-              if (err) return reject(err);
-            });
-          }
-          else return reject(err);
-        }
-      });
+      /**
+       * Recursively read the src directory to build the files
+       */
+      recursive(path.join(__base, srcDir), (err, files) => {
+        files.forEach(filePath => {
+          if (path.extname(filePath) !== '.md') return;
 
-    }, () => {
-      recursiveRead(dir, {
-        include: 'md',
-      }, (err, filePath) => {
-
-        fs.readFile(filePath, (err, fileBuf) => {
-          const file = Buffer.from(fileBuf);
-          const markdown = file.toString();
-      
-          const content = matter(markdown);
-          const html = converter.makeHtml(content.content);
-      
-          const fullPath = path.join(__base, deployDir, filePath.replace(dir, ''));
-          
-          createHTML(fullPath, {html, frontMatter: content.data}, { to: '.html', devMode: options.dev })
-          .catch(reject);
-
-
+          fs.readFile(filePath, (err, fileBuf) => {
+            const file = Buffer.from(fileBuf);
+            const markdown = file.toString();
+        
+            const content = matter(markdown);
+            const html = converter.makeHtml(content.content);
+        
+            const fullPath = path.join(__deploy, filePath.replace(path.join(__base, srcDir), ''));
+            
+            createHTML(fullPath, {html, frontMatter: content.data}, { to: '.html', devMode: options.dev })
+            .catch(reject);
+          });
         });
-      }, () => {
 
         // If output folder does not exist, then create it
         if (!fs.existsSync(deployPath))
@@ -133,5 +123,5 @@ export default function(options) {
 
     });
 
-  })
+  });
 }
