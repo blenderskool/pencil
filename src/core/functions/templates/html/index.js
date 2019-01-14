@@ -195,21 +195,41 @@ export default function(frontMatter) {
   template = template.loadHook('scripts', tags);
 
 
-  // Sidebar
+  /**
+   * Sidebar is generated
+   */
   tags = '';
   if (Array.isArray(config.sidebar) && frontMatter.sidebar !== false) {
-    for (let item of config.sidebar) {
+    config.sidebar.forEach(item => {
+
+      if (typeof item === 'string') {
+        /**
+         * If sidebar item is plain text.
+         */
+        tags += `<span>${item}</span>`;
+        return;
+      }
+
       const name = item[0];
       const val = item[1];
 
       if (config.plugins && typeof config.plugins === 'object' && config.plugins.hasOwnProperty(name)) {
         // This section adds plugin support to the sidebar
         if (val && typeof val === 'object')
+          /**
+           * Plugins with attributes use following syntax
+           * ['plugin_tag', { 'attribute': 'value', ..., children: 'Child value' }]
+           */
           tags += addAttributes(name, val)+`${val.children ? val.children : ''}</${name}>`;
         else
+          /**
+           * For plugins with no attributes,
+           * ['plugin_tag', 'child_value']
+           */
           tags += `<${name}>${val}</${name}>`;
       }
       else if (val && typeof val === 'object') {
+        // Sublinks
         tags += `<div class="page">${ name }</div>`
         for (let subName in val) {
           tags += `<div class="indent">${addAttributes('a', {
@@ -218,12 +238,13 @@ export default function(frontMatter) {
         }
       }
       else {
+        // Standard links
         tags += `<div class="page">${addAttributes('a', {
           href: val
         }) + name + '</a>'}</div>`;
       }
 
-    }
+    });
   }
   template = template.loadHook('sidebar', tags);
 
