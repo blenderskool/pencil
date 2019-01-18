@@ -90,7 +90,7 @@ git push origin some-fix
 > Use the playground to test your code.
 > **Do not commit changes made in the `playground`.**
 
-Once you are done with the changes, you can open a pull request on this repository.
+Once you are done with the changes, you can open a pull request to `dev` branch.
 
 ## License
 DocBook is [MIT Licensed](https://github.com/blenderskool/docbook/blob/master/LICENSE)
