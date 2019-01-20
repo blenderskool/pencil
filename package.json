@@ -4,9 +4,9 @@
   "description": "Static documentation website generator based on markdown",
   "scripts": {
     "build": "gulp",
-    "scripts": "gulp scripts",
-    "styles": "gulp styles",
-    "html": "gulp html",
+    "build:scripts": "gulp scripts",
+    "build:styles": "gulp styles",
+    "build:html": "gulp html",
     "dev": "gulp dev --silent",
     "start": "npm run dev",
     "postinstall": "cd playground && npm install"
