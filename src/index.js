@@ -5,12 +5,14 @@ import matter from 'gray-matter';
 import showdownEmoji from 'showdown-emoji';
 import recursive from 'recursive-readdir';
 import rimraf from 'rimraf';
+import mkdirp from 'mkdirp';
 
 import createHTML from './core/functions/createHTML';
 import copyStatic from './core/functions/copydir';
 import styles from './core/functions/templates/styles';
 import scripts from './core/functions/templates/javascript';
 import loadHook from './core/utils/loadHook';
+import { logFile } from './core/utils/log';
 
 /**
  * Showdown extension that is used to make h1, h2, h3
@@ -76,9 +78,31 @@ export default function(options) {
             const html = converter.makeHtml(content.content);
         
             const fullPath = path.join(__deploy, filePath.replace(path.join(__base, srcDir), ''));
-            
-            createHTML(fullPath, {html, frontMatter: content.data}, { to: '.html', devMode: options.dev })
-            .catch(reject);
+
+            /**
+             * Create the directories where the file would be saved
+             */
+            mkdirp(path.dirname(fullPath), async err => {
+              if (err) return reject(err);
+
+              try {
+                // Get the HTML data
+                const data = await createHTML(fullPath, {html, frontMatter: content.data}, { devMode: options.dev});
+
+                // Write the file with .html extension and same name
+                fs.writeFile(fullPath.replace(/\.[^/.]+$/, '.html'), data, err => {
+                  if (err) return reject(err);
+
+                  /**
+                   * Log the file that has been generated along with the file size
+                   */
+                  logFile(path.basename(fullPath, '.md')+'.html', data.length/1000);
+                });
+              }
+              catch(err) {
+                reject(err);
+              }
+            });
           });
         });
 
@@ -90,7 +114,10 @@ export default function(options) {
         styles()
         .then(cssData => {
           fs.writeFile(path.join(deployPath, 'styles.css'), cssData, err => {
-            if (err) reject(err);
+            if (err) return reject(err);
+
+            // Log styles file is generated
+            logFile('styles.css', cssData.length/1000);
           });
         })
         .catch(reject);
@@ -99,7 +126,10 @@ export default function(options) {
         scripts()
         .then(scriptData => {
           fs.writeFile(path.join(deployPath, 'script.js'), scriptData, err => {
-            if (err) reject(err);
+            if (err) return reject(err);
+
+            // Log script file is generated
+            logFile('script.js', scriptData.length/1000);
           });
         })
         .catch(reject);
