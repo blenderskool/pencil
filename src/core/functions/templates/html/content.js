@@ -8,12 +8,12 @@ export default function(data) {
   let index = '';
   let matches = [];
   let option = data.frontMatter.contents;
-  option = typeof option === 'string' ? option.toLowerCase() : 'dense';
+  if (typeof option === 'string') option = option.toLowerCase();
 
   /**
    * Contents is disabled for the page
    */
-  if (option !== 'disable') {
+  if (option !== false) {
     while ((matches = regex.exec(data.html)) !== null) {
 
       if (option === 'simple' && matches[1] === '3') continue;

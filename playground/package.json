@@ -1,0 +1,19 @@
+{
+  "name": "acme-docs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "docbook dev",
+    "start": "npm run dev",
+    "build": "docbook build",
+    "version": "docbook --version"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "docbook": "../"
+  },
+  "random": "file:../"
+}
