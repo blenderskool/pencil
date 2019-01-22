@@ -96,7 +96,8 @@ export default function(options) {
                   /**
                    * Log the file that has been generated along with the file size
                    */
-                  logFile(path.basename(fullPath, '.md')+'.html', data.length/1000);
+                  if (!options.dev)
+                    logFile(path.basename(fullPath, '.md')+'.html', data.length/1000);
                 });
               }
               catch(err) {
@@ -117,7 +118,8 @@ export default function(options) {
             if (err) return reject(err);
 
             // Log styles file is generated
-            logFile('styles.css', cssData.length/1000);
+            if (!options.dev)
+              logFile('styles.css', cssData.length/1000);
           });
         })
         .catch(reject);
@@ -129,7 +131,8 @@ export default function(options) {
             if (err) return reject(err);
 
             // Log script file is generated
-            logFile('script.js', scriptData.length/1000);
+            if (!options.dev)
+              logFile('script.js', scriptData.length/1000);
           });
         })
         .catch(reject);
