@@ -11,7 +11,7 @@
     "build:playground": "cd playground && npm run build",
     "dev": "gulp dev --silent",
     "start": "npm run dev",
-    "postinstall": "cd playground && npm install"
+    "prepare": "cd playground && npm install"
   },
   "bin": {
     "docbook": "bin/docbook"
