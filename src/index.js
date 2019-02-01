@@ -45,23 +45,26 @@ String.prototype.loadHook = loadHook;
  */
 export default function(options) {
 
+  const basePath = options.basePath || process.cwd();
+  const deployPath = path.join(basePath, options.deployDir || 'dist');
+  const srcDir = options.src || 'src';
+
+  /**
+   * Global read only variables are set here
+   */
+  global.__base = basePath;
+  global.__config = path.join(__base, 'docbook.config');
+  global.__deploy = deployPath;
+
   return new Promise((resolve, reject) => {
-
-    const basePath = options.basePath || process.cwd();
-    const deployPath = path.join(basePath, options.deployDir || 'dist');
-    const srcDir = options.src || 'src';
-
-    /**
-     * Global read only variables are set here
-     */
-    global.__base = basePath;
-    global.__config = path.join(__base, 'docbook.config');
-    global.__deploy = deployPath;
-
     /**
      * Remove the old deploy files
      */
     rimraf(__deploy, err => {
+      /**
+       * Create the deploy directory for saving the files
+       */
+      mkdirp.sync(__deploy);
 
       /**
        * Recursively read the src directory to build the files
@@ -73,10 +76,10 @@ export default function(options) {
           fs.readFile(filePath, (err, fileBuf) => {
             const file = Buffer.from(fileBuf);
             const markdown = file.toString();
-        
+
             const content = matter(markdown);
             const html = converter.makeHtml(content.content);
-        
+
             const fullPath = path.join(__deploy, filePath.replace(path.join(__base, srcDir), ''));
 
             /**
@@ -106,10 +109,6 @@ export default function(options) {
             });
           });
         });
-
-        // If output folder does not exist, then create it
-        if (!fs.existsSync(deployPath))
-          fs.mkdirSync(deployPath);
 
         // Create a bundled styles file
         styles()
