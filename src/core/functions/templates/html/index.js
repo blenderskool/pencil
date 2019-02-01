@@ -12,12 +12,18 @@ import addAttributes from '../../../utils/attributes';
  */
 function navCreator(nav, type, aria, recurLevel = 1) {
   let tags = '';
+  const hookOptions = {
+    keepHook: false,
+    asText: true,
+    parseMarkdown: true
+  };
 
   if (Array.isArray(nav)) {
     nav.forEach(item => {
 
-      if (typeof item === 'string')
-        return tags += `<span ${aria ? 'role="menuitem"' : ''}>${item}</span>`;
+      if (typeof item === 'string') {
+        return tags += `<span ${aria ? 'role="menuitem"' : ''}>{{ item }}</span>`.loadHook('item', item, hookOptions);
+      }
 
       const name = item[0];
       const val = item[1];
@@ -26,22 +32,24 @@ function navCreator(nav, type, aria, recurLevel = 1) {
         return tags += addAttributes('a', {
           href: val,
           ...(aria && {role: 'menuitem'})
-        }) + name+'</a>';
+        })+'{{ item }}</a>'.loadHook('item', name, hookOptions);
       }
 
-      if (!val)
-        return tags += `<span ${aria ? 'role="menuitem"' : ''}>${name}</span>`;
+      if (!val) {
+        return tags += `<span ${aria ? 'role="menuitem"' : ''}>{{ item }}</span>`.loadHook('item', name, hookOptions);
+      }
 
       if (Array.isArray(val) && recurLevel < 3) {
         /**
          * Drop down menu is setup
          */
-        return tags += `<span tabindex="0" aria-haspopup="true" aria-expanded="false">${name}
+        return tags += `<span tabindex="0" aria-haspopup="true" aria-expanded="false">
+          {{ item }}
           <i class="icon ion-ios-arrow-${type === 'footer' ? 'up' : 'down'}"></i>
           <div class="drop-menu" role="menu">
             ${navCreator(val, 'sub', true, ++recurLevel)}
           </div>
-          </span>`;
+          </span>`.loadHook('item', name, hookOptions);
       }
 
       if (typeof val === 'object') {
@@ -52,7 +60,7 @@ function navCreator(nav, type, aria, recurLevel = 1) {
           href: val.link,
           target: val.newTab ? '_blank' : '',
           ...(aria && {role: 'menuitem'})
-        }) + name+'</a>';
+        }) +'{{ item }}</a>'.loadHook('item', name, hookOptions);
       }
 
     });
@@ -199,6 +207,11 @@ export default function(frontMatter) {
    * Sidebar is generated
    */
   tags = '';
+  const sbHookOpts = {
+    keepHook: false,
+    asText: true,
+    parseMarkdown: true
+  };
   if (Array.isArray(config.sidebar) && frontMatter.sidebar !== false) {
     config.sidebar.forEach(item => {
 
@@ -206,7 +219,7 @@ export default function(frontMatter) {
         /**
          * If sidebar item is plain text.
          */
-        tags += `<span>${item}</span>`;
+        tags += '<span>{{ item }}</span>'.loadHook('item', item, sbHookOpts);
         return;
       }
 
@@ -220,28 +233,28 @@ export default function(frontMatter) {
            * Plugins with attributes use following syntax
            * ['plugin_tag', { 'attribute': 'value', ..., children: 'Child value' }]
            */
-          tags += addAttributes(name, val)+`${val.children ? val.children : ''}</${name}>`;
+          tags += addAttributes(name, val)+`{{ val }}</${name}>`.loadHook('val', val.children || val.value || '', sbHookOpts);
         else
           /**
            * For plugins with no attributes,
            * ['plugin_tag', 'child_value']
            */
-          tags += `<${name}>${val}</${name}>`;
+          tags += `<${name}>{{ item }}</${name}>`.loadHook('item', val, sbHookOpts);
       }
       else if (val && typeof val === 'object') {
         // Sublinks
-        tags += `<div class="page">${ name }</div>`
+        tags += `<div class="page">{{ name }}</div>`.loadHook('name', name, sbHookOpts);
         for (let subName in val) {
           tags += `<div class="indent">${addAttributes('a', {
             href: val[subName]
-          }) + subName + '</a>'}</div>`;
+          }) + '{{ item }}</a>'}</div>`.loadHook('item', subName, sbHookOpts);
         }
       }
       else {
         // Standard links
         tags += `<div class="page">${addAttributes('a', {
           href: val
-        }) + name + '</a>'}</div>`;
+        }) + '{{ item }}</a>'}</div>`.loadHook('item', name, sbHookOpts);
       }
 
     });

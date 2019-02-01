@@ -27,7 +27,9 @@ export default function(filePath, data, options) {
     const htmlTemplate = templateHTML(data.frontMatter);
 
     // Merge the data into the template
-    data.html = htmlTemplate.loadHook('content', data.html, links.length > 2 && data.frontMatter.pageNav !== false);
+    data.html = htmlTemplate.loadHook('content', data.html, {
+      keepHook: links.length > 2 && data.frontMatter.pageNav !== false
+    });
 
     /**
      * Add the page footer navigation that adds neighbouring page links
@@ -52,7 +54,9 @@ export default function(filePath, data, options) {
               </a>`
               : ''
             }
-          </div>`, i < links.length-1);
+          </div>`, {
+            keepHook: i < links.length-1
+          });
         });
 
         return content;
