@@ -1,9 +1,9 @@
 <p align="center">
-  <img src="https://docbook.netlify.com/img/logo.svg" alt="DocBook">
+  <img src="https://penciljs.netlify.com/img/logo.svg" alt="Pencil">
 </p>
 
 <p align="center">
-  Docbook is a powerful <b>static documentation website generator</b> that works on <b>Markdown</b>.
+  Pencil is a powerful <b>static documentation website generator</b> that works on <b>Markdown</b>.
 </p>
 
 <p align="center">
@@ -16,9 +16,9 @@
 </p>
 
 ## What can it do?
-DocBook allows you to write content in [Markdown](https://en.wikipedia.org/wiki/Markdown), which has a very **powerful** and **easy** to learn markup syntax. You can quickly start creating your website without much code.
+Pencil allows you to write content in [Markdown](https://en.wikipedia.org/wiki/Markdown), which has a very **powerful** and **easy** to learn markup syntax. You can quickly start creating your website without much code.
 
-DocBook will automatically create the required files for your website, which are **ready to be deployed** to services like Netlify, GitHub Pages.
+Pencil will automatically create the required files for your website, which are **ready to be deployed** to services like Netlify, GitHub Pages.
 
 
 ## Features
@@ -41,21 +41,21 @@ DocBook will automatically create the required files for your website, which are
 - Custom plugins support
 
 ## Quick start
-DocBook site can be created quickly using the CLI tool. Make sure you have recent LTS version of [Node.js](https://nodejs.org/) installed. Follow the commands below:
+Pencil site can be created quickly using the CLI tool. Make sure you have recent LTS version of [Node.js](https://nodejs.org/) installed. Follow the commands below:
 ```bash
-npm install -g docbook
-docbook init
+npm install -g @pencil/core
+pencil init
 # follow steps shown in CLI
 ```
 > Installing dependencies via `npm install` is not necessary if CLI is globally installed.
 
 
 ## Development
-Following commands must be followed to setup DocBook development environment.
+Following commands must be followed to setup Pencil development environment.
 
 ```bash
-git clone https://github.com/blenderskool/docbook
-cd docbook
+git clone https://github.com/blenderskool/pencil
+cd pencil
 npm install
 npm run dev
 ```
@@ -63,13 +63,13 @@ By default, the dev server opens at port `3000` with the playground.
 Playground is where you can test the code and make live changes to it.
 
 ### Directory structure
-DocBook follows the following directory structure,
+Pencil follows the following directory structure,
 - `src` - Contains the source code.
   - `core` - Core modules that are used.
     - `functions` - Contains the code for the builder.
     - `templates` - Template files that define the structure, design and basic functionality of documentation website.
     - `utils` - Helper functions used extensively in functions.
-- `playground` - A sample documentation website setup to test DocBook features during development.
+- `playground` - A sample documentation website setup to test Pencil features during development.
 - `bin` - Contains the scripts for the CLI.
 
 ## Contributing
@@ -93,4 +93,4 @@ git push origin some-fix
 Once you are done with the changes, you can open a pull request to `dev` branch.
 
 ## License
-DocBook is [MIT Licensed](https://github.com/blenderskool/docbook/blob/master/LICENSE)
+Pencil is [MIT Licensed](https://github.com/blenderskool/pencil/blob/master/LICENSE)

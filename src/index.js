@@ -55,7 +55,7 @@ export default function(options) {
      * Global read only variables are set here
      */
     global.__base = basePath;
-    global.__config = path.join(__base, 'docbook.config');
+    global.__config = path.join(__base, 'pencil.config');
     global.__deploy = deployPath;
 
     /**

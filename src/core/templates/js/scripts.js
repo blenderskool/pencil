@@ -21,7 +21,7 @@ function toggleDark(ele) {
   /**
    * Store this in local storage
    */
-  localStorage.setItem('docbook-data', JSON.stringify({
+  localStorage.setItem('pencil-data', JSON.stringify({
     darkTheme: document.body.classList.contains('dark')
   }));
 }
@@ -30,7 +30,7 @@ function toggleDark(ele) {
  * Use the local storage data on page load
  */
 (function() {
-  const data = JSON.parse(localStorage.getItem('docbook-data'));
+  const data = JSON.parse(localStorage.getItem('pencil-data'));
   const button = document.querySelector('button.theme-toggle');
 
   if (data) {

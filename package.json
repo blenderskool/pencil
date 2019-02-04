@@ -1,6 +1,6 @@
 {
-  "name": "docbook",
-  "version": "0.7.1",
+  "name": "@pencil/core",
+  "version": "0.8.0",
   "description": "Static documentation website generator based on markdown",
   "main": "build/index.js",
   "scripts": {
@@ -14,16 +14,16 @@
     "prepare": "cd playground && npm install"
   },
   "bin": {
-    "docbook": "bin/docbook"
+    "pencil": "bin/pencil"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/blenderskool/docbook"
+    "url": "git+https://github.com/blenderskool/pencil.git"
   },
   "bugs": {
-    "url": "https://github.com/blenderskool/docbook/issues"
+    "url": "https://github.com/blenderskool/pencil/issues"
   },
-  "homepage": "https://github.com/blenderskool/docbook#readme",
+  "homepage": "https://github.com/blenderskool/pencil#readme",
   "author": "Akash Hamirwasia",
   "license": "MIT",
   "devDependencies": {
@@ -53,5 +53,12 @@
     "rimraf": "^2.6.3",
     "showdown": "^1.8.6",
     "showdown-emoji": "^1.0.5"
-  }
+  },
+  "keywords": [
+    "static",
+    "documentation",
+    "website",
+    "generator",
+    "markdown"
+  ]
 }
