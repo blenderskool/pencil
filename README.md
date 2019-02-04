@@ -7,11 +7,11 @@
 </p>
 
 <p align="center">
-   <a href="https://www.npmjs.com/package/docbook">
-    <img src="https://img.shields.io/npm/v/docbook.svg" alt="Version">
+   <a href="https://www.npmjs.com/package/@penciljs/core">
+    <img src="https://img.shields.io/npm/v/@penciljs/core.svg" alt="Version">
   </a>
-  <a href="https://www.npmjs.com/package/docbook">
-    <img src="https://img.shields.io/npm/l/docbook.svg" alt="License">
+  <a href="https://www.npmjs.com/package/@penciljs/core">
+    <img src="https://img.shields.io/npm/l/@penciljs/core.svg" alt="License">
   </a>
 </p>
 
