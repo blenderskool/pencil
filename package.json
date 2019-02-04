@@ -1,5 +1,5 @@
 {
-  "name": "@pencil/core",
+  "name": "@penciljs/core",
   "version": "0.8.0",
   "description": "Static documentation website generator based on markdown",
   "main": "build/index.js",

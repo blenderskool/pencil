@@ -43,7 +43,7 @@ Pencil will automatically create the required files for your website, which are 
 ## Quick start
 Pencil site can be created quickly using the CLI tool. Make sure you have recent LTS version of [Node.js](https://nodejs.org/) installed. Follow the commands below:
 ```bash
-npm install -g @pencil/core
+npm install -g @penciljs/core
 pencil init
 # follow steps shown in CLI
 ```
