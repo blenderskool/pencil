@@ -49,7 +49,7 @@ module.exports = function dev(port) {
      * Check if the config file is syntactically correct before rebuild
      */
     try {
-      const script = vm.runInNewContext('require(join(process.cwd(), "docbook.config"))', {require, join, process});
+      const script = vm.runInNewContext('require(join(process.cwd(), "pencil.config"))', {require, join, process});
     }
     catch(e) {
       console.log(chalk.red(e.stack));

@@ -1,5 +1,5 @@
 # Playground
-**Welcome to the DocBook Playground.** This is the place where you can test out DocBook features that you are developing :smiley:
+**Welcome to the Pencil Playground.** This is the place where you can test out Pencil features that you are developing :smiley:
 
 <callout type="success">
   Remove code in `playground/index.md`**(this page)** and start playing!
