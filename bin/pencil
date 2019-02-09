@@ -17,9 +17,9 @@ program
 program
   .command('init')
   .alias('i')
-  .description('Start a new DocBook project')
+  .description('Start a new Pencil project')
   .action(() => {
-    require('./docbook-init');
+    require('./pencil-init');
   });
 
 /**
@@ -34,7 +34,7 @@ program
     
     log(chalk.blue.bold('Starting local server on port '+cmd.port));
 
-    const dev = require('./docbook-dev');
+    const dev = require('./pencil-dev');
     dev(cmd.port);
   });
 
@@ -68,7 +68,7 @@ program
 program
   .on('command:*', () => {
     log(chalk.red.bold('Invalid command'));
-    log(chalk.blue.bold('Use') + ' docbook --help' + chalk.blue.bold(' to view valid commands'));
+    log(chalk.blue.bold('Use') + ' pencil --help' + chalk.blue.bold(' to view valid commands'));
     log();
   });
 

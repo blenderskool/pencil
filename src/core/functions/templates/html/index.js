@@ -94,8 +94,8 @@ export default function(frontMatter) {
     template = template.loadHook('title', config.head ?
     config.head.title ?
     config.head.title :
-    'DocBook site' :
-    'DocBook site');
+    'Pencil site' :
+    'Pencil site');
 
   /**
    * Adds the theme-color meta tag based on following order
@@ -167,7 +167,7 @@ export default function(frontMatter) {
       `<header>${config.logo ?
       `<a href="/" class="brand"><img alt="${config.head ?
       config.head.title :
-      'Docbook site'}" src=${config.logo}></a>` :
+      'Pencil site'}" src=${config.logo}></a>` :
       ''}<nav>{{ nav }}</nav></header>`
     );
     // Adds a class to the container to accomodate for the fixed header height

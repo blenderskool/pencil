@@ -49,12 +49,12 @@ export default function(options) {
   const deployPath = path.join(basePath, options.deployDir || 'dist');
   const srcDir = options.src || 'src';
 
-  /**
-   * Global read only variables are set here
-   */
-  global.__base = basePath;
-  global.__config = path.join(__base, 'docbook.config');
-  global.__deploy = deployPath;
+    /**
+     * Global read only variables are set here
+     */
+    global.__base = basePath;
+    global.__config = path.join(__base, 'pencil.config');
+    global.__deploy = deployPath;
 
   return new Promise((resolve, reject) => {
     /**
