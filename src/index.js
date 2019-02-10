@@ -28,6 +28,7 @@ showdown.extension('heading-anchor', () =>
 const converter = new showdown.Converter({
   ghCompatibleHeaderId: true,
   extensions: ['heading-anchor', showdownEmoji],
+  tables: true
 });
 
 /**

@@ -1,3 +1,13 @@
+// Variables
+$theme: [theme];
+$text: #192328;
+$text-light: #30353c;
+$text-lighter: #4d5a60;
+$light-gray: #869095;
+$white: #ffffff;
+$shadow: rgba(30, 38, 36, 0.12);
+$border-radius: 3px;
+
 *::selection {
   background-color: #dcf3ff;
 }
@@ -5,7 +15,7 @@
 body {
   font-family: 'Source Sans Pro', sans-serif;
   font-size: 18px;
-  color: #192328;
+  color: $text;
   height: 100%;
 }
 
@@ -51,7 +61,7 @@ h6 {
 
 
 p, ul, ol {
-  color: #4D5A60;
+  color: $text-lighter;
   line-height: 1.4em;
 }
 
@@ -64,7 +74,7 @@ p {
 }
 
 a {
-  color: [theme];
+  color: $theme;
   font-weight: 600;
   text-decoration: none;
   transition: color .15s ease, opacity .15s ease;
@@ -83,7 +93,7 @@ a {
     &:hover {
       /* border-bottom is used as it gives more control */
       opacity: 1;
-      border-bottom: 3px solid [theme];
+      border-bottom: 3px solid $theme;
     }
   }
 
@@ -92,13 +102,13 @@ a {
     position: absolute;
     top: -50px;
     left: 0;
-    color: [theme];
-    background-color: #ffffff;
+    color: $theme;
+    background-color: $white;
     padding: 10px 15px;
     border-bottom-right-radius: 3px;
     z-index: 110;
     transition: top 0.2s ease;
-    box-shadow: 0 3px 10px rgba(30, 38, 36, 0.12);
+    box-shadow: 0 3px 10px $shadow;
     
     &:focus {
       top: 0;
@@ -115,7 +125,7 @@ code {
   background-color: #f0f2f2;
   padding: 4px 8px;
   font-size: 15px;
-  border-radius: 3px;
+  border-radius: $border-radius;
   margin: 0 3px;
   font-family: 'Source Sans Pro', monospace;
   font-weight: 600;
@@ -124,7 +134,7 @@ code {
 
 b, strong {
   font-weight: 600;
-  color: #30353c;
+  color: $text-light;
 }
 
 ul {
@@ -135,7 +145,7 @@ ul {
 
 img {
   max-width: 100%;
-  border-radius: 3px;
+  border-radius: $border-radius;
   vertical-align: middle;
 
   &.emoji {
@@ -144,12 +154,12 @@ img {
 }
 
 blockquote {
-  border-left: 3px solid #869095;
-  border-radius: 2px;
+  border-left: 3px solid $light-gray;
+  border-radius: $border-radius;
   padding-left: 15px;
 
   p {
-    color: #869095;
+    color: $light-gray;
   }
 }
 
@@ -164,8 +174,8 @@ header {
   align-items: center;
   padding: 0 30px;
   
-  background-color: #ffffff;
-  box-shadow: 0 2px 3px rgba(30, 38, 36, 0.12);
+  background-color: $white;
+  box-shadow: 0 2px 3px $shadow;
 
   nav {
     flex: 1;
@@ -178,7 +188,7 @@ header {
       height: 60px;
       border: none;
       font-size: 20px;
-      color: #869095;
+      color: $light-gray;
       background-color: transparent;
       border-left: 1px solid rgba(117, 117, 117, 0.2);
       margin: 0 -30px 0 20px;
@@ -238,9 +248,9 @@ span {
     right: 0;
     min-width: 100px;
     width: 100%;
-    background-color: #ffffff;
+    background-color: $white;
     border: 1px solid #E1E8E8;
-    border-radius: 3px;
+    border-radius: $border-radius;
     box-shadow: 0 3px 8px rgba(30, 38, 36, .12);
     transition: all 0.2s ease;
 
@@ -258,7 +268,7 @@ footer {
   font-size: 16px;
   padding: 0 30px;
   text-align: right;
-  color: #869095;
+  color: $light-gray;
 
   span {
     height: 40px;
@@ -271,6 +281,27 @@ footer {
       box-shadow: 0 3px 3px rgba(30, 38, 36, .05);
     }
   }
+}
+
+table {
+  width: 100%;
+  border-radius: $border-radius;
+  overflow: hidden;
+  
+  th, td {
+    padding: 3px 12px;
+    border: 1px solid #d7d9d9;
+  }
+
+  th {
+    background-color: #F0F2F2;
+    font-weight: 600;
+  }
+
+  td {
+    color: $text-lighter;
+  }
+
 }
 
 .container {
@@ -293,7 +324,7 @@ footer {
 
 .sidebar {
   background-color: #F0F2F2;
-  box-shadow: inset -10px 0 50px 0 rgba(30, 38, 36, 0.12);
+  box-shadow: inset -10px 0 50px 0 $shadow;
   
   position: fixed;
   top: 0;
@@ -318,10 +349,10 @@ footer {
   }
 
   a {
-    color: #192328;
+    color: $text;
 
     &:hover {
-      border-bottom: 2px solid [theme];
+      border-bottom: 2px solid $theme;
     }
   }
 
@@ -335,7 +366,7 @@ footer {
 
     a {
       font-weight: 400;
-      color: #4D5A60;
+      color: $text-lighter;
       font-size: 16px;    
     }
   }
@@ -364,7 +395,7 @@ main {
       .parent {
         font-weight: 600;
         text-transform: uppercase;
-        color: #869095;
+        color: $light-gray;
         font-size: 14px;
       }
     }
@@ -391,7 +422,7 @@ aside {
     &:first-child {
       margin-bottom: 15px;
       text-transform: uppercase;
-      color: #869095;
+      color: $light-gray;
       font-size: 14px;
     }
 
@@ -401,10 +432,10 @@ aside {
     }
 
     a {
-      color: #4D5A60;
+      color: $text-lighter;
 
       &:hover {
-        color: [theme] !important;
+        color: $theme !important;
       }
     }
 
@@ -428,7 +459,7 @@ aside {
   font-size: 1.7rem;
   border: none;
   background: transparent;
-  color: [theme];
+  color: $theme;
   cursor: pointer;
   user-select: none;
 }
@@ -701,10 +732,10 @@ main div.code-toolbar > .toolbar .toolbar-item {
   margin: 0 0.2em;
 }
 main div.code-toolbar > .toolbar a, div.code-toolbar > .toolbar button, div.code-toolbar > .toolbar span {
-  color: #4D5A60 !important;
+  color: $text-lighter !important;
   padding: 0.1em 0.5em !important;
-  background: #ffffff !important;
-  border-radius: 3px !important;
+  background: $white !important;
+  border-radius: $border-radius !important;
   box-shadow: none !important;
 }
 
