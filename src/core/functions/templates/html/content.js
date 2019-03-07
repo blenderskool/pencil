@@ -25,7 +25,12 @@ export default function(data) {
 
     // This does the check if index of the page, must be shown or not
     if (index)
-      index = '<div>Contents</div>' + index;
+      index = `
+        <div>
+          <i class='icon ion-md-list'></i>
+          Contents
+        </div>
+        ` + index;
   }
 
 
