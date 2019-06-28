@@ -24,6 +24,7 @@ module.exports = function dev(port) {
     bs.init({
       server: join(process.cwd(), devFolder),
       port,
+      ui: false,
       snippetOptions: {
         rule: {
           match: /<!-- browsersync -->/i,
@@ -49,7 +50,7 @@ module.exports = function dev(port) {
      * Check if the config file is syntactically correct before rebuild
      */
     try {
-      const script = vm.runInNewContext('require(join(process.cwd(), "pencil.config"))', {require, join, process});
+      vm.runInNewContext('require(join(process.cwd(), "pencil.config"))', {require, join, process});
     }
     catch(e) {
       console.log(chalk.red(e.stack));
