@@ -71,10 +71,14 @@ export default function(options) {
        * Recursively read the src directory to build the files
        */
       recursive(path.join(__base, srcDir), (err, files) => {
+        if (err) return reject(err);
+
         files.forEach(filePath => {
           if (path.extname(filePath) !== '.md') return;
 
           fs.readFile(filePath, (err, fileBuf) => {
+            if (err) return reject(err);
+
             const file = Buffer.from(fileBuf);
             const markdown = file.toString();
 
