@@ -14,9 +14,63 @@ const rl = readline.createInterface({
 });
 const log = console.log;
 
-(function recurAsk() {
+/**
+ * Use the name of the project if specified in the command
+ */
+let projName = process.argv[3];
+if (projName !== undefined) {
+  initProject(projName);
+} else {
+  recurAsk();
+}
+
+/**
+ * Creates a new Pencil project in the current directory
+ * @param projName Name of the project to create
+ */
+function initProject(projName) {
+  // Create a short kebab cased name for the folder
+  const shtName = kebab(projName).replace(/ /g, '-');
+  const projPath = join(path, shtName);
+
   /**
-   * Get the name of the project
+   * Create the project folder
+   */
+  mkdirp(projPath, err => {
+    if (err) return log(err);
+
+    /**
+     * Download the site template from GitHub
+     */
+    log(chalk.blue.bold('Downloading template\n'));
+    download('blenderskool/pencil-template', projPath, err => {
+
+      if (err) return log(chalk.red.bold('There was an error'));
+
+      const pkgPath = join(projPath, 'package.json');
+
+      /**
+       * Change the name field of package.json file in the template
+       */
+      const pkg = readFileSync(pkgPath).toString();
+      writeFileSync(pkgPath, pkg.replace('{{ name }}', shtName));
+
+      /**
+       * Further commands if download was successful
+       */
+      log(chalk.green.bold('Download successful! Use these commands to start working on the site\n'));
+      log(chalk.gray('cd '+shtName));
+      log(chalk.gray('pencil dev'));
+      log();
+    });
+  });
+}
+
+
+function recurAsk() {
+
+  /**
+   * Ask the name of the project if not specified
    */
   rl.question(chalk.blue.bold('Project Name: '), ans => {
     if (!ans) {
@@ -25,42 +79,8 @@ const log = console.log;
     }
 
     rl.close();
-    
-    // Create a short kebab cased name for the folder
-    const shtName = kebab(ans).replace(/ /g, '-');
-    const projPath = join(path, shtName);
-
-    /**
-     * Create the project folder
-     */
-    mkdirp(projPath, err => {
-      if (err) return log(err);
-
-      /**
-       * Download the site template from GitHub
-       */
-      log(chalk.blue.bold('\nDownloading template\n'));
-      download('blenderskool/pencil-template', projPath, err => {
-
-        if (err) return log(chalk.red.bold('There was an error'));
-
-        const pkgPath = join(projPath, 'package.json');
-
-        /**
-         * Change the name field of package.json file in the template
-         */
-        const pkg = readFileSync(pkgPath).toString();
-        writeFileSync(pkgPath, pkg.replace('{{ name }}', shtName));
-
-        /**
-         * Further commands if download was successful
-         */
-        log(chalk.green.bold('Download successful! Use these commands to start working on the site\n'));
-        log(chalk.gray('cd '+shtName));
-        log(chalk.gray('pencil dev'));
-        log();
-      });
-    });
+    log('\n');
+    initProject(ans);
 
   });
-})();
+}
