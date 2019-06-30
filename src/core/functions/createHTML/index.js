@@ -3,7 +3,7 @@ import { minify } from "html-minifier";
 
 import sb from './sidebar';
 import templateHTML from '../templates/html';
-import indexGen from '../templates/html/content';
+import tableOfContents from '../templates/html/toc';
 import injectPlugins from '../plugins/parser';
 
 let sidebar;
@@ -20,6 +20,7 @@ export default function(filePath, data, options) {
 
   return new Promise((resolve, reject) => {
     const links = sidebar.getLinks(path.relative(__deploy, filePath));
+    const config = require(__config);
 
     /**
      * We get the required HTML template
@@ -28,14 +29,14 @@ export default function(filePath, data, options) {
 
     // Merge the data into the template
     data.html = htmlTemplate.loadHook('content', data.html, {
-      keepHook: links.length > 2 && data.frontMatter.pageNav !== false
+      keepHook: links.length > 2 && config.pageNav !== false && data.frontMatter.pageNav !== false
     });
 
     /**
      * Add the page footer navigation that adds neighbouring page links
      * This can be disabled using the front matter
      */
-    if (data.frontMatter.pageNav !== false) {
+    if (config.pageNav !== false && data.frontMatter.pageNav !== false) {
       data.html = data.html.loadHook('content', () => {
         let content = `<div class="page-nav">{{ links }}</div>`;
 
@@ -67,7 +68,7 @@ export default function(filePath, data, options) {
     data.html = injectPlugins(data);
 
     // Contents sidebar is added
-    data = indexGen(data);
+    data = tableOfContents(data);
 
     // Minify the html
     data = minify(data, {
