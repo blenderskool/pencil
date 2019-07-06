@@ -38,12 +38,14 @@
     "gulp-sass": "^4.0.1"
   },
   "dependencies": {
-    "browser-sync": "^2.26.3",
+    "browser-sync": "^2.26.7",
     "chalk": "^2.4.1",
     "clean-css": "^4.1.11",
     "commander": "^2.16.0",
     "dom-parser": "^0.1.5",
     "download-git-repo": "^1.0.2",
+    "emojer": "^1.1.4",
+    "github-api-emojis": "^1.0.2",
     "gray-matter": "^4.0.1",
     "html-minifier": "^3.5.16",
     "mkdirp": "^0.5.1",
@@ -51,8 +53,7 @@
     "recursive-readdir": "^2.2.2",
     "require-from-url": "^3.1.2",
     "rimraf": "^2.6.3",
-    "showdown": "^1.8.6",
-    "showdown-emoji": "^1.0.5"
+    "showdown": "^1.8.6"
   },
   "keywords": [
     "static",
