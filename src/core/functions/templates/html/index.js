@@ -12,12 +12,43 @@ import addAttributes from '../../../utils/attributes';
  */
 function navCreator(nav, type, aria, recurLevel = 1) {
   let tags = '';
+  const hookOptions = {
+    keepHook: false,
+    asText: true,
+    parseMarkdown: true
+  };
 
   if (Array.isArray(nav)) {
     nav.forEach(item => {
 
-      if (typeof item === 'string')
-        return tags += `<span ${aria ? 'role="menuitem"' : ''}>${item}</span>`;
+      if (typeof item === 'string') {
+        return tags += `<span ${aria ? 'role="menuitem"' : ''}>{{ item }}</span>`.loadHook('item', item, hookOptions);
+      }
+      else if (item && typeof item === 'object' && !Array.isArray(item)) {
+        const config = require(__config);
+
+        if (config.plugins && typeof config.plugins === 'object' && config.plugins.hasOwnProperty(item.plugin)) {
+          // Plugin tag has been created
+          const plugin = (addAttributes(item.plugin, item.props)+`{{ val }}</${item.plugin}>`).loadHook('val', item.value || item.children || '', hookOptions);
+
+          /**
+           * If link option is there, then wrap the plugin tag with anchor tag
+           */
+          if (item.options && typeof item.options === 'object' && item.options.link) {
+            tags += (addAttributes('a', {
+              href: item.options.link,
+              target: item.options.link ? '_blank' : '',
+              ...(aria && {role: 'menuitem'})
+            })+`{{ plugin }}</a>`).loadHook('plugin', plugin);
+          }
+          else {
+            // If no link, then directly add it to the navigation
+            tags += plugin;
+          }
+
+          return;
+        }
+      }
 
       const name = item[0];
       const val = item[1];
@@ -26,22 +57,24 @@ function navCreator(nav, type, aria, recurLevel = 1) {
         return tags += addAttributes('a', {
           href: val,
           ...(aria && {role: 'menuitem'})
-        }) + name+'</a>';
+        })+'{{ item }}</a>'.loadHook('item', name, hookOptions);
       }
 
-      if (!val)
-        return tags += `<span ${aria ? 'role="menuitem"' : ''}>${name}</span>`;
+      if (!val) {
+        return tags += `<span ${aria ? 'role="menuitem"' : ''}>{{ item }}</span>`.loadHook('item', name, hookOptions);
+      }
 
       if (Array.isArray(val) && recurLevel < 3) {
         /**
          * Drop down menu is setup
          */
-        return tags += `<span tabindex="0" aria-haspopup="true" aria-expanded="false">${name}
+        return tags += `<span tabindex="0" aria-haspopup="true" aria-expanded="false">
+          {{ item }}
           <i class="icon ion-ios-arrow-${type === 'footer' ? 'up' : 'down'}"></i>
           <div class="drop-menu" role="menu">
             ${navCreator(val, 'sub', true, ++recurLevel)}
           </div>
-          </span>`;
+          </span>`.loadHook('item', name, hookOptions);
       }
 
       if (typeof val === 'object') {
@@ -52,7 +85,7 @@ function navCreator(nav, type, aria, recurLevel = 1) {
           href: val.link,
           target: val.newTab ? '_blank' : '',
           ...(aria && {role: 'menuitem'})
-        }) + name+'</a>';
+        }) +'{{ item }}</a>'.loadHook('item', name, hookOptions);
       }
 
     });
@@ -199,6 +232,11 @@ export default function(frontMatter) {
    * Sidebar is generated
    */
   tags = '';
+  const sbHookOpts = {
+    keepHook: false,
+    asText: true,
+    parseMarkdown: true
+  };
   if (Array.isArray(config.sidebar) && frontMatter.sidebar !== false) {
     config.sidebar.forEach(item => {
 
@@ -206,42 +244,59 @@ export default function(frontMatter) {
         /**
          * If sidebar item is plain text.
          */
-        tags += `<span>${item}</span>`;
-        return;
+        tags += '<span>{{ item }}</span>'.loadHook('item', item, sbHookOpts);
       }
+      else if (item && typeof item === 'object' && !Array.isArray(item)) {
+        /**
+         * If the item is a plugin, check if it is registered in the config and add it to the sidebar.
+         * Syntax for plugins:
+         * { plugin: 'plugin_name', props: { attributes }, [value, children]: 'child value' }
+         */
 
-      const name = item[0];
-      const val = item[1];
+        if (config.plugins && typeof config.plugins === 'object' && config.plugins.hasOwnProperty(item.plugin)) {
+          const plugin = (addAttributes(item.plugin, item.props)+`{{ val }}</${item.plugin}>`).loadHook('val', item.value || item.children || '', sbHookOpts);
 
-      if (config.plugins && typeof config.plugins === 'object' && config.plugins.hasOwnProperty(name)) {
-        // This section adds plugin support to the sidebar
-        if (val && typeof val === 'object')
-          /**
-           * Plugins with attributes use following syntax
-           * ['plugin_tag', { 'attribute': 'value', ..., children: 'Child value' }]
-           */
-          tags += addAttributes(name, val)+`${val.children ? val.children : ''}</${name}>`;
-        else
-          /**
-           * For plugins with no attributes,
-           * ['plugin_tag', 'child_value']
-           */
-          tags += `<${name}>${val}</${name}>`;
-      }
-      else if (val && typeof val === 'object') {
-        // Sublinks
-        tags += `<div class="page">${ name }</div>`
-        for (let subName in val) {
-          tags += `<div class="indent">${addAttributes('a', {
-            href: val[subName]
-          }) + subName + '</a>'}</div>`;
+          if (item.options && typeof item.options === 'object' && item.options.link) {
+            /**
+             * If the plugin is also a link, then add it as a page link to the sidebar
+             */
+            tags += `<div class="page">${addAttributes('a', {
+              href: item.options.link
+            }) + '{{ plugin }}</a>'}</div>`.loadHook('plugin', plugin);
+          }
+          else {
+            /**
+             * If not a link, then add it to the sidebar as is
+             */
+            tags += plugin;
+          }
         }
+
       }
-      else {
-        // Standard links
-        tags += `<div class="page">${addAttributes('a', {
-          href: val
-        }) + name + '</a>'}</div>`;
+      else if (Array.isArray(item) && item.length >= 2) {
+        /**
+         * Standard sidebar item of array type
+         */
+
+        const name = item[0];
+        const val = item[1];
+
+        if (val && typeof val === 'object') {
+          // Sublinks
+          tags += `<div class="page">{{ name }}</div>`.loadHook('name', name, sbHookOpts);
+          for (let subName in val) {
+            tags += `<div class="indent">${addAttributes('a', {
+              href: val[subName]
+            }) + '{{ item }}</a>'}</div>`.loadHook('item', subName, sbHookOpts);
+          }
+        }
+        else {
+          // Standard links
+          tags += `<div class="page">${addAttributes('a', {
+            href: val
+          }) + '{{ item }}</a>'}</div>`.loadHook('item', name, sbHookOpts);
+        }
+
       }
 
     });
