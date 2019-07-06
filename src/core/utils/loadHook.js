@@ -1,12 +1,6 @@
 import showdown from 'showdown';
-import showdownEmoji from 'showdown-emoji';
+import { showdownEmoji, removePara } from '../sd-extensions';
 
-const removePara = {
-  type: 'output',
-  filter: text => {
-    return text.replace(/<\/?p[^>]*>/ig, '');
-  }
-}
 const converter = new showdown.Converter({
   extensions: [showdownEmoji, removePara]
 });

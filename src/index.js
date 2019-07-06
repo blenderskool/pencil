@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import showdown from 'showdown';
 import matter from 'gray-matter';
-import showdownEmoji from 'showdown-emoji';
+import { headingAnchor, showdownEmoji } from './core/sd-extensions';
 import recursive from 'recursive-readdir';
 import rimraf from 'rimraf';
 import mkdirp from 'mkdirp';
@@ -14,20 +14,9 @@ import scripts from './core/functions/templates/javascript';
 import loadHook from './core/utils/loadHook';
 import { logFile } from './core/utils/log';
 
-/**
- * Showdown extension that is used to make h1, h2, h3
- * elements anchored links
- */
-showdown.extension('heading-anchor', () =>
-  [{
-    type: 'html',
-    regex: /(<h([1-3]) id="([^"]+?)">)(.*)(<\/h\2>)/g,
-    replace: '$1<a class="anchor" href="#$3" aria-hidden="true" tabindex="-1">$4</a>$5'
-  }]
-);
 const converter = new showdown.Converter({
   ghCompatibleHeaderId: true,
-  extensions: ['heading-anchor', showdownEmoji],
+  extensions: [headingAnchor, showdownEmoji],
 });
 
 /**
@@ -61,6 +50,7 @@ export default function(options) {
      * Remove the old deploy files
      */
     rimraf(__deploy, err => {
+      if (err) return reject(err);
       /**
        * Create the deploy directory for saving the files
        */
@@ -70,10 +60,14 @@ export default function(options) {
        * Recursively read the src directory to build the files
        */
       recursive(path.join(__base, srcDir), (err, files) => {
+        if (err) return reject(err);
+
         files.forEach(filePath => {
           if (path.extname(filePath) !== '.md') return;
 
           fs.readFile(filePath, (err, fileBuf) => {
+            if (err) return reject(err);
+
             const file = Buffer.from(fileBuf);
             const markdown = file.toString();
 
@@ -81,13 +75,13 @@ export default function(options) {
             const html = converter.makeHtml(content.content);
 
             const fullPath = path.join(__deploy, filePath.replace(path.join(__base, srcDir), ''));
-
             /**
              * Create the directories where the file would be saved
              */
             mkdirp(path.dirname(fullPath), async err => {
               if (err) return reject(err);
 
+              
               try {
                 // Get the HTML data
                 const data = await createHTML(fullPath, {html, frontMatter: content.data}, { devMode: options.dev});
