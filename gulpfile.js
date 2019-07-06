@@ -109,7 +109,7 @@ gulp.task('dev', gulp.series('default', function server() {
     .then(() => {
       // Successful build
 
-      console.log(chalk.green.bold('Build successfull in '+((new Date()) - time)/1000+'s'));
+      console.log(chalk.green.bold('Build successful in '+((new Date()) - time)/1000+'s'));
       // Reload the browser
       bs.reload();
 
